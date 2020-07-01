@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-import { param2Obj } from './utils'
->>>>>>> 35ff4f7... vue-element-template
 
 const tokens = {
   admin: {
@@ -27,11 +23,10 @@ const users = {
   }
 }
 
-<<<<<<< HEAD
 module.exports = [
   // user login
   {
-    url: '/vue-element-admin/user/login',
+    url: '/vue-admin-template/user/login',
     type: 'post',
     response: config => {
       const { username } = config.body
@@ -54,7 +49,7 @@ module.exports = [
 
   // get user info
   {
-    url: '/vue-element-admin/user/info\.*',
+    url: '/vue-admin-template/user/info\.*',
     type: 'get',
     response: config => {
       const { token } = config.query
@@ -68,40 +63,16 @@ module.exports = [
         }
       }
 
-=======
-export default {
-  login: res => {
-    const { username } = JSON.parse(res.body)
-    const data = tokens[username]
-
-    if (data) {
-      return {
-        code: 20000,
-        data
-      }
-    }
-    return {
-      code: 60204,
-      message: 'Account and password are incorrect.'
-    }
-  },
-  getInfo: res => {
-    const { token } = param2Obj(res.url)
-    const info = users[token]
-
-    if (info) {
->>>>>>> 35ff4f7... vue-element-template
       return {
         code: 20000,
         data: info
       }
     }
-<<<<<<< HEAD
   },
 
   // user logout
   {
-    url: '/vue-element-admin/user/logout',
+    url: '/vue-admin-template/user/logout',
     type: 'post',
     response: _ => {
       return {
@@ -111,17 +82,3 @@ export default {
     }
   }
 ]
-=======
-    return {
-      code: 50008,
-      message: 'Login failed, unable to get user details.'
-    }
-  },
-  logout: () => {
-    return {
-      code: 20000,
-      data: 'success'
-    }
-  }
-}
->>>>>>> 35ff4f7... vue-element-template

@@ -1,11 +1,5 @@
-<<<<<<< HEAD
+*
 build/*.js
 src/assets
 public
 dist
-=======
-*
-build/*.js
-config/*.js
-src/assets
->>>>>>> 35ff4f7... vue-element-template

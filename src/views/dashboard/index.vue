@@ -1,54 +1,23 @@
 <template>
   <div class="dashboard-container">
-<<<<<<< HEAD
-    <component :is="currentRole" />
-=======
-    <div class="dashboard-text">name:{{ name }}</div>
-    <div class="dashboard-text">roles:<span v-for="role in roles" :key="role">{{ role }}</span></div>
->>>>>>> 35ff4f7... vue-element-template
+    <div class="dashboard-text">name: {{ name }}</div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-<<<<<<< HEAD
-import adminDashboard from './admin'
-import editorDashboard from './editor'
-
-export default {
-  name: 'Dashboard',
-  components: { adminDashboard, editorDashboard },
-  data() {
-    return {
-      currentRole: 'adminDashboard'
-    }
-  },
-  computed: {
-    ...mapGetters([
-      'roles'
-    ])
-  },
-  created() {
-    if (!this.roles.includes('admin')) {
-      this.currentRole = 'editorDashboard'
-    }
-  }
-}
-</script>
-=======
 
 export default {
   name: 'Dashboard',
   computed: {
     ...mapGetters([
-      'name',
-      'roles'
+      'name'
     ])
   }
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .dashboard {
   &-container {
     margin: 30px;
@@ -59,4 +28,3 @@ export default {
   }
 }
 </style>
->>>>>>> 35ff4f7... vue-element-template
