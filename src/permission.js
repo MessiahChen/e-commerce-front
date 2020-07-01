@@ -1,5 +1,6 @@
 import router from './router'
 import store from './store'
+<<<<<<< HEAD
 import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
@@ -63,12 +64,51 @@ router.beforeEach(async(to, from, next) => {
     } else {
       // other pages that do not have permission to access are redirected to the login page.
       next(`/login?redirect=${to.path}`)
+=======
+import NProgress from 'nprogress' // progress bar
+import 'nprogress/nprogress.css' // progress bar style
+import { Message } from 'element-ui'
+import { getToken } from '@/utils/auth' // getToken from cookie
+
+NProgress.configure({ showSpinner: false })// NProgress configuration
+
+const whiteList = ['/login'] // 不重定向白名单
+router.beforeEach((to, from, next) => {
+  NProgress.start()
+  if (getToken()) {
+    if (to.path === '/login') {
+      next({ path: '/' })
+      NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
+    } else {
+      if (store.getters.roles.length === 0) {
+        store.dispatch('GetInfo').then(res => { // 拉取用户信息
+          next()
+        }).catch((err) => {
+          store.dispatch('FedLogOut').then(() => {
+            Message.error(err || 'Verification failed, please login again')
+            next({ path: '/' })
+          })
+        })
+      } else {
+        next()
+      }
+    }
+  } else {
+    if (whiteList.indexOf(to.path) !== -1) {
+      next()
+    } else {
+      next(`/login?redirect=${to.path}`) // 否则全部重定向到登录页
+>>>>>>> 35ff4f7... vue-element-template
       NProgress.done()
     }
   }
 })
 
 router.afterEach(() => {
+<<<<<<< HEAD
   // finish progress bar
   NProgress.done()
+=======
+  NProgress.done() // 结束Progress
+>>>>>>> 35ff4f7... vue-element-template
 })

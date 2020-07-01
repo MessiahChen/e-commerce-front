@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 // global transition css
 
 /* fade */
+=======
+//globl transition css
+
+/*fade*/
+>>>>>>> 35ff4f7... vue-element-template
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.28s;
@@ -11,7 +17,11 @@
   opacity: 0;
 }
 
+<<<<<<< HEAD
 /* fade-transform */
+=======
+/*fade-transform*/
+>>>>>>> 35ff4f7... vue-element-template
 .fade-transform-leave-active,
 .fade-transform-enter-active {
   transition: all .5s;
@@ -27,7 +37,11 @@
   transform: translateX(30px);
 }
 
+<<<<<<< HEAD
 /* breadcrumb transition */
+=======
+/*fade*/
+>>>>>>> 35ff4f7... vue-element-template
 .breadcrumb-enter-active,
 .breadcrumb-leave-active {
   transition: all .5s;

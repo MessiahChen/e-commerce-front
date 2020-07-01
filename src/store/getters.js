@@ -1,5 +1,6 @@
 const getters = {
   sidebar: state => state.app.sidebar,
+<<<<<<< HEAD
   size: state => state.app.size,
   device: state => state.app.device,
   visitedViews: state => state.tagsView.visitedViews,
@@ -11,5 +12,12 @@ const getters = {
   roles: state => state.user.roles,
   permission_routes: state => state.permission.routes,
   errorLogs: state => state.errorLog.logs
+=======
+  device: state => state.app.device,
+  token: state => state.user.token,
+  avatar: state => state.user.avatar,
+  name: state => state.user.name,
+  roles: state => state.user.roles
+>>>>>>> 35ff4f7... vue-element-template
 }
 export default getters

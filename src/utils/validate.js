@@ -1,4 +1,5 @@
 /**
+<<<<<<< HEAD
  * Created by PanJiaChen on 16/11/18.
  */
 
@@ -15,10 +16,17 @@ export function isExternal(path) {
  * @returns {Boolean}
  */
 export function validUsername(str) {
+=======
+ * Created by jiachenpan on 16/11/18.
+ */
+
+export function isvalidUsername(str) {
+>>>>>>> 35ff4f7... vue-element-template
   const valid_map = ['admin', 'editor']
   return valid_map.indexOf(str.trim()) >= 0
 }
 
+<<<<<<< HEAD
 /**
  * @param {string} url
  * @returns {Boolean}
@@ -84,4 +92,8 @@ export function isArray(arg) {
     return Object.prototype.toString.call(arg) === '[object Array]'
   }
   return Array.isArray(arg)
+=======
+export function isExternal(path) {
+  return /^(https?:|mailto:|tel:)/.test(path)
+>>>>>>> 35ff4f7... vue-element-template
 }

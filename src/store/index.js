@@ -1,9 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+<<<<<<< HEAD
+=======
+import app from './modules/app'
+import user from './modules/user'
+>>>>>>> 35ff4f7... vue-element-template
 import getters from './getters'
 
 Vue.use(Vuex)
 
+<<<<<<< HEAD
 // https://webpack.js.org/guides/dependency-management/#requirecontext
 const modulesFiles = require.context('./modules', true, /\.js$/)
 
@@ -19,6 +25,13 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
 
 const store = new Vuex.Store({
   modules,
+=======
+const store = new Vuex.Store({
+  modules: {
+    app,
+    user
+  },
+>>>>>>> 35ff4f7... vue-element-template
   getters
 })
 

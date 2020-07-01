@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+<<<<<<< HEAD
 Vue.use(Router)
 
 /* Layout */
@@ -70,10 +71,38 @@ export const constantRoutes = [
     component: () => import('@/views/error-page/401'),
     hidden: true
   },
+=======
+// in development-env not use lazy-loading, because lazy-loading too many pages will cause webpack hot update too slow. so only in production use lazy-loading;
+// detail: https://panjiachen.github.io/vue-element-admin-site/#/lazy-loading
+
+Vue.use(Router)
+
+/* Layout */
+import Layout from '../views/layout/Layout'
+
+/**
+* hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
+* alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
+*                                if not set alwaysShow, only more than one route under the children
+*                                it will becomes nested mode, otherwise not show the root menu
+* redirect: noredirect           if `redirect:noredirect` will no redirect in the breadcrumb
+* name:'router-name'             the name is used by <keep-alive> (must set!!!)
+* meta : {
+    title: 'title'               the name show in subMenu and breadcrumb (recommend set)
+    icon: 'svg-name'             the icon show in the sidebar
+    breadcrumb: false            if false, the item will hidden in breadcrumb(default is true)
+  }
+**/
+export const constantRouterMap = [
+  { path: '/login', component: () => import('@/views/login/index'), hidden: true },
+  { path: '/404', component: () => import('@/views/404'), hidden: true },
+
+>>>>>>> 35ff4f7... vue-element-template
   {
     path: '/',
     component: Layout,
     redirect: '/dashboard',
+<<<<<<< HEAD
     children: [
       {
         path: 'dashboard',
@@ -218,24 +247,63 @@ export const asyncRoutes = [
         component: () => import('@/views/example/list'),
         name: 'ArticleList',
         meta: { title: 'Article List', icon: 'list' }
+=======
+    name: 'Dashboard',
+    hidden: true,
+    children: [{
+      path: 'dashboard',
+      component: () => import('@/views/dashboard/index')
+    }]
+  },
+
+  {
+    path: '/example',
+    component: Layout,
+    redirect: '/example/table',
+    name: 'Example',
+    meta: { title: 'Example', icon: 'example' },
+    children: [
+      {
+        path: 'table',
+        name: 'Table',
+        component: () => import('@/views/table/index'),
+        meta: { title: 'Table', icon: 'table' }
+      },
+      {
+        path: 'tree',
+        name: 'Tree',
+        component: () => import('@/views/tree/index'),
+        meta: { title: 'Tree', icon: 'tree' }
+>>>>>>> 35ff4f7... vue-element-template
       }
     ]
   },
 
   {
+<<<<<<< HEAD
     path: '/tab',
+=======
+    path: '/form',
+>>>>>>> 35ff4f7... vue-element-template
     component: Layout,
     children: [
       {
         path: 'index',
+<<<<<<< HEAD
         component: () => import('@/views/tab/index'),
         name: 'Tab',
         meta: { title: 'Tab', icon: 'tab' }
+=======
+        name: 'Form',
+        component: () => import('@/views/form/index'),
+        meta: { title: 'Form', icon: 'form' }
+>>>>>>> 35ff4f7... vue-element-template
       }
     ]
   },
 
   {
+<<<<<<< HEAD
     path: '/error',
     component: Layout,
     redirect: 'noRedirect',
@@ -368,6 +436,61 @@ export const asyncRoutes = [
         component: () => import('@/views/clipboard/index'),
         name: 'ClipboardDemo',
         meta: { title: 'Clipboard', icon: 'clipboard' }
+=======
+    path: '/nested',
+    component: Layout,
+    redirect: '/nested/menu1',
+    name: 'Nested',
+    meta: {
+      title: 'Nested',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: 'menu1',
+        component: () => import('@/views/nested/menu1/index'), // Parent router-view
+        name: 'Menu1',
+        meta: { title: 'Menu1' },
+        children: [
+          {
+            path: 'menu1-1',
+            component: () => import('@/views/nested/menu1/menu1-1'),
+            name: 'Menu1-1',
+            meta: { title: 'Menu1-1' }
+          },
+          {
+            path: 'menu1-2',
+            component: () => import('@/views/nested/menu1/menu1-2'),
+            name: 'Menu1-2',
+            meta: { title: 'Menu1-2' },
+            children: [
+              {
+                path: 'menu1-2-1',
+                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
+                name: 'Menu1-2-1',
+                meta: { title: 'Menu1-2-1' }
+              },
+              {
+                path: 'menu1-2-2',
+                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
+                name: 'Menu1-2-2',
+                meta: { title: 'Menu1-2-2' }
+              }
+            ]
+          },
+          {
+            path: 'menu1-3',
+            component: () => import('@/views/nested/menu1/menu1-3'),
+            name: 'Menu1-3',
+            meta: { title: 'Menu1-3' }
+          }
+        ]
+      },
+      {
+        path: 'menu2',
+        component: () => import('@/views/nested/menu2/index'),
+        meta: { title: 'menu2' }
+>>>>>>> 35ff4f7... vue-element-template
       }
     ]
   },
@@ -377,12 +500,17 @@ export const asyncRoutes = [
     component: Layout,
     children: [
       {
+<<<<<<< HEAD
         path: 'https://github.com/PanJiaChen/vue-element-admin',
+=======
+        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
+>>>>>>> 35ff4f7... vue-element-template
         meta: { title: 'External Link', icon: 'link' }
       }
     ]
   },
 
+<<<<<<< HEAD
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
@@ -402,3 +530,13 @@ export function resetRouter() {
 }
 
 export default router
+=======
+  { path: '*', redirect: '/404', hidden: true }
+]
+
+export default new Router({
+  // mode: 'history', //后端支持可开
+  scrollBehavior: () => ({ y: 0 }),
+  routes: constantRouterMap
+})
+>>>>>>> 35ff4f7... vue-element-template

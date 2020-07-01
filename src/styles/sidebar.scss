@@ -1,5 +1,9 @@
 #app {
 
+<<<<<<< HEAD
+=======
+  // 主体区域 Main container
+>>>>>>> 35ff4f7... vue-element-template
   .main-container {
     min-height: 100%;
     transition: margin-left .28s;
@@ -7,10 +11,17 @@
     position: relative;
   }
 
+<<<<<<< HEAD
   .sidebar-container {
     transition: width 0.28s;
     width: $sideBarWidth !important;
     background-color: $menuBg;
+=======
+  // 侧边栏 Sidebar container
+  .sidebar-container {
+    transition: width 0.28s;
+    width: $sideBarWidth !important;
+>>>>>>> 35ff4f7... vue-element-template
     height: 100%;
     position: fixed;
     font-size: 0px;
@@ -20,19 +31,31 @@
     z-index: 1001;
     overflow: hidden;
 
+<<<<<<< HEAD
     // reset element-ui css
+=======
+    //reset element-ui css
+>>>>>>> 35ff4f7... vue-element-template
     .horizontal-collapse-transition {
       transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;
     }
 
     .scrollbar-wrapper {
       overflow-x: hidden !important;
+<<<<<<< HEAD
+=======
+
+      .el-scrollbar__view {
+        height: 100%;
+      }
+>>>>>>> 35ff4f7... vue-element-template
     }
 
     .el-scrollbar__bar.is-vertical {
       right: 0px;
     }
 
+<<<<<<< HEAD
     .el-scrollbar {
       height: 100%;
     }
@@ -43,6 +66,8 @@
       }
     }
 
+=======
+>>>>>>> 35ff4f7... vue-element-template
     .is-horizontal {
       display: none;
     }
@@ -57,11 +82,14 @@
       margin-right: 16px;
     }
 
+<<<<<<< HEAD
     .sub-el-icon {
       margin-right: 12px;
       margin-left: -2px;
     }
 
+=======
+>>>>>>> 35ff4f7... vue-element-template
     .el-menu {
       border: none;
       height: 100%;
@@ -93,6 +121,7 @@
 
   .hideSidebar {
     .sidebar-container {
+<<<<<<< HEAD
       width: 54px !important;
     }
 
@@ -114,6 +143,21 @@
         .sub-el-icon {
           margin-left: 19px;
         }
+=======
+      width: 36px !important;
+    }
+
+    .main-container {
+      margin-left: 36px;
+    }
+
+    .submenu-title-noDropdown {
+      padding-left: 10px !important;
+      position: relative;
+
+      .el-tooltip {
+        padding: 0 10px !important;
+>>>>>>> 35ff4f7... vue-element-template
       }
     }
 
@@ -121,6 +165,7 @@
       overflow: hidden;
 
       &>.el-submenu__title {
+<<<<<<< HEAD
         padding: 0 !important;
 
         .svg-icon {
@@ -130,6 +175,9 @@
         .sub-el-icon {
           margin-left: 19px;
         }
+=======
+        padding-left: 10px !important;
+>>>>>>> 35ff4f7... vue-element-template
 
         .el-submenu__icon-arrow {
           display: none;
@@ -156,7 +204,11 @@
     min-width: $sideBarWidth !important;
   }
 
+<<<<<<< HEAD
   // mobile responsive
+=======
+  // 适配移动端, Mobile responsive
+>>>>>>> 35ff4f7... vue-element-template
   .mobile {
     .main-container {
       margin-left: 0px;
@@ -191,15 +243,19 @@
     .svg-icon {
       margin-right: 16px;
     }
+<<<<<<< HEAD
     .sub-el-icon {
       margin-right: 12px;
       margin-left: -2px;
     }
+=======
+>>>>>>> 35ff4f7... vue-element-template
   }
 
   .nest-menu .el-submenu>.el-submenu__title,
   .el-menu-item {
     &:hover {
+<<<<<<< HEAD
       // you can use $subMenuHover
       background-color: $menuHover !important;
     }
@@ -223,4 +279,10 @@
       border-radius: 20px;
     }
   }
+=======
+      // You can use $subMenuHover
+      background-color: $menuHover !important;
+    }
+  }
+>>>>>>> 35ff4f7... vue-element-template
 }
