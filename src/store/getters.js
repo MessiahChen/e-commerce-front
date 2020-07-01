@@ -1,28 +1,15 @@
-// 字段排序函数
-const compare = property => {
-  return function (a, b) {
-    var value1 = a[property];
-    var value2 = b[property];
-    return value1 - value2;
-  };
-};
-
-// 获取排序后的列表
-export const orderGoodsList = state => {
-  return state.goodsList.sort(compare(state.orderBy));
-};
-
-// 获取秒杀的小时
-export const seckillsHours = state => {
-  return state.seckills.deadline.hours < 10 ? '0' + state.seckills.deadline.hours : state.seckills.deadline.hours;
-};
-
-// 获取秒杀的分钟
-export const seckillsMinutes = state => {
-  return state.seckills.deadline.minute < 10 ? '0' + state.seckills.deadline.minute : state.seckills.deadline.minute;
-};
-
-// 获取秒杀的秒
-export const seckillsSeconds = state => {
-  return state.seckills.deadline.seconds < 10 ? `0${state.seckills.deadline.seconds}` : state.seckills.deadline.seconds;
-};
+const getters = {
+  sidebar: state => state.app.sidebar,
+  size: state => state.app.size,
+  device: state => state.app.device,
+  visitedViews: state => state.tagsView.visitedViews,
+  cachedViews: state => state.tagsView.cachedViews,
+  token: state => state.user.token,
+  avatar: state => state.user.avatar,
+  name: state => state.user.name,
+  introduction: state => state.user.introduction,
+  roles: state => state.user.roles,
+  permission_routes: state => state.permission.routes,
+  errorLogs: state => state.errorLog.logs
+}
+export default getters
