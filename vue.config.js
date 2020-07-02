@@ -36,6 +36,18 @@ module.exports = {
       warnings: false,
       errors: true
     },
+    // TODO
+    // Add Proxy to connect to backend 跨域的时候把注释去掉
+    // proxy {
+    //   [process.env.VUE_APP_BASE_API]: {
+    //     target: process.env.VUE_APP_BASE_API,
+    //     changeOrigin: true,
+    //     pathRewrite: {
+    //       ['^' + process.env.VUE_APP_BASE_API]: ''
+    //     }
+    //   }
+    // }
+    // before: require('./mock/mock-server.js')
     before: require('./mock/mock-server.js')
   },
   configureWebpack: {
