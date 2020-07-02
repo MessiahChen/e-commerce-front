@@ -54,6 +54,7 @@ export const constantRoutes = [
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
+
   {
     path: '/bvo',
     component: Layout,
@@ -110,7 +111,7 @@ export const constantRoutes = [
       },
       {
         path: 'goodsHistory',
-        component: () => import('@/views/mvo/mvo-goodsHistory'),
+        component: () => import('@/views/mvo/mvo-goodsBrowse'),
         name: 'goodsHistory',
         meta: { title: 'Goods Browse', icon: 'search', affix: true }
       },
@@ -131,6 +132,31 @@ export const constantRoutes = [
         component: () => import('@/views/mvo/mvo-wallet'),
         name: 'wallet',
         meta: { title: 'My Wallet', icon: 'money', affix: true }
+      }
+    ]
+  },
+  {
+    path: '/admin',
+    component: Layout,
+    meta: { title: 'Admin', icon: 'peoples'},
+    children: [
+      {
+        path: 'code',
+        component: () => import('@/views/admin/admin-code'),
+        name: 'code',
+        meta: { title: 'Code Manage', icon: 'form', affix: true }
+      },
+      {
+        path: 'parameter',
+        component: () => import('@/views/admin/admin-parameter'),
+        name: 'storeManagement',
+        meta: { title: 'Parameter Manage', icon: 'component', affix: true }
+      },
+      {
+        path: 'withdraw',
+        component: () => import('@/views/admin/admin-withdraw-aduit'),
+        name: 'goodsHistory',
+        meta: { title: 'Withdraw Aduit', icon: 'money', affix: true }
       }
     ]
   },
