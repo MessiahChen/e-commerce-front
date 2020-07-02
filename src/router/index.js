@@ -54,7 +54,86 @@ export const constantRoutes = [
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
-
+  {
+    path: '/bvo',
+    component: Layout,
+    meta: { title: 'BVO', icon: 'excel'},
+    children: [
+      {
+        path: 'myinfo',
+        component: () => import('@/views/bvo/bvo-myinfo'),
+        name: 'myinfo',
+        meta: { title: '我的信息', icon: 'form', affix: true }
+      },
+      {
+        path: 'goodsAdd',
+        component: () => import('@/views/bvo/bvo-goodsAdd'),
+        name: 'goodsAdd',
+        meta: { title: '商品录入', icon: 'dashboard', affix: true }
+      },
+      {
+        path: 'goodsPicture',
+        component: () => import('@/views/bvo/bvo-goodsPicture'),
+        name: 'myinfo',
+        meta: { title: '商品主图', icon: 'dashboard', affix: true }
+      },
+      {
+        path: 'orderManagement',
+        component: () => import('@/views/bvo/bvo-orderManagement'),
+        name: 'orderManagement',
+        meta: { title: '订单管理', icon: 'form', affix: true }
+      },
+      {
+        path: 'wallet',
+        component: () => import('@/views/bvo/bvo-wallet'),
+        name: 'wallet',
+        meta: { title: '钱包', icon: 'form', affix: true }
+      },
+    ]
+  },
+  {
+    path: '/mvo',
+    component: Layout,
+    meta: { title: 'MVO', icon: 'excel'},
+    children: [
+      {
+        path: 'myinfo',
+        component: () => import('@/views/mvo/mvo-myinfo'),
+        name: 'myinfo',
+        meta: { title: '我的信息', icon: 'form', affix: true }
+      },
+      {
+        path: 'storeManagement',
+        component: () => import('@/views/mvo/mvo-storeManagement'),
+        name: 'storeManagement',
+        meta: { title: '店铺管理', icon: 'dashboard', affix: true }
+      },
+      {
+        path: 'goodsHistory',
+        component: () => import('@/views/mvo/mvo-goodsHistory'),
+        name: 'goodsHistory',
+        meta: { title: '商品浏览', icon: 'dashboard', affix: true }
+      },
+      {
+        path: 'wishList',
+        component: () => import('@/views/mvo/mvo-wishList'),
+        name: 'wishList',
+        meta: { title: '心愿单', icon: 'dashboard', affix: true }
+      },
+      {
+        path: 'orderManagement',
+        component: () => import('@/views/mvo/mvo-orderManagement'),
+        name: 'orderManagement',
+        meta: { title: '订单管理', icon: 'dashboard', affix: true }
+      },
+      {
+        path: 'wallet',
+        component: () => import('@/views/mvo/mvo-wallet'),
+        name: 'wallet',
+        meta: { title: '我的钱包', icon: 'form', affix: true }
+      }
+    ]
+  },
   {
     path: '/example',
     component: Layout,
@@ -76,7 +155,6 @@ export const constantRoutes = [
       }
     ]
   },
-
   {
     path: '/form',
     component: Layout,
