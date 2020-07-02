@@ -57,7 +57,7 @@ export const constantRoutes = [
   {
     path: '/bvo',
     component: Layout,
-    meta: { title: 'BVO', icon: 'excel'},
+    meta: { title: 'BVO', icon: 'user'},
     children: [
       {
         path: 'myinfo',
@@ -69,32 +69,32 @@ export const constantRoutes = [
         path: 'goodsAdd',
         component: () => import('@/views/bvo/bvo-goodsAdd'),
         name: 'goodsAdd',
-        meta: { title: '商品录入', icon: 'dashboard', affix: true }
+        meta: { title: '商品录入', icon: 'edit', affix: true }
       },
       {
         path: 'goodsPicture',
         component: () => import('@/views/bvo/bvo-goodsPicture'),
         name: 'myinfo',
-        meta: { title: '商品主图', icon: 'dashboard', affix: true }
+        meta: { title: '商品主图', icon: 'icon', affix: true }
       },
       {
         path: 'orderManagement',
         component: () => import('@/views/bvo/bvo-orderManagement'),
         name: 'orderManagement',
-        meta: { title: '订单管理', icon: 'form', affix: true }
+        meta: { title: '订单管理', icon: 'list', affix: true }
       },
       {
         path: 'wallet',
         component: () => import('@/views/bvo/bvo-wallet'),
         name: 'wallet',
-        meta: { title: '钱包', icon: 'form', affix: true }
+        meta: { title: '钱包', icon: 'money', affix: true }
       },
     ]
   },
   {
     path: '/mvo',
     component: Layout,
-    meta: { title: 'MVO', icon: 'excel'},
+    meta: { title: 'MVO', icon: 'peoples'},
     children: [
       {
         path: 'myinfo',
@@ -106,31 +106,31 @@ export const constantRoutes = [
         path: 'storeManagement',
         component: () => import('@/views/mvo/mvo-storeManagement'),
         name: 'storeManagement',
-        meta: { title: '店铺管理', icon: 'dashboard', affix: true }
+        meta: { title: '店铺管理', icon: 'component', affix: true }
       },
       {
         path: 'goodsHistory',
         component: () => import('@/views/mvo/mvo-goodsHistory'),
         name: 'goodsHistory',
-        meta: { title: '商品浏览', icon: 'dashboard', affix: true }
+        meta: { title: '商品浏览', icon: 'search', affix: true }
       },
       {
         path: 'wishList',
         component: () => import('@/views/mvo/mvo-wishList'),
         name: 'wishList',
-        meta: { title: '心愿单', icon: 'dashboard', affix: true }
+        meta: { title: '心愿单', icon: 'star', affix: true }
       },
       {
         path: 'orderManagement',
         component: () => import('@/views/mvo/mvo-orderManagement'),
         name: 'orderManagement',
-        meta: { title: '订单管理', icon: 'dashboard', affix: true }
+        meta: { title: '订单管理', icon: 'list', affix: true }
       },
       {
         path: 'wallet',
         component: () => import('@/views/mvo/mvo-wallet'),
         name: 'wallet',
-        meta: { title: '我的钱包', icon: 'form', affix: true }
+        meta: { title: '我的钱包', icon: 'money', affix: true }
       }
     ]
   },
