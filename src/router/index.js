@@ -161,7 +161,7 @@ export const constantRoutes = [
   {
     path: '/admin',
     component: Layout,
-    meta: { title: 'Admin', icon: 'bugs'},
+    meta: { title: 'Admin', icon: 'bug'},
     children: [
       {
         path: 'code',
