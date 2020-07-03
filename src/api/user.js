@@ -22,3 +22,12 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function walletLogin(params) {
+  return request({
+    url: '',
+    method: 'get',
+    params
+  })
+}
+

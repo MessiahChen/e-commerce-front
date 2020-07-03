@@ -5,7 +5,8 @@
 
       <div class="title-container">
         <h3 class="title" >Cross-border E-commerce Borrow-sell Platform</h3>
-      </div></br>
+      </div>
+      <br>
 
       <div class="title-container">
         <h5 style="color: #fff; margin:0 5px 10px 5px;">Login With Your Account</h5>

@@ -68,28 +68,42 @@ export const constantRoutes = [
       },
       {
         path: 'goodsAdd',
-        component: () => import('@/views/bvo/bvo-goodsAdd'),
+        component: () => import('@/views/bvo/bvo-goods-add'),
         name: 'goodsAdd',
         meta: { title: 'Goods Entry', icon: 'edit', affix: true }
       },
       {
         path: 'goodsPicture',
-        component: () => import('@/views/bvo/bvo-goodsPicture'),
+        component: () => import('@/views/bvo/bvo-goods-management'),
         name: 'myinfo',
         meta: { title: 'Goods Images', icon: 'icon', affix: true }
       },
       {
         path: 'orderManagement',
-        component: () => import('@/views/bvo/bvo-orderManagement'),
+        component: () => import('@/views/bvo/bvo-order-management'),
         name: 'orderManagement',
         meta: { title: 'Order Manage', icon: 'list', affix: true }
       },
       {
-        path: 'wallet',
-        component: () => import('@/views/bvo/bvo-wallet'),
-        name: 'wallet',
-        meta: { title: 'My Wallet', icon: 'money', affix: true }
+        path: 'bvoWallet',
+        component: () => import('@/views/bvo/bvo-wallet/bvo-wallet'),
+        name: 'bvoWallet',
+        meta: { title: 'My Wallet', icon: 'money', affix: true },
       },
+      {
+        path: 'bvoAvailableMoney',
+        component: () => import('@/views/bvo/bvo-wallet/bvo-available-money'),
+        name: 'bvoAvailableMoney',
+        meta: { title: 'Available Money', icon: 'money', affix: true },
+        hidden:true
+      },
+      {
+        path: 'bvoTransactionRecord',
+        component: () => import('@/views/bvo/bvo-wallet/bvo-transaction-record'),
+        name: 'bvoTransactionRecord',
+        meta: { title: 'Transaction Record', icon: 'money', affix: true },
+        hidden:true
+      }
     ]
   },
   {
@@ -105,25 +119,25 @@ export const constantRoutes = [
       },
       {
         path: 'storeManagement',
-        component: () => import('@/views/mvo/mvo-storeManagement'),
+        component: () => import('@/views/mvo/mvo-store-management'),
         name: 'storeManagement',
         meta: { title: 'Store Manage', icon: 'component', affix: true }
       },
       {
         path: 'goodsHistory',
-        component: () => import('@/views/mvo/mvo-goodsBrowse'),
+        component: () => import('@/views/mvo/mvo-goods-browse'),
         name: 'goodsHistory',
         meta: { title: 'Goods Browse', icon: 'search', affix: true }
       },
       {
         path: 'wishList',
-        component: () => import('@/views/mvo/mvo-wishList'),
+        component: () => import('@/views/mvo/mvo-wishlist'),
         name: 'wishList',
         meta: { title: 'Wishlist', icon: 'star', affix: true }
       },
       {
         path: 'orderManagement',
-        component: () => import('@/views/mvo/mvo-orderManagement'),
+        component: () => import('@/views/mvo/mvo-order-management'),
         name: 'orderManagement',
         meta: { title: 'Order Manage', icon: 'list', affix: true }
       },
@@ -226,13 +240,15 @@ export const constantRoutes = [
                 path: 'menu1-2-1',
                 component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
                 name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
+                meta: { title: 'Menu1-2-1' },
+                // hidden:true
               },
               {
                 path: 'menu1-2-2',
                 component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
                 name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
+                meta: { title: 'Menu1-2-2' },
+                // hidden:true
               }
             ]
           },
