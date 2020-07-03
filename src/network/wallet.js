@@ -2,8 +2,8 @@ import request from '@/utils/request'
 
 export function walletLogin(params) {
   return request({
-    url: 'http://localhost:9050/add/wallet',
-    method: 'put',
+    url: '',
+    method: 'get',
     params
   })
 }

@@ -1,6 +1,8 @@
-import { login, logout, getInfo, walletLogin } from '@/api/user'
+import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
+import { walletLogin } from '@/network/bvo'
+
 
 const getDefaultState = () => {
   return {
@@ -45,7 +47,7 @@ const actions = {
 
   // wallet login
   walletLogin({ commit }, userInfo) {
-    const { username, password } = userInfo
+    const { username, email, password } = userInfo
     return new Promise((resolve, reject) => {
       walletLogin({ username: username.trim(), email: email.trim(), password: password }).then(response => {
         const { data } = response

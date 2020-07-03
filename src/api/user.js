@@ -23,11 +23,4 @@ export function logout() {
   })
 }
 
-export function walletLogin(params) {
-  return request({
-    url: '',
-    method: 'get',
-    params
-  })
-}
 
