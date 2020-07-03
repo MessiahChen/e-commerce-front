@@ -56,9 +56,9 @@ export const constantRoutes = [
   },
 
   {
-    path: '/bvo',
+    path: '/mvo',
     component: Layout,
-    meta: { title: 'BVO', icon: 'user'},
+    meta: { title: 'MVO', icon: 'peoples'},
     children: [
       {
         path: 'myinfo',
@@ -93,9 +93,9 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/mvo',
+    path: '/bvo',
     component: Layout,
-    meta: { title: 'MVO', icon: 'peoples'},
+    meta: { title: 'BVO', icon: 'user'},
     children: [
       {
         path: 'myinfo',
