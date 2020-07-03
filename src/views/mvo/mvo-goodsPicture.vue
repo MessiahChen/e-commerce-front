@@ -4,7 +4,7 @@
 
 <script>
     export default {
-        name: "bvo-addGoods"
+        name: "mvo-goodsPicture"
     }
 </script>
 

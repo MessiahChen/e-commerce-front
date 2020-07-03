@@ -62,31 +62,31 @@ export const constantRoutes = [
     children: [
       {
         path: 'myinfo',
-        component: () => import('@/views/bvo/bvo-myinfo'),
+        component: () => import('@/views/mvo/mvo-myinfo'),
         name: 'myinfo',
         meta: { title: 'My Info', icon: 'form', affix: true }
       },
       {
         path: 'goodsAdd',
-        component: () => import('@/views/bvo/bvo-goodsAdd'),
+        component: () => import('@/views/mvo/mvo-goodsAdd'),
         name: 'goodsAdd',
         meta: { title: 'Goods Entry', icon: 'edit', affix: true }
       },
       {
         path: 'goodsPicture',
-        component: () => import('@/views/bvo/bvo-goodsPicture'),
+        component: () => import('@/views/mvo/mvo-goodsPicture'),
         name: 'myinfo',
         meta: { title: 'Goods Images', icon: 'icon', affix: true }
       },
       {
         path: 'orderManagement',
-        component: () => import('@/views/bvo/bvo-orderManagement'),
+        component: () => import('@/views/mvo/mvo-orderManagement'),
         name: 'orderManagement',
         meta: { title: 'Order Manage', icon: 'list', affix: true }
       },
       {
         path: 'wallet',
-        component: () => import('@/views/bvo/bvo-wallet'),
+        component: () => import('@/views/mvo/mvo-wallet'),
         name: 'wallet',
         meta: { title: 'My Wallet', icon: 'money', affix: true }
       },
@@ -99,37 +99,37 @@ export const constantRoutes = [
     children: [
       {
         path: 'myinfo',
-        component: () => import('@/views/mvo/mvo-myinfo'),
+        component: () => import('@/views/bvo/bvo-myinfo'),
         name: 'myinfo',
         meta: { title: 'My Info', icon: 'form', affix: true }
       },
       {
         path: 'storeManagement',
-        component: () => import('@/views/mvo/mvo-storeManagement'),
+        component: () => import('@/views/bvo/bvo-storeManagement'),
         name: 'storeManagement',
         meta: { title: 'Store Manage', icon: 'component', affix: true }
       },
       {
         path: 'goodsHistory',
-        component: () => import('@/views/mvo/mvo-goodsBrowse'),
+        component: () => import('@/views/bvo/bvo-goodsBrowse'),
         name: 'goodsHistory',
         meta: { title: 'Goods Browse', icon: 'search', affix: true }
       },
       {
         path: 'wishList',
-        component: () => import('@/views/mvo/mvo-wishList'),
+        component: () => import('@/views/bvo/bvo-wishList'),
         name: 'wishList',
         meta: { title: 'Wishlist', icon: 'star', affix: true }
       },
       {
         path: 'orderManagement',
-        component: () => import('@/views/mvo/mvo-orderManagement'),
+        component: () => import('@/views/bvo/bvo-orderManagement'),
         name: 'orderManagement',
         meta: { title: 'Order Manage', icon: 'list', affix: true }
       },
       {
         path: 'wallet',
-        component: () => import('@/views/mvo/mvo-wallet'),
+        component: () => import('@/views/bvo/bvo-wallet'),
         name: 'wallet',
         meta: { title: 'My Wallet', icon: 'money', affix: true }
       }
