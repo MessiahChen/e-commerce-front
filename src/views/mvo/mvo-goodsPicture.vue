@@ -4,7 +4,7 @@
 
 <script>
     export default {
-        name: "mvo-store-management"
+        name: "mvo-goodsPicture"
     }
 </script>
 

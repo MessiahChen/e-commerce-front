@@ -54,7 +54,43 @@ export const constantRoutes = [
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
-
+  {
+    path: '/mvo',
+    component: Layout,
+    meta: { title: 'MVO', icon: 'peoples'},
+    children: [
+      {
+        path: 'myinfo',
+        component: () => import('@/views/mvo/mvo-myinfo'),
+        name: 'myinfo',
+        meta: { title: 'My Info', icon: 'form', affix: true }
+      },
+      {
+        path: 'goodsAdd',
+        component: () => import('@/views/mvo/mvo-goodsAdd'),
+        name: 'goodsAdd',
+        meta: { title: 'Goods Entry', icon: 'edit', affix: true }
+      },
+      {
+        path: 'goodsPicture',
+        component: () => import('@/views/mvo/mvo-goodsPicture'),
+        name: 'myinfo',
+        meta: { title: 'Goods Images', icon: 'icon', affix: true }
+      },
+      {
+        path: 'orderManagement',
+        component: () => import('@/views/mvo/mvo-orderManagement'),
+        name: 'orderManagement',
+        meta: { title: 'Order Manage', icon: 'list', affix: true }
+      },
+      {
+        path: 'wallet',
+        component: () => import('@/views/mvo/mvo-wallet'),
+        name: 'wallet',
+        meta: { title: 'My Wallet', icon: 'money', affix: true }
+      },
+    ]
+  },
   {
     path: '/bvo',
     component: Layout,
@@ -67,20 +103,26 @@ export const constantRoutes = [
         meta: { title: 'My Info', icon: 'form', affix: true }
       },
       {
-        path: 'goodsAdd',
-        component: () => import('@/views/bvo/bvo-goods-add'),
-        name: 'goodsAdd',
-        meta: { title: 'Goods Entry', icon: 'edit', affix: true }
+        path: 'storeManagement',
+        component: () => import('@/views/bvo/bvo-storeManagement'),
+        name: 'storeManagement',
+        meta: { title: 'Store Manage', icon: 'component', affix: true }
       },
       {
-        path: 'goodsPicture',
-        component: () => import('@/views/bvo/bvo-goods-management'),
-        name: 'myinfo',
-        meta: { title: 'Goods Images', icon: 'icon', affix: true }
+        path: 'goodsHistory',
+        component: () => import('@/views/bvo/bvo-goodsBrowse'),
+        name: 'goodsHistory',
+        meta: { title: 'Goods Browse', icon: 'search', affix: true }
+      },
+      {
+        path: 'wishList',
+        component: () => import('@/views/bvo/bvo-wishList'),
+        name: 'wishList',
+        meta: { title: 'Wishlist', icon: 'star', affix: true }
       },
       {
         path: 'orderManagement',
-        component: () => import('@/views/bvo/bvo-order-management'),
+        component: () => import('@/views/bvo/bvo-orderManagement'),
         name: 'orderManagement',
         meta: { title: 'Order Manage', icon: 'list', affix: true }
       },
@@ -103,49 +145,6 @@ export const constantRoutes = [
         name: 'bvoTransactionRecord',
         meta: { title: 'Transaction Record', icon: 'money', affix: true },
         hidden:true
-      }
-    ]
-  },
-  {
-    path: '/mvo',
-    component: Layout,
-    meta: { title: 'MVO', icon: 'peoples'},
-    children: [
-      {
-        path: 'myinfo',
-        component: () => import('@/views/mvo/mvo-myinfo'),
-        name: 'myinfo',
-        meta: { title: 'My Info', icon: 'form', affix: true }
-      },
-      {
-        path: 'storeManagement',
-        component: () => import('@/views/mvo/mvo-store-management'),
-        name: 'storeManagement',
-        meta: { title: 'Store Manage', icon: 'component', affix: true }
-      },
-      {
-        path: 'goodsHistory',
-        component: () => import('@/views/mvo/mvo-goods-browse'),
-        name: 'goodsHistory',
-        meta: { title: 'Goods Browse', icon: 'search', affix: true }
-      },
-      {
-        path: 'wishList',
-        component: () => import('@/views/mvo/mvo-wishlist'),
-        name: 'wishList',
-        meta: { title: 'Wishlist', icon: 'star', affix: true }
-      },
-      {
-        path: 'orderManagement',
-        component: () => import('@/views/mvo/mvo-order-management'),
-        name: 'orderManagement',
-        meta: { title: 'Order Manage', icon: 'list', affix: true }
-      },
-      {
-        path: 'wallet',
-        component: () => import('@/views/mvo/mvo-wallet'),
-        name: 'wallet',
-        meta: { title: 'My Wallet', icon: 'money', affix: true }
       }
     ]
   },
@@ -174,111 +173,112 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
-  },
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/nested',
-    component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
-    meta: {
-      title: 'Nested',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' },
-                // hidden:true
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' },
-                // hidden:true
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
-      },
-      {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        name: 'Menu2',
-        meta: { title: 'menu2' }
-      }
-    ]
-  },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
-  },
+  // {
+  //   path: '/example',
+  //   component: Layout,
+  //   redirect: '/example/table',
+  //   name: 'Example',
+  //   meta: { title: 'Example', icon: 'el-icon-s-help' },
+  //   children: [
+  //     {
+  //       path: 'table',
+  //       name: 'Table',
+  //       component: () => import('@/views/table/index'),
+  //       meta: { title: 'Table', icon: 'table' }
+  //     },
+  //     {
+  //       path: 'tree',
+  //       name: 'Tree',
+  //       component: () => import('@/views/tree/index'),
+  //       meta: { title: 'Tree', icon: 'tree' }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/form',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'Form',
+  //       component: () => import('@/views/form/index'),
+  //       meta: { title: 'Form', icon: 'form' }
+  //     }
+  //   ]
+  // },
+  //
+  // {
+  //   path: '/nested',
+  //   component: Layout,
+  //   redirect: '/nested/menu1',
+  //   name: 'Nested',
+  //   meta: {
+  //     title: 'Nested',
+  //     icon: 'nested'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'menu1',
+  //       component: () => import('@/views/nested/menu1/index'), // Parent router-view
+  //       name: 'Menu1',
+  //       meta: { title: 'Menu1' },
+  //       children: [
+  //         {
+  //           path: 'menu1-1',
+  //           component: () => import('@/views/nested/menu1/menu1-1'),
+  //           name: 'Menu1-1',
+  //           meta: { title: 'Menu1-1' }
+  //         },
+  //         {
+  //           path: 'menu1-2',
+  //           component: () => import('@/views/nested/menu1/menu1-2'),
+  //           name: 'Menu1-2',
+  //           meta: { title: 'Menu1-2' },
+  //           children: [
+  //             {
+  //               path: 'menu1-2-1',
+  //               component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
+  //               name: 'Menu1-2-1',
+  //               meta: { title: 'Menu1-2-1' },
+  //               // hidden:true
+  //             },
+  //             {
+  //               path: 'menu1-2-2',
+  //               component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
+  //               name: 'Menu1-2-2',
+  //               meta: { title: 'Menu1-2-2' },
+  //               // hidden:true
+  //             }
+  //           ]
+  //         },
+  //         {
+  //           path: 'menu1-3',
+  //           component: () => import('@/views/nested/menu1/menu1-3'),
+  //           name: 'Menu1-3',
+  //           meta: { title: 'Menu1-3' }
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       path: 'menu2',
+  //       component: () => import('@/views/nested/menu2/index'),
+  //       name: 'Menu2',
+  //       meta: { title: 'menu2' }
+  //     }
+  //   ]
+  // },
+  //
+  // {
+  //   path: 'external-link',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
+  //       meta: { title: 'External Link', icon: 'link' }
+  //     }
+  //   ]
+  // },
+  //
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

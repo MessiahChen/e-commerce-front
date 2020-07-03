@@ -4,7 +4,7 @@
 
 <script>
     export default {
-        name: "bvo-wallet"
+        name: "mvo-wallet"
     }
 </script>
 

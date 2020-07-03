@@ -4,7 +4,7 @@
 
 <script>
     export default {
-        name: "bvo-order-management"
+        name: "mvo-orderManagement"
     }
 </script>
 
