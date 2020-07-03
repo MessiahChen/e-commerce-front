@@ -1,51 +1,76 @@
+<!-- <el-breadcrumb-item :to="{ path: '/main' }">Home</el-breadcrumb-item> -->
 <template>
-  <div>
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/main' }">Home</el-breadcrumb-item>
-      <el-breadcrumb-item>Company</el-breadcrumb-item>
-    </el-breadcrumb>
-    <br />
-    <br />
-    <br />
-    <div class="flex">
-    <span>
-      Company Name：
-      <el-input style="width:200px" placeholder></el-input>
-    </span>
+  <div style="margin: 60px; white-space:nowrap;">
+    
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
+      <el-form-item label="Name:" prop="name">
+        <el-col :span="8">
+          <el-input v-model="ruleForm.name"></el-input>
+        </el-col>
+      </el-form-item>
 
-      <span>Brief Introduction:</span>
+      <el-form-item label="E-mail" prop="email">
+        <el-col :span="8">
+          <el-input v-model="ruleForm.email"></el-input>
+        </el-col>
+      </el-form-item>
 
-      <el-input style="width:800px" :autosize="{ minRows: 8, maxRows: 8}" type="textarea" placeholder="enter" v-model="textarea2"></el-input>
+      <el-form-item label="Phone" prop="phone">
+        <el-col :span="8">
+          <el-input v-model="ruleForm.phone"></el-input>
+        </el-col>
+      </el-form-item>
 
-
-      <span>
-      GMC Report Type：
-      <el-input style="width:200px" placeholder></el-input>
-    </span>
-
-      <span>
-      GMC Report Url：
-      <el-input style="width:200px" placeholder></el-input>
-    </span>
-
-      <el-button style="width:150px" type="danger">save</el-button>
-    </div>
+      <el-form-item>
+        <el-button type="primary" @click="submitForm('ruleForm')">Save</el-button>
+        <el-button @click="resetForm('ruleForm')">My Stores</el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
 <script>
   export default {
     data() {
-      return {};
+      return {
+        ruleForm: {
+          name: '',
+          email: '',
+          phone:'',
+        },
+        rules: {
+          name: [{
+            required: true,
+            message: 'Please enter the name',
+            trigger: 'blur'
+          }],
+          email: [{
+            required: true,
+            message: 'Please enter the e-mail',
+            trigger: 'blur'
+          }],
+          phone: [{
+            required: true,
+            message: 'Please enter the phone number',
+            trigger: 'blur'
+          }]
+        }
+      };
+    },
+    methods: {
+      submitForm(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            alert('submit!');
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
+      }
     }
-  };
-</script>
-
-<style>
-  .flex{
-    display: flex;
-    height: 600px;
-    flex-direction: column;
-    justify-content: space-between;
   }
-</style>
+</script>
