@@ -28,3 +28,10 @@ export function withDrawMoney(params) {
     params
   })
 }
+export function updatePassword(params) {
+  return request({
+    url: '/vue-admin-template/table/list',
+    method: 'post',
+    params
+  })
+}

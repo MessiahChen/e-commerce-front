@@ -27,50 +27,44 @@
             </el-table-column>
 
             <el-table-column align="center" width="150px" label="Title">
-              <template slot-scope="{row}">
-                <el-button type="text" @click="intoTitle">{{row.title}}</el-button>
+              <template slot-scope="scope">
+                <el-button type="text" @click="intoTitle(scope.row.title)">{{scope.row.title}}</el-button>
               </template>
             </el-table-column>
 
             <el-table-column width="110px" align="center" label="Price">
               <template slot-scope="scope">
-                <span>{{ scope.row.author }}</span>
+                <span>{{ scope.row.SALES_PRICE }}</span>
               </template>
             </el-table-column>
 
             <el-table-column width="120px" align="center" label="QTY">
               <template slot-scope="scope">
-                <svg-icon v-for="n in +scope.row.importance" :key="n" icon-class="star" />
+                <span>{{ scope.row.QTY }}</span>
               </template>
             </el-table-column>
 
             <el-table-column align="center" label="Sku" width="95">
               <template slot-scope="scope">
-                <span>{{ scope.row.pageviews }}</span>
+                <span>{{ scope.row.skuNo }}</span>
               </template>
             </el-table-column>
 
             <el-table-column  align="center" label="Order No" width="110">
-              <template slot-scope="{row}">
-                <el-tag :type="row.status | statusFilter">
-                  {{ row.status }}
-                </el-tag>
+              <template slot-scope="scope">
+                <span>{{ scope.row.ORDER_NO }}</span>
               </template>
             </el-table-column>
 
             <el-table-column  align="center" label="Total" width="110">
-              <template slot-scope="{row}">
-                <el-tag :type="row.status | statusFilter">
-                  {{ row.status }}
-                </el-tag>
+              <template slot-scope="scope">
+                <span>{{ scope.row.total }}</span>
               </template>
             </el-table-column>
 
             <el-table-column  align="center" label="Operation" width="110">
-              <template slot-scope="{row}">
-                <el-tag :type="row.status | statusFilter">
-                  {{ row.status }}
-                </el-tag>
+              <template slot-scope="scope">
+                <span>{{ scope.row.skuNo }}</span>
               </template>
             </el-table-column>
 
@@ -91,42 +85,38 @@
             </el-table-column>
 
             <el-table-column align="center" width="150px" label="Title">
-              <template slot-scope="{row}">
-                <el-button type="text" @click="intoTitle">{{row.title}}</el-button>
+              <template slot-scope="scope">
+                <el-button type="text" @click="intoTitle(scope.row.title)">{{scope.row.title}}</el-button>
               </template>
             </el-table-column>
 
             <el-table-column width="110px" align="center" label="Price">
               <template slot-scope="scope">
-                <span>{{ scope.row.author }}</span>
+                <span>{{ scope.row.SALES_PRICE }}</span>
               </template>
             </el-table-column>
 
             <el-table-column width="120px" align="center" label="QTY">
               <template slot-scope="scope">
-                <svg-icon v-for="n in +scope.row.importance" :key="n" icon-class="star" />
+                <span>{{ scope.row.QTY }}</span>
               </template>
             </el-table-column>
 
             <el-table-column align="center" label="Sku" width="95">
               <template slot-scope="scope">
-                <span>{{ scope.row.pageviews }}</span>
+                <span>{{ scope.row.skuNo }}</span>
               </template>
             </el-table-column>
 
             <el-table-column  align="center" label="Order No" width="110">
-              <template slot-scope="{row}">
-                <el-tag :type="row.status | statusFilter">
-                  {{ row.status }}
-                </el-tag>
+              <template slot-scope="scope">
+                <span>{{ scope.row.ORDER_NO }}</span>
               </template>
             </el-table-column>
 
             <el-table-column  align="center" label="Total" width="110">
-              <template slot-scope="{row}">
-                <el-tag :type="row.status | statusFilter">
-                  {{ row.status }}
-                </el-tag>
+              <template slot-scope="scope">
+                <span>{{ scope.row.total }}</span>
               </template>
             </el-table-column>
 
@@ -147,50 +137,44 @@
             </el-table-column>
 
             <el-table-column align="center" width="150px" label="Title">
-              <template slot-scope="{row}">
-                <el-button type="text" @click="intoTitle">{{row.title}}</el-button>
+              <template slot-scope="scope">
+                <el-button type="text" @click="intoTitle(scope.row.title)">{{scope.row.title}}</el-button>
               </template>
             </el-table-column>
 
             <el-table-column width="110px" align="center" label="Price">
               <template slot-scope="scope">
-                <span>{{ scope.row.author }}</span>
+                <span>{{ scope.row.SALES_PRICE }}</span>
               </template>
             </el-table-column>
 
             <el-table-column width="120px" align="center" label="QTY">
               <template slot-scope="scope">
-                <svg-icon v-for="n in +scope.row.importance" :key="n" icon-class="star" />
+                <span>{{ scope.row.QTY }}</span>
               </template>
             </el-table-column>
 
             <el-table-column align="center" label="Sku" width="95">
               <template slot-scope="scope">
-                <span>{{ scope.row.pageviews }}</span>
+                <span>{{ scope.row.skuNo }}</span>
               </template>
             </el-table-column>
 
             <el-table-column  align="center" label="Order No" width="110">
-              <template slot-scope="{row}">
-                <el-tag :type="row.status | statusFilter">
-                  {{ row.status }}
-                </el-tag>
+              <template slot-scope="scope">
+                <span>{{ scope.row.ORDER_NO }}</span>
               </template>
             </el-table-column>
 
             <el-table-column  align="center" label="Total" width="110">
-              <template slot-scope="{row}">
-                <el-tag :type="row.status | statusFilter">
-                  {{ row.status }}
-                </el-tag>
+              <template slot-scope="scope">
+                <span>{{ scope.row.total }}</span>
               </template>
             </el-table-column>
 
             <el-table-column  align="center" label="Tracking No" width="110">
-              <template slot-scope="{row}">
-                <el-tag :type="row.status | statusFilter">
-                  {{ row.status }}
-                </el-tag>
+              <template slot-scope="scope">
+                  <span>{{ scope.row.TrackingNo }}</span>
               </template>
             </el-table-column>
 
@@ -211,50 +195,44 @@
             </el-table-column>
 
             <el-table-column align="center" width="150px" label="Title">
-              <template slot-scope="{row}">
-                <el-button type="text" @click="intoTitle">{{row.title}}</el-button>
+              <template slot-scope="scope">
+                <el-button type="text" @click="intoTitle(scope.row.title)">{{scope.row.title}}</el-button>
               </template>
             </el-table-column>
 
             <el-table-column width="110px" align="center" label="Price">
               <template slot-scope="scope">
-                <span>{{ scope.row.author }}</span>
+                <span>{{ scope.row.SALES_PRICE }}</span>
               </template>
             </el-table-column>
 
             <el-table-column width="120px" align="center" label="QTY">
               <template slot-scope="scope">
-                <svg-icon v-for="n in +scope.row.importance" :key="n" icon-class="star" />
+                <span>{{ scope.row.QTY }}</span>
               </template>
             </el-table-column>
 
             <el-table-column align="center" label="Sku" width="95">
               <template slot-scope="scope">
-                <span>{{ scope.row.pageviews }}</span>
+                <span>{{ scope.row.skuNo }}</span>
               </template>
             </el-table-column>
 
             <el-table-column  align="center" label="Order No" width="110">
-              <template slot-scope="{row}">
-                <el-tag :type="row.status | statusFilter">
-                  {{ row.status }}
-                </el-tag>
+              <template slot-scope="scope">
+                <span>{{ scope.row.ORDER_NO }}</span>
               </template>
             </el-table-column>
 
             <el-table-column  align="center" label="Total" width="110">
-              <template slot-scope="{row}">
-                <el-tag :type="row.status | statusFilter">
-                  {{ row.status }}
-                </el-tag>
+              <template slot-scope="scope">
+                <span>{{ scope.row.total }}</span>
               </template>
             </el-table-column>
 
             <el-table-column  align="center" label="Tracking No" width="110">
-              <template slot-scope="{row}">
-                <el-tag :type="row.status | statusFilter">
-                  {{ row.status }}
-                </el-tag>
+              <template slot-scope="scope">
+                <span>{{ scope.row.TrackingNo }}</span>
               </template>
             </el-table-column>
 
@@ -275,42 +253,38 @@
             </el-table-column>
 
             <el-table-column align="center" width="150px" label="Title">
-              <template slot-scope="{row}">
-                <el-button type="text" @click="intoTitle">{{row.title}}</el-button>
+              <template slot-scope="scope">
+                <el-button type="text" @click="intoTitle(scope.row.title)">{{scope.row.title}}</el-button>
               </template>
             </el-table-column>
 
             <el-table-column width="110px" align="center" label="Price">
               <template slot-scope="scope">
-                <span>{{ scope.row.author }}</span>
+                <span>{{ scope.row.SALES_PRICE }}</span>
               </template>
             </el-table-column>
 
             <el-table-column width="120px" align="center" label="QTY">
               <template slot-scope="scope">
-                <svg-icon v-for="n in +scope.row.importance" :key="n" icon-class="star" />
+                <span>{{ scope.row.QTY }}</span>
               </template>
             </el-table-column>
 
             <el-table-column align="center" label="Sku" width="95">
               <template slot-scope="scope">
-                <span>{{ scope.row.pageviews }}</span>
+                <span>{{ scope.row.skuNo }}</span>
               </template>
             </el-table-column>
 
             <el-table-column  align="center" label="Order No" width="110">
-              <template slot-scope="{row}">
-                <el-tag :type="row.status | statusFilter">
-                  {{ row.status }}
-                </el-tag>
+              <template slot-scope="scope">
+                <span>{{ scope.row.ORDER_NO }}</span>
               </template>
             </el-table-column>
 
             <el-table-column  align="center" label="Total" width="110">
-              <template slot-scope="{row}">
-                <el-tag :type="row.status | statusFilter">
-                  {{ row.status }}
-                </el-tag>
+              <template slot-scope="scope">
+                <span>{{ scope.row.total }}</span>
               </template>
             </el-table-column>
 
@@ -359,7 +333,9 @@
             this.list = response.data.items
             this.loading = false
           })
-
+        },
+        intoTitle(){
+          //转到商品页
         }
       }
     }
