@@ -10,7 +10,7 @@
     >
       <el-table-column label="Transaction Number" align="center" >
         <template slot-scope="scope">
-          {{ scope.row.recordId }}
+          {{ scope.row.transactionNumber }}
         </template>
       </el-table-column>
       <el-table-column label="Available Money" align="center">
@@ -20,12 +20,12 @@
       </el-table-column>
       <el-table-column label="Create Time" align="center">
         <template slot-scope="scope">
-          {{ scope.row.time }}
+          {{ scope.row.createTime }}
         </template>
       </el-table-column>
-      <el-table-column label="State" align="center">
+      <el-table-column label="Status" align="center">
         <template slot-scope="scope">
-          {{ scope.row.state }}
+          {{ scope.row.status }}
         </template>
       </el-table-column>
     </el-table>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-  import { getTransactionRecord } from '@/network/bvo'
+  import { getTransactionRecord } from '@/network/wallet'
 
   export default {
     name: 'bvo-transaction-record',
