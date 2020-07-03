@@ -84,11 +84,23 @@ export const constantRoutes = [
         meta: { title: 'Order Manage', icon: 'list', affix: true }
       },
       {
-        path: 'wallet',
-        component: () => import('@/views/mvo/mvo-wallet'),
-        name: 'wallet',
+        path: 'mvoWallet',
+        component: () => import('@/views/mvo/mvo-wallet/mvo-wallet'),
+        name: 'mvoWallet',
         meta: { title: 'My Wallet', icon: 'money', affix: true }
       },
+      {
+        path: 'mvoAvailableMoney',
+        component: () => import('@/views/mvo/mvo-wallet/mvo-available-money'),
+        name: 'mvoAvailableMoney',
+        hidden:true
+      },
+      {
+        path: 'mvoTransactionRecord',
+        component: () => import('@/views/mvo/mvo-wallet/mvo-transaction-record'),
+        name: 'mvoTransactionRecord',
+        hidden:true
+      }
     ]
   },
   {
@@ -136,14 +148,12 @@ export const constantRoutes = [
         path: 'bvoAvailableMoney',
         component: () => import('@/views/bvo/bvo-wallet/bvo-available-money'),
         name: 'bvoAvailableMoney',
-        meta: { title: 'Available Money', icon: 'money', affix: true },
         hidden:true
       },
       {
         path: 'bvoTransactionRecord',
         component: () => import('@/views/bvo/bvo-wallet/bvo-transaction-record'),
         name: 'bvoTransactionRecord',
-        meta: { title: 'Transaction Record', icon: 'money', affix: true },
         hidden:true
       }
     ]
