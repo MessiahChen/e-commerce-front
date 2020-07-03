@@ -11,12 +11,12 @@
       >
         <el-table-column label="Account Name" align="center" >
           <template slot-scope="scope">
-            {{ scope.row.account }}
+            {{ scope.row.accountName }}
           </template>
         </el-table-column>
         <el-table-column label="Available Money" align="center">
           <template slot-scope="scope">
-            {{ scope.row.avaliable }}
+            {{ scope.row.avaliableMoney }}
           </template>
         </el-table-column>
         <el-table-column label="Operation" align="center">
@@ -27,7 +27,7 @@
               <el-dialog :visible.sync="dialogFormVisible" title="Withdraw">
                 <el-form ref="form" :model="form" label-width="120px">
                   <el-form-item label="Money Amout">
-                    <el-input v-model="form.sum" />
+                    <el-input v-model="form.withdrawingMoney" />
                   </el-form-item>
                   <el-form-item label="Password">
                     <el-input type="password" v-model="form.password" />
@@ -54,10 +54,12 @@
 
 <script>
 
-  import {
+  import
+  {
     getAvailableMoney,
     withDrawMoney
-  } from '@/network/bvo'
+  }
+  from '@/network/wallet'
 
   export default {
     name: "bvo-available-money",
@@ -77,11 +79,11 @@
         listLoading: true,
         dialogFormVisible: false,
         form: {
-          sum:'',
+          withdrawingMoney:'',
           password:''
         },
         params:{
-          sum:'',
+          withdrawingMoney:'',
           password:''
         }
       }
@@ -99,11 +101,11 @@
       },
       closeDialog(){
         this.dialogFormVisible = false;
-        this.form.sum = '';
+        this.form.withdrawingMoney = '';
         this.form.password = ''
       },
       onWithdraw(){
-        this.params.sum = this.form.sum;
+        this.params.withdrawingMoney = this.form.withdrawingMoney;
         this.params.password = this.form.password;
         withDrawMoney(this.params).then(response => {
           console.log(response.code);
