@@ -1,56 +1,3 @@
-<!-- <template>
-  <div>
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/main' }">Home</el-breadcrumb-item>
-      <el-breadcrumb-item>Company</el-breadcrumb-item>
-    </el-breadcrumb>
-    <br />
-    <br />
-    <br />
-    <div class="flex">
-    <span>
-      Company Name：
-      <el-input style="width:200px" placeholder></el-input>
-    </span>
-
-      <span>Brief Introduction:</span>
-
-      <el-input style="width:800px" :autosize="{ minRows: 8, maxRows: 8}" type="textarea" placeholder="enter" v-model="textarea2"></el-input>
-
-
-      <span>
-      GMC Report Type：
-      <el-input style="width:200px" placeholder></el-input>
-    </span>
-
-      <span>
-      GMC Report Url：
-      <el-input style="width:200px" placeholder></el-input>
-    </span>
-
-      <el-button style="width:150px" type="danger">save</el-button>
-    </div>
-  </div>
-</template>
-
-<script>
-  export default {
-    data() {
-      return {};
-    }
-  };
-</script>
-
-<style>
-  .flex{
-    display: flex;
-    height: 600px;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-</style>
- -->
-
 <template>
   <div style="margin: 40px; white-space:nowrap;">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="160px" class="demo-ruleForm">
@@ -59,12 +6,31 @@
           <el-input v-model="ruleForm.companyNameCN"></el-input>
         </el-col>
       </el-form-item>
+
       <el-form-item label="Company Name (EN)" prop="companyNameEN">
         <el-col :span="8">
           <el-input v-model="ruleForm.companyNameEN"></el-input>
         </el-col>
       </el-form-item>
-      <el-form-item label="活动区域" prop="region">
+
+      <el-form-item label="Brief Introduction" prop="intro" style="margin-bottom: 30px;">
+        <Tinymce ref="editor" v-model="ruleForm.intro" :height="400" />
+      </el-form-item>
+
+      <el-form-item label="GMC Report Type" prop="type">
+        <el-col :span="8">
+          <el-input v-model="ruleForm.type"></el-input>
+        </el-col>
+      </el-form-item>
+
+      <el-form-item label="GRC Report URL" prop="url">
+        <el-col :span="8">
+          <el-input v-model="ruleForm.url"></el-input>
+        </el-col>
+      </el-form-item>
+
+      <!-- 其他形式 -->
+<!--      <el-form-item label="活动区域" prop="region">
         <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
           <el-option label="区域一" value="shanghai"></el-option>
           <el-option label="区域二" value="beijing"></el-option>
@@ -102,76 +68,106 @@
       </el-form-item>
       <el-form-item label="活动形式" prop="desc">
         <el-input type="textarea" v-model="ruleForm.desc"></el-input>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-        <el-button @click="resetForm('ruleForm')">重置</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')">Save</el-button>
+        <el-button @click="resetForm('ruleForm')">Reset</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
+  import Tinymce from '@/components/Tinymce'
   export default {
+    components: { Tinymce },
     data() {
       return {
         ruleForm: {
           companyNameCN: '',
           companyNameEN: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
+          intro:'',
+          type:'',
+          url:'',
+          // region: '',
+          // date1: '',
+          // date2: '',
+          // delivery: false,
+          // type: [],
+          // resource: '',
+          // desc: ''
         },
         rules: {
-          name: [{
-              required: true,
-              message: '请输入活动名称',
-              trigger: 'blur'
-            },
-            {
-              min: 3,
-              max: 5,
-              message: '长度在 3 到 5 个字符',
-              trigger: 'blur'
-            }
-          ],
-          region: [{
+          companyNameCN: [{
             required: true,
-            message: '请选择活动区域',
-            trigger: 'change'
+            message: 'Please enter the Chinese name',
+            trigger: 'blur'
           }],
-          date1: [{
-            type: 'date',
+          companyNameEN: [{
             required: true,
-            message: '请选择日期',
-            trigger: 'change'
+            message: 'Please enter the English name',
+            trigger: 'blur'
           }],
-          date2: [{
-            type: 'date',
+          intro: [{
             required: true,
-            message: '请选择时间',
-            trigger: 'change'
+            message: 'Please enter the Introduction',
+            trigger: 'blur'
           }],
           type: [{
-            type: 'array',
             required: true,
-            message: '请至少选择一个活动性质',
-            trigger: 'change'
+            message: 'Please enter the GMC Report Type',
+            trigger: 'blur'
           }],
-          resource: [{
+          url: [{
             required: true,
-            message: '请选择活动资源',
-            trigger: 'change'
-          }],
-          desc: [{
-            required: true,
-            message: '请填写活动形式',
+            message: 'Please enter the GMC Report URL',
             trigger: 'blur'
           }]
+          // name: [{
+          //     required: true,
+          //     message: '请输入活动名称',
+          //     trigger: 'blur'
+          //   },
+          //   {
+          //     min: 3,
+          //     max: 5,
+          //     message: '长度在 3 到 5 个字符',
+          //     trigger: 'blur'
+          //   }
+          // ],
+          // region: [{
+          //   required: true,
+          //   message: '请选择活动区域',
+          //   trigger: 'change'
+          // }],
+          // date1: [{
+          //   type: 'date',
+          //   required: true,
+          //   message: '请选择日期',
+          //   trigger: 'change'
+          // }],
+          // date2: [{
+          //   type: 'date',
+          //   required: true,
+          //   message: '请选择时间',
+          //   trigger: 'change'
+          // }],
+          // type: [{
+          //   type: 'array',
+          //   required: true,
+          //   message: '请至少选择一个活动性质',
+          //   trigger: 'change'
+          // }],
+          // resource: [{
+          //   required: true,
+          //   message: '请选择活动资源',
+          //   trigger: 'change'
+          // }],
+          // desc: [{
+          //   required: true,
+          //   message: '请填写活动形式',
+          //   trigger: 'blur'
+          // }]
         }
       };
     },
