@@ -2,8 +2,8 @@ import request from '@/utils/request'
 
 export function walletLogin(params) {
   return request({
-    url: '/vue-admin-template/user/login',
-    method: 'post',
+    url: 'http://localhost:9050/add/wallet',
+    method: 'put',
     params
   })
 }

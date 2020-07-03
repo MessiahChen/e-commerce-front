@@ -36,6 +36,7 @@
 <script>
     import {validUsername} from "@/utils/validate";
     import {getTransactionRecord, walletLogin} from '@/network/bvo'
+    import {setToken} from "@/utils/auth";
 
     export default {
       name: "bvo-wallet",
@@ -103,17 +104,25 @@
         handleLogin() {
           this.$refs.loginForm.validate(valid => {
             if (valid) {
-              console.log(123);
-              this.loading = true
-              console.log(123);
-              this.$store.dispatch('user/walletLogin', this.loginForm).then(() => {
-                console.log(123)
-                this.$router.push({
-                  path: '/bvo/bvoAvailableMoney'
+              this.loading = true;
+              return new Promise((resolve, reject) => {
+                walletLogin({
+                  username: this.loginForm.username.trim(),
+                  email: this.loginForm.email.trim(),
+                  password: this.loginForm.password
+                }).then(response => {
+                  resolve()
+                  this.$router.push({
+                    path: '/bvo/bvoAvailableMoney'
+                  });
+                  this.loading = false
+                }).catch(error => {
+                  reject(error);
+                  this.$router.push({
+                    path: '/bvo/bvoAvailableMoney'
+                  });
+                  this.loading = false
                 })
-                this.loading = false
-              }).catch(() => {
-                this.loading = false
               })
             } else {
               console.log('error submit!!')
