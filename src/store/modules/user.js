@@ -45,7 +45,7 @@ const actions = {
 
   // wallet login
   walletLogin({ commit }, userInfo) {
-    const { username, password } = userInfo
+    const { username, email, password } = userInfo
     return new Promise((resolve, reject) => {
       walletLogin({ username: username.trim(), email: email.trim(), password: password }).then(response => {
         const { data } = response
