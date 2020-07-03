@@ -67,19 +67,19 @@ export const constantRoutes = [
       },
       {
         path: 'goodsAdd',
-        component: () => import('@/views/mvo/mvo-goodsAdd'),
+        component: () => import('@/views/mvo/mvo-goods-add'),
         name: 'goodsAdd',
         meta: { title: 'Goods Entry', icon: 'edit', affix: true }
       },
       {
         path: 'goodsPicture',
-        component: () => import('@/views/mvo/mvo-goodsPicture'),
+        component: () => import('@/views/mvo/mvo-goods-picture'),
         name: 'myinfo',
         meta: { title: 'Goods Images', icon: 'icon', affix: true }
       },
       {
         path: 'orderManagement',
-        component: () => import('@/views/mvo/mvo-orderManagement'),
+        component: () => import('@/views/mvo/mvo-order-management'),
         name: 'orderManagement',
         meta: { title: 'Order Manage', icon: 'list', affix: true }
       },
@@ -104,13 +104,13 @@ export const constantRoutes = [
       },
       {
         path: 'storeManagement',
-        component: () => import('@/views/bvo/bvo-storeManagement'),
+        component: () => import('@/views/bvo/bvo-store-management'),
         name: 'storeManagement',
         meta: { title: 'Store Manage', icon: 'component', affix: true }
       },
       {
         path: 'goodsHistory',
-        component: () => import('@/views/bvo/bvo-goodsBrowse'),
+        component: () => import('@/views/bvo/bvo-goods-view'),
         name: 'goodsHistory',
         meta: { title: 'Goods Browse', icon: 'search', affix: true }
       },
@@ -122,7 +122,7 @@ export const constantRoutes = [
       },
       {
         path: 'orderManagement',
-        component: () => import('@/views/bvo/bvo-orderManagement'),
+        component: () => import('@/views/bvo/bvo-order-management'),
         name: 'orderManagement',
         meta: { title: 'Order Manage', icon: 'list', affix: true }
       },

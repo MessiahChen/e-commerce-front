@@ -4,7 +4,7 @@
 
 <script>
     export default {
-        name: "bvo-storeManagement"
+        name: "bvo-goods-view"
     }
 </script>
 
