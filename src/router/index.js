@@ -67,7 +67,7 @@ export const constantRoutes = [
       },
       {
         path: 'goodsAdd',
-        component: () => import('@/views/mvo/mvo-goods-add'),
+        component: () => import('@/views/mvo/mvo-product-entry/index'),
         name: 'goodsAdd',
         meta: { title: 'Goods Entry', icon: 'edit', affix: true }
       },
