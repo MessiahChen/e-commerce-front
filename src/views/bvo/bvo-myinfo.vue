@@ -1,7 +1,6 @@
-<!-- <el-breadcrumb-item :to="{ path: '/main' }">Home</el-breadcrumb-item> -->
 <template>
   <div style="margin: 60px; white-space:nowrap;">
-    
+
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
       <el-form-item label="Name:" prop="name">
         <el-col :span="8">
@@ -23,7 +22,7 @@
 
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')">Save</el-button>
-        <el-button @click="resetForm('ruleForm')">My Stores</el-button>
+        <el-button @click="toStores('ruleForm')">My Stores</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -68,8 +67,10 @@
           }
         });
       },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
+      toStores(formName) {
+        this.$router.push({
+          path: '/bvo/storeManagement'
+        });
       }
     }
   }

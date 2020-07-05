@@ -116,7 +116,7 @@ export const constantRoutes = [
       },
       {
         path: 'storeManagement',
-        component: () => import('@/views/bvo/bvo-store-management'),
+        component: () => import('@/views/bvo/bvo-store-management/bvo-store-management'),
         name: 'storeManagement',
         meta: { title: 'Store Manage', icon: 'component', affix: true }
       },
@@ -155,7 +155,25 @@ export const constantRoutes = [
         component: () => import('@/views/bvo/bvo-wallet/bvo-transaction-record'),
         name: 'bvoTransactionRecord',
         hidden:true
-      }
+      },
+      {
+        path: 'bvoChoose',
+        component: () => import('@/views/bvo/bvo-store-management/bvo-choose'),
+        name: 'bvoChoose',
+        hidden:true
+      },
+      {
+        path: 'bvoAddAmazon',
+        component: () => import('@/views/bvo/bvo-store-management/bvo-add-amazon'),
+        name: 'bvoAddAmazon',
+        hidden:true
+      },
+      {
+        path: 'bvoAddEbay',
+        component: () => import('@/views/bvo/bvo-store-management/bvo-add-ebay'),
+        name: 'bvoAddEbay',
+        hidden:true
+      },
     ]
   },
   {
