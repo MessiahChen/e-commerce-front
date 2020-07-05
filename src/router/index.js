@@ -66,16 +66,30 @@ export const constantRoutes = [
         meta: { title: 'My Info', icon: 'form', affix: true }
       },
       {
-        path: 'goodsAdd',
+        path: 'productAdd',
         component: () => import('@/views/mvo/mvo-product-entry/index'),
-        name: 'goodsAdd',
-        meta: { title: 'Goods Entry', icon: 'edit', affix: true }
+        name: 'productAdd',
+        meta: { title: 'Product Entry', icon: 'edit', affix: true},
+        // children:[
+        //   {
+        //     path: 'showProductInfo',
+        //     component: () => import('@/views/mvo/mvo-product-entry/components/ShowProductInfo'),
+        //     name: 'showProductInfo',
+        //     meta:{ title: 'Show Product' }
+        //   },
+        //   {
+        //     path: 'addProductInfo',
+        //     component: () => import('@/views/mvo/mvo-product-entry/components/AddProductInfo'),
+        //     name: 'addProductInfo',
+        //     meta:{ title: 'Add Product' }
+        //   }
+        // ]
       },
       {
-        path: 'goodsPicture',
-        component: () => import('@/views/mvo/mvo-goods-picture'),
-        name: 'myinfo',
-        meta: { title: 'Goods Images', icon: 'icon', affix: true }
+        path: 'productImage',
+        component: () => import('@/views/mvo/mvo-product-image/index'),
+        name: 'productImage',
+        meta: { title: 'Product Images', icon: 'icon', affix: true }
       },
       {
         path: 'orderManagement',
