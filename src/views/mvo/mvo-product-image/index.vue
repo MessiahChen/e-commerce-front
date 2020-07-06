@@ -4,12 +4,13 @@
       <div slot="header" class="clearfix">
         <span>Product Title：</span>
         <el-input v-model="productTitle" placeholder="Please input product title" style="width: 40vw;"></el-input>
-        <el-button class="pan-btn light-blue-btn" style="margin-left: 1vw;" type="text" @click="searchProductByTitle()">Search</el-button>
-        <el-button class="pan-btn light-blue-btn" style="margin-left: 1vw;" type="text" @click="ifOpenDialog = true">Add</el-button>
+        <el-button class="pan-btn light-blue-btn" style="margin-left: 1vw;" type="text" @click="searchProductImageByTitle()">Search</el-button>
+        <el-button class="pan-btn light-blue-btn" style="margin-left: 1vw;" type="text" @click="openAddDialog()">Add</el-button>
         <el-button class="pan-btn light-blue-btn" style="margin-left: 1vw;" type="text" @click="batchDeleteproductImage()">Delete</el-button>
       </div>
 
-      <el-table ref="productTable" v-loading="tableLoading" :data="productImage" border fit highlight-current-row style="width: 100%;">
+      <el-table ref="productTable" v-loading="tableLoading" :data="productImages" border fit highlight-current-row
+        style="width: 100%;">
         <el-table-column align="center" type="selection" width="100px">
         </el-table-column>
         <el-table-column label="Product Title" align="center">
@@ -22,12 +23,12 @@
             <span>{{ row.categoryName }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Image" width="150px" align="center">
+        <el-table-column label="Image" align="center">
           <template slot-scope="{row}">
             <span>{{ row.imageUri }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Status" align="center">
+        <el-table-column label="Status" width="150px" align="center">
           <template slot-scope="{row}">
             <span>{{ row.status }}</span>
           </template>
@@ -48,46 +49,23 @@
       </el-pagination>
     </el-card>
 
-    <el-dialog title="Add Product" :visible.sync="ifOpenDialog" width="80%" center top="5vh">
-      <div class="dialog-span">
-        <el-form ref="form" :model="newproductImage" label-width="150px">
-          <el-form-item label="商品标题">
-            <el-input v-model="newproductImage.title"></el-input>
-          </el-form-item>
-          <el-form-item label="长">
-            <el-input v-model="newproductImage.length"></el-input>
-          </el-form-item>
-          <el-form-item label="宽">
-            <el-input v-model="newproductImage.width"></el-input>
-          </el-form-item>
-          <el-form-item label="高">
-            <el-input v-model="newproductImage.height"></el-input>
-          </el-form-item>
-          <el-form-item label="重量">
-            <el-input v-model="newproductImage.weight"></el-input>
-          </el-form-item>
+    <el-dialog title="Product Infomation" :visible.sync="ifOpenDialog" width="70%" center top="5vh">
 
-          <el-form-item label="商品sku编码">
-            <el-input v-model="newproductImage.skuCd"></el-input>
-          </el-form-item>
+      <el-form ref="form" :model="productImage" label-width="150px">
+        <el-form-item label="Product Title">
+          <el-input v-model="productImage.title"></el-input>
+        </el-form-item>
 
-          <el-form-item label="商品ean编码">
-            <el-input v-model="newproductImage.ean"></el-input>
-          </el-form-item>
+        <el-form-item label="Product Category">
+          <el-cascader v-model="productCat" :options="productCats" :props="{ value: 'catId', label: 'catName', children :'viceCats'}"></el-cascader>
+        </el-form-item>
 
-          <el-form-item label="商品型号">
-            <el-input v-model="newproductImage.model"></el-input>
-          </el-form-item>
+        <el-form-item label="Upload Images">
+          <el-button class="pan-btn light-blue-btn" type="text">选择图片</el-button>
+          <el-button class="pan-btn light-blue-btn" style="margin-left: 1vw;" type="text">上传图片</el-button>
+        </el-form-item>
 
-          <el-form-item label="借卖价格">
-            <el-input v-model="newproductImage.retailPrice"></el-input>
-          </el-form-item>
-
-          <el-form-item label="保修期">
-            <el-input v-model="newproductImage.warrantyDay"></el-input>
-          </el-form-item>
-        </el-form>
-      </div>
+      </el-form>
 
 
       <span slot="footer" class="dialog-footer">
@@ -99,9 +77,15 @@
 </template>
 
 <script>
-
-  import axios from 'axios'
-
+  import {
+    getAllProduct,
+    searchProduct,
+    addProduct,
+    deleteProduct,
+    getProductWhenUpdate,
+    updateProduct,
+    getAllCategory
+  } from '@/network/mvo-product-image.js'
   export default {
     name: "mvo-product-image",
     data() {
@@ -109,7 +93,7 @@
         productTitle: "",
         // Table变量
         tableKey: 0,
-        productImage: null,
+        productImages: null,
         tableLoading: true,
         // 分页控件变量
         pageSize: 10,
@@ -118,8 +102,18 @@
         ifOnlyOnePage: false,
         // 是否打开弹窗
         ifOpenDialog: false,
+        // 已选商品分类
+        productCat: "",
+        productCats: [{
+          catId: 1,
+          catName: "ceshi",
+          viceCats: [{
+            catId: 2,
+            catName: "ceshi2",
+          }]
+        }],
         // 添加新商品
-        newproductImage: {
+        productImage: {
           ean: "",
           height: "",
           length: "",
@@ -145,67 +139,66 @@
           pageNum: this.pageNum,
           pageSize: this.pageSize
         }
-        axios.post('http://localhost:9040/productImage/getAllProductImage', getAllProductImageVO).then(response => {
-          if(response.data.code == "200"){
-            this.productImage = response.data.data.list
-            this.totalPage = response.data.data.totalPage
-            this.pageNum = response.data.data.pageNum
+        this.tableLoading = true
+        return new Promise((resolve, reject) => {
+          getAllProduct(getAllProductImageVO).then(response => {
+            this.productImages = response.data.list
+            this.totalPage = response.data.totalPage
+            this.pageNum = response.data.pageNum
+            resolve()
+            console.log(response.data)
+            console.log(this.pageSize)
+            console.log(this.totalPage)
+            console.log(this.pageNum)
             this.tableLoading = false
-          }else{
-            this.$message.warning(response.data.message);
+          }).catch(error => {
+            reject(error);
             this.tableLoading = false
-          }
-        }).catch(error => {
-          console.log(error)
-          this.tableLoading = false
+          })
         })
-        this.tableLoading = false
-        // return new Promise((resolve, reject) => {
-        //   getAllProduct(getAllProductVO).then(response => {
-        //     console.log(response.data)
-        //     resolve()
-        //     this.$router.push({
-        //       path: '/bvo/bvoAvailableMoney'
-        //     });
-        //     this.loading = false
-        //   }).catch(error => {
-        //     reject(error);
-        //     this.$router.push({
-        //       path: '/bvo/bvoAvailableMoney'
-        //     });
-        //     this.loading = false
-        //   })
-        //   setTimeout(() => {
-        //     this.tableLoading = false
-        //   }, 1000)
-        // })
       },
-      searchProductByTitle() {
-        var searchProductVO = {
+      searchProductImageByTitle() {
+        var searchProductImageVO = {
           manId: 1,
           pageNum: this.pageNum,
           pageSize: this.pageSize,
           title: this.productTitle
         }
         this.tableLoading = true
-        axios.post('http://localhost:9040/productEntry/searchProductByTitle', searchProductVO).then(response => {
-          console.log(response.data)
-          if(response.data.code == "200"){
-            this.productImage = response.data.data.list
-            this.totalPage = response.data.data.totalPage
-            this.pageNum = response.data.data.pageNum
+        return new Promise((resolve, reject) => {
+          searchProduct(searchProductImageVO).then(response => {
+            this.productImages = response.data.list
+            this.totalPage = response.data.totalPage
+            this.pageNum = response.data.pageNum
+            resolve()
+            console.log(response.data)
+            console.log(this.pageSize)
+            console.log(this.totalPage)
+            console.log(this.pageNum)
             this.tableLoading = false
-          }else{
-            this.$message.warning(response.data.message);
+          }).catch(error => {
+            reject(error);
             this.tableLoading = false
-          }
-        }).catch(error => {
-          console.log(error)
-          this.tableLoading = false
+          })
         })
       },
-      handleUpdate(row) {
-
+      openAddDialog() {
+        // this.getAllImageCategory();
+        this.ifOpenDialog = true;
+      },
+      getAllImageCategory() {
+        return new Promise((resolve, reject) => {
+          getAllCategory().then(response => {
+            this.productCats = response.data.list
+            resolve()
+            console.log(response.data)
+            console.log(this.pageSize)
+            console.log(this.totalPage)
+            console.log(this.pageNum)
+          }).catch(error => {
+            reject(error);
+          })
+        })
       },
       batchDeleteproductImage() {
         var data = this.$refs.productTable.selection;

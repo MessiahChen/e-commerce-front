@@ -1,57 +1,63 @@
 import request from '@/utils/request'
 
-export function getAllProduct(getAllProductVO) {
+export function getAllProduct(getAllProductImageVO) {
   return request({
-    url: 'http://localhost:9040/productEntry/getAllProduct',
+    url: 'http://localhost:9040/productImage/getAllProductImage',
     method: 'post',
     header: {
       'Content-Type': 'application/json' //如果写成contentType会报错
     },
-    data: getAllProductVO
+    data: getAllProductImageVO
   })
 }
 
-export function searchProduct(searchProductVO) {
+export function searchProduct(searchProductImageVO) {
   return request({
-    url: 'http://localhost:9040/productEntry/searchProductByTitle',
+    url: 'http://localhost:9040/productImage/searchProductImageByTitle',
     method: 'post',
     header: {
       'Content-Type': 'application/json' //如果写成contentType会报错
     },
-    data: searchProductVO
+    data: searchProductImageVO
   })
 }
 
-export function addProduct(addProductVO){
+export function getAllCategory(){
   return request({
-    url: 'http://localhost:9040/productEntry/addProductInfo',
+    url: 'http://localhost:9040/productImage/getAllCategory',
+    method: 'get'
+  })
+}
+
+export function addProduct(productCategoryAddVO){
+  return request({
+    url: 'http://localhost:9040/productImage/addProductImage',
     method: 'put',
     header: {
       'Content-Type': 'application/json' //如果写成contentType会报错
     },
-    data: addProductVO
+    data: productCategoryAddVO
   })
 }
 
 export function deleteProduct(proId){
   return request({
-    url: 'http://localhost:9040/productEntry/deleteProductInfo',
+    url: 'http://localhost:9040/productImage/deleteProductInfo',
     method: 'delete',
     params: proId
   })
 }
 export function getProductWhenUpdate(proId){
   return request({
-    url: 'http://localhost:9040/productEntry/getProductInfoWhenUpdate',
+    url: 'http://localhost:9040/productImage/getProductInfoWhenUpdate',
     method: 'get',
     params: proId
   })
 }
 export function updateProduct(productUpdateVO){
   return request({
-    url: 'http://localhost:9040/productEntry/updateProductInfo',
+    url: 'http://localhost:9040/productImage/updateProductInfo',
     method: 'patch',
     data: productUpdateVO
   })
 }
-

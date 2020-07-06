@@ -11,7 +11,7 @@
           highlight-current-row
         >
           <el-table-column label="Account Name" align="center" >
-            <template slot-scope="scope" >
+            <template slot-scope="scope">
               {{ scope.row.accountName }}
             </template>
           </el-table-column>

@@ -1,7 +1,7 @@
 <template>
   <div style="margin: 60px; white-space:nowrap;">
 
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
+    <el-form :model="ruleForm" ref="ruleForm" class="demo-ruleForm">
 
       <h2>Company Information</h2>
       <el-table :data="companyData" border style="width: 100%">
@@ -21,7 +21,7 @@
       </el-table>
 
       <h2>Brand Information</h2>
-      <el-table :data="brandData" border style="width: 100%">
+      <el-table :data="brandData" border style="width: 100%; margin-bottom: 30px;">
         <el-table-column align="center" type="selection" width="100px">
         </el-table-column>
         <el-table-column prop="bname" label="Brand Name">
@@ -31,11 +31,47 @@
         </el-table-column>
         </el-table-column>
         <el-table-column prop="boperation" label="Operation">
-          <el-button type="primary" circle size='small' icon="el-icon-edit" @click="editCompany('ruleForm')"></el-button>
-          <el-button type="danger" circle size='small' icon="el-icon-delete" @click="editCompany('ruleForm')"></el-button>
+          <template slot-scope="{row,$index}">
+            <el-button type="primary" circle size='small' icon="el-icon-edit" @click="editBrand('ruleForm')"></el-button>
+            <el-button type="danger" circle size='small' icon="el-icon-delete" @click="handleDelete(row,$index)"></el-button>
+          </template>
         </el-table-column>
       </el-table>
+      <el-button type="primary" @click="addBrand('ruleForm')" >Add Brand</el-button>
     </el-form>
+
+    <div class="dialog-container">
+      <el-dialog :visible.sync="dialogFormVisible" title="Brand Information">
+        <el-form ref="form" :model="temp" label-width="120px">
+          <el-form-item label="Brand Name">
+            <el-col :span="12">
+              <el-input v-model="temp.bname" placeholder="Please enter the brand name" />
+            <el-col>
+          </el-form-item>
+          <el-form-item label="Brand Logo">
+            <el-upload
+              :multiple="true"
+              :show-file-list="true"
+              :on-remove="handleRemove"
+              :on-success="handleSuccess"
+              :before-upload="beforeUpload"
+            >
+              <el-button size="small">
+                Select Picture
+              </el-button>
+            </el-upload>
+            <el-button type="success" icon="el-icon-upload" @click="handleSubmit">
+              Upload
+            </el-button>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="saveBrand">Save</el-button>
+            <el-button type="info" @click="closeDialog">Cancel</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+    </div>
+
   </div>
 </template>
 
@@ -43,6 +79,12 @@
   export default {
     data() {
       return {
+        dialogFormVisible: false,
+        temp: [{
+          bname: '',
+          logo:'',
+          boperation:''
+        }],
         companyData: [{
           cn: '东软',
           en: 'NeuSoft',
@@ -62,6 +104,96 @@
         this.$router.push({
           path: '/mvo/mvoCompanyInfo'
         });
+      },
+      editBrand(formName){
+        console.log(formName);
+        this.dialogFormVisible = true;
+      },
+      resetTemp() {
+        this.temp = {
+          bname: '',
+          logo:'',
+          boperation:''
+        }
+      },
+      addBrand(formName){
+        this.resetTemp();
+        this.dialogFormVisible = true;
+        this.$nextTick(() => {
+          this.$refs['form'].clearValidate()
+        })
+      },
+      saveBrand(formName) {
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            this.brandData.unshift(this.temp);
+            this.dialogFormVisible = false;
+            this.$notify({
+                title: 'Success',
+                message: 'Created Successfully',
+                type: 'success',
+                duration: 2000
+              });
+          }
+        });
+      },
+      closeDialog(){
+        this.dialogFormVisible = false;
+      },
+      handleDelete(row, index) {
+        this.$notify({
+          title: 'Success',
+          message: 'Delete Successfully',
+          type: 'success',
+          duration: 2000
+        })
+        this.brandData.splice(index, 1)
+      },
+      handleSubmit() {
+        const arr = Object.keys(this.listObj).map(v => this.listObj[v])
+        if (!this.checkAllSuccess()) {
+          this.$message('Please wait for all images to be uploaded successfully. If there is a network problem, please refresh the page and upload again!')
+          return
+        }
+        this.$emit('successCBK', arr)
+        this.listObj = {}
+        this.fileList = []
+        this.dialogVisible = false
+      },
+      handleSuccess(response, file) {
+        const uid = file.uid
+        const objKeyArr = Object.keys(this.listObj)
+        for (let i = 0, len = objKeyArr.length; i < len; i++) {
+          if (this.listObj[objKeyArr[i]].uid === uid) {
+            this.listObj[objKeyArr[i]].url = response.files.file
+            this.listObj[objKeyArr[i]].hasSuccess = true
+            return
+          }
+        }
+      },
+      handleRemove(file) {
+        const uid = file.uid
+        const objKeyArr = Object.keys(this.listObj)
+        for (let i = 0, len = objKeyArr.length; i < len; i++) {
+          if (this.listObj[objKeyArr[i]].uid === uid) {
+            delete this.listObj[objKeyArr[i]]
+            return
+          }
+        }
+      },
+      beforeUpload(file) {
+        const _self = this
+        const _URL = window.URL || window.webkitURL
+        const fileName = file.uid
+        this.listObj[fileName] = {}
+        return new Promise((resolve, reject) => {
+          const img = new Image()
+          img.src = _URL.createObjectURL(file)
+          img.onload = function() {
+            _self.listObj[fileName] = { hasSuccess: false, uid: file.uid, width: this.width, height: this.height }
+          }
+          resolve(true)
+        })
       }
     }
   }

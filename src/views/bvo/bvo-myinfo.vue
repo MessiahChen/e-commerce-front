@@ -4,19 +4,19 @@
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
       <el-form-item label="Name:" prop="name">
         <el-col :span="8">
-          <el-input v-model="ruleForm.name"></el-input>
+          <el-input v-model="ruleForm.name" placeholder="Please enter the name"></el-input>
         </el-col>
       </el-form-item>
 
       <el-form-item label="E-mail" prop="email">
         <el-col :span="8">
-          <el-input v-model="ruleForm.email"></el-input>
+          <el-input v-model="ruleForm.email" placeholder="Please enter the e-mail"></el-input>
         </el-col>
       </el-form-item>
 
       <el-form-item label="Phone" prop="phone">
         <el-col :span="8">
-          <el-input v-model="ruleForm.phone"></el-input>
+          <el-input v-model="ruleForm.phone" placeholder="Please enter the phone"></el-input>
         </el-col>
       </el-form-item>
 
