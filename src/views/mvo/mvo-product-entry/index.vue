@@ -9,7 +9,7 @@
         <el-button class="pan-btn light-blue-btn" style="margin-left: 1vw;" type="text" @click="batchDeleteProductInfo()">Delete</el-button>
       </div>
 
-      <el-table ref="productTable" v-loading="tableLoading" :data="productInfo" border fit highlight-current-row style="width: 100%;">
+      <el-table ref="productTable" v-loading="tableLoading" :data="productInfos" border fit highlight-current-row style="width: 100%;">
         <el-table-column align="center" type="selection" width="100px">
         </el-table-column>
         <el-table-column label="Product Title" align="center">
@@ -34,7 +34,7 @@
         </el-table-column>
         <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
           <template slot-scope="{row,$index}">
-            <el-button type="primary" size="mini" @click="handleUpdate(row)">
+            <el-button type="primary" size="mini" @click="getProductInfoWhenUpdate(row)">
               Edit
             </el-button>
             <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="deleteProductInfo(row,$index)">
@@ -43,67 +43,75 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination background layout="prev, pager, next" :page-size="pageSize" :page-count="totalPage" :current-page="pageNum"
-        :hide-on-single-page="ifOnlyOnePage" style="margin: 1vw auto;text-align: center;">
+
+      <el-pagination background layout="prev, pager, next" :page-size="pageSize" :page-count="totalPage" :current-page.sync="pageNum"
+        :hide-on-single-page="ifOnlyOnePage" style="margin: 1vw auto;text-align: center;" @current-change="getAllProductInfo()">
       </el-pagination>
     </el-card>
 
-    <el-dialog title="Add Product" :visible.sync="ifOpenDialog" width="80%" center top="5vh">
-      <div class="dialog-span">
-        <el-form ref="form" :model="newProductInfo" label-width="150px">
-          <el-form-item label="商品标题">
-            <el-input v-model="newProductInfo.title"></el-input>
+    <el-dialog :title="dialogFunction" :visible.sync="ifOpenDialog" width="70%" center top="5vh" destroy-on-close
+      @closed="closeDialog()">
+      <el-form ref="form" :model="productInfo" label-width="100px">
+        <el-form-item label="商品标题">
+          <el-input v-model="productInfo.title"></el-input>
+        </el-form-item>
+        <div style="display: flex; flex-direction: row;">
+          <el-form-item label="长" style="width: 15vw;">
+            <el-input v-model="productInfo.length"></el-input>
           </el-form-item>
-          <el-form-item label="长">
-            <el-input v-model="newProductInfo.length"></el-input>
+          <el-form-item label="宽" style="width: 15vw;">
+            <el-input v-model="productInfo.width"></el-input>
           </el-form-item>
-          <el-form-item label="宽">
-            <el-input v-model="newProductInfo.width"></el-input>
+          <el-form-item label="高" style="width: 15vw;">
+            <el-input v-model="productInfo.height"></el-input>
           </el-form-item>
-          <el-form-item label="高">
-            <el-input v-model="newProductInfo.height"></el-input>
+          <el-form-item label="重量" style="width: 15vw;">
+            <el-input v-model="productInfo.weight"></el-input>
           </el-form-item>
-          <el-form-item label="重量">
-            <el-input v-model="newProductInfo.weight"></el-input>
-          </el-form-item>
+        </div>
 
-          <el-form-item label="商品sku编码">
-            <el-input v-model="newProductInfo.skuCd"></el-input>
-          </el-form-item>
+        <el-form-item label="商品sku编码">
+          <el-input v-model="productInfo.skuCd"></el-input>
+        </el-form-item>
 
-          <el-form-item label="商品ean编码">
-            <el-input v-model="newProductInfo.ean"></el-input>
-          </el-form-item>
+        <el-form-item label="商品ean编码">
+          <el-input v-model="productInfo.ean"></el-input>
+        </el-form-item>
 
-          <el-form-item label="商品型号">
-            <el-input v-model="newProductInfo.model"></el-input>
-          </el-form-item>
+        <el-form-item label="商品型号">
+          <el-input v-model="productInfo.model"></el-input>
+        </el-form-item>
 
-          <el-form-item label="借卖价格">
-            <el-input v-model="newProductInfo.retailPrice"></el-input>
-          </el-form-item>
+        <el-form-item label="借卖价格">
+          <el-input v-model="productInfo.retailPrice"></el-input>
+        </el-form-item>
 
-          <el-form-item label="保修期">
-            <el-input v-model="newProductInfo.warrantyDay"></el-input>
-          </el-form-item>
-        </el-form>
-      </div>
-
+        <el-form-item label="保修期">
+          <el-input v-model="productInfo.warrantyDay"></el-input>
+        </el-form-item>
+      </el-form>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="ifOpenDialog = false">Cancel</el-button>
-        <el-button type="primary" @click="ifOpenDialog = false">Save</el-button>
+        <el-button type="primary" @click="dialogFunction == 'Add Product' ? addProductInfo() : updateProductInfo()">Save</el-button>
       </span>
     </el-dialog>
+
   </div>
 </template>
 
 <script>
   import {
-    getAllProduct
+    getAllProduct,
+    searchProduct,
+    addProduct,
+    deleteProduct,
+    getProductWhenUpdate,
+    updateProduct
   } from '@/network/mvo-product-entry.js'
-  import axios from 'axios'
+
   import AddProductInfo from './components/AddProductInfo.vue'
+
   export default {
     name: "mvo-product-entry",
     components: {
@@ -114,17 +122,18 @@
         productTitle: "",
         // Table变量
         tableKey: 0,
-        productInfo: null,
+        productInfos: null,
         tableLoading: true,
         // 分页控件变量
-        pageSize: 10,
+        pageSize: 2,
         totalPage: 1,
         pageNum: 1,
         ifOnlyOnePage: false,
         // 是否打开弹窗
         ifOpenDialog: false,
+        dialogFunction: "Add Product",
         // 添加新商品
-        newProductInfo: {
+        productInfo: {
           ean: "",
           height: "",
           length: "",
@@ -136,7 +145,8 @@
           userId: "",
           warrantyDay: "",
           weight: "",
-          width: ""
+          width: "",
+          manId: 1
         }
       }
     },
@@ -150,40 +160,23 @@
           pageNum: this.pageNum,
           pageSize: this.pageSize
         }
-        axios.post('http://localhost:9040/productEntry/getAllProduct', getAllProductVO).then(response => {
-          if(response.data.code == "200"){
-            this.productInfo = response.data.data.list
-            this.totalPage = response.data.data.totalPage
-            this.pageNum = response.data.data.pageNum
+        this.tableLoading = true
+        return new Promise((resolve, reject) => {
+          getAllProduct(getAllProductVO).then(response => {
+            this.productInfos = response.data.list
+            this.totalPage = response.data.totalPage
+            this.pageNum = response.data.pageNum
+            resolve()
+            console.log(response.data)
+            console.log(this.pageSize)
+            console.log(this.totalPage)
+            console.log(this.pageNum)
             this.tableLoading = false
-          }else{
-            this.$message.warning(response.data.message);
+          }).catch(error => {
+            reject(error);
             this.tableLoading = false
-          }
-        }).catch(error => {
-          console.log(error)
-          this.tableLoading = false
+          })
         })
-        this.tableLoading = false
-        // return new Promise((resolve, reject) => {
-        //   getAllProduct(getAllProductVO).then(response => {
-        //     console.log(response.data)
-        //     resolve()
-        //     this.$router.push({
-        //       path: '/bvo/bvoAvailableMoney'
-        //     });
-        //     this.loading = false
-        //   }).catch(error => {
-        //     reject(error);
-        //     this.$router.push({
-        //       path: '/bvo/bvoAvailableMoney'
-        //     });
-        //     this.loading = false
-        //   })
-        //   setTimeout(() => {
-        //     this.tableLoading = false
-        //   }, 1000)
-        // })
       },
       searchProductByTitle() {
         var searchProductVO = {
@@ -193,43 +186,124 @@
           title: this.productTitle
         }
         this.tableLoading = true
-        axios.post('http://localhost:9040/productEntry/searchProductByTitle', searchProductVO).then(response => {
-          console.log(response.data)
-          if(response.data.code == "200"){
-            this.productInfo = response.data.data.list
-            this.totalPage = response.data.data.totalPage
-            this.pageNum = response.data.data.pageNum
+        return new Promise((resolve, reject) => {
+          searchProduct(searchProductVO).then(response => {
+            this.productInfos = response.data.list
+            this.totalPage = response.data.totalPage
+            this.pageNum = response.data.pageNum
+            resolve()
             this.tableLoading = false
-          }else{
-            this.$message.warning(response.data.message);
+          }).catch(error => {
+            reject(error);
             this.tableLoading = false
-          }
-        }).catch(error => {
-          console.log(error)
-          this.tableLoading = false
+          })
         })
       },
-      handleUpdate(row) {
+      addProductInfo() {
+        return new Promise((resolve, reject) => {
+          addProduct(this.productInfo).then(response => {
+            this.$message.info("Add Product Successfully!")
+            this.ifOpenDialog = false;
+            this.getAllProductInfo()
+            resolve()
+          }).catch(error => {
+            reject(error);
+          })
+        })
+      },
+      getProductInfoWhenUpdate(row) {
+        this.dialogFunction = "Modify Product"
+        this.ifOpenDialog = true
+        return new Promise((resolve, reject) => {
+          getProductWhenUpdate({
+            proId: row.proId
+          }).then(response => {
+            this.productInfo = {
+              proId: row.proId,
 
+              ean: response.data.ean,
+              height: response.data.height,
+              length: response.data.length,
+              model: response.data.model,
+              retailPrice: response.data.retailPrice,
+              skuCd: response.data.skuCd,
+              title: response.data.title,
+              upc: response.data.upc,
+              userId: "",
+              warrantyDay: response.data.warrantyDay,
+              weight: response.data.weight,
+              width: response.data.width
+            }
+            resolve()
+          }).catch(error => {
+            reject(error);
+          })
+        })
       },
       batchDeleteProductInfo() {
         var data = this.$refs.productTable.selection;
-        for (var i = 0; i < data.length; i++) {
-          axios.delete('http://localhost:9040/productEntry/deleteProductInfo?proId=' + data[i].proId).then(response => {
-            console.log(response.data)
-          }).catch(error => {
-            console.log(error)
-          })
-        }
-        this.getAllProductInfo()
+        console.log(data)
+        // for (var i = 0; i < data.length; i++) {
+        //   return new Promise((resolve, reject) => {
+        //     deleteProduct({
+        //       proId: data[i].proId
+        //     }).then(response => {
+        //       resolve()
+        //       console.log(i)
+        //       console.log(data.length)
+        //       if (i == data.length - 1) {
+        //         this.getAllProductInfo()
+        //       }
+        //     }).catch(error => {
+        //       reject(error);
+        //     })
+        //   })
+        // }
       },
       deleteProductInfo(row, index) {
-        axios.delete('http://localhost:9040/productEntry/deleteProductInfo?proId=' + row.proId).then(response => {
-          console.log(response.data)
-        }).catch(error => {
-          console.log(error)
+        return new Promise((resolve, reject) => {
+          deleteProduct({
+            proId: row.proId
+          }).then(response => {
+            resolve()
+            this.getAllProductInfo()
+          }).catch(error => {
+            reject(error);
+          })
         })
-        this.getAllProductInfo()
+      },
+      updateProductInfo() {
+        return new Promise((resolve, reject) => {
+          updateProduct(this.productInfo).then(response => {
+            this.$message.info("Modify Product Successfully!")
+            this.ifOpenDialog = false;
+            resolve()
+            this.getAllProductInfo()
+          }).catch(error => {
+            reject(error);
+          })
+        })
+
+      },
+      closeDialog() {
+        this.productInfo = {
+          ean: "",
+          height: "",
+          length: "",
+          model: "",
+          retailPrice: "",
+          skuCd: "",
+          title: "",
+          upc: "",
+          userId: "",
+          warrantyDay: "",
+          weight: "",
+          width: "",
+          manId: 1
+        }
+      },
+      changeit(){
+        console.log(this.pageNum)
       }
     }
   }
@@ -238,9 +312,13 @@
 <style scoped rel="stylesheet/scss" lang="scss">
   @import "src/styles/btn.scss";
 
-  .dialog-span {
-    // width: 50%;
-    // display: flex;
-    // align-items: center;
+  .el-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .el-form-item {
+    width: 60vw;
   }
 </style>
