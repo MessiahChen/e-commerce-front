@@ -15,7 +15,7 @@
       </el-table-column>
       <el-table-column label="Available Money" align="center">
         <template slot-scope="scope">
-          {{ scope.row.balance }}
+          {{ scope.row.transactionMoney }}
         </template>
       </el-table-column>
       <el-table-column label="Create Time" align="center">
@@ -60,8 +60,12 @@
     methods: {
       fetchData() {
         this.listLoading = true
-        getTransactionRecord().then(response => {
-          this.list = response.data.items
+        getTransactionRecord(
+          {
+            accountName: this.$store.state.user.accountName
+          }
+        ).then(response => {
+          this.list = response.data
           this.listLoading = false
         })
       }

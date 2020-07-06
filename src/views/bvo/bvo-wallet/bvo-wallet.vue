@@ -34,7 +34,8 @@
 </template>
 
 <script>
-    import {walletLogin} from '@/network/wallet'
+    import {walletRegister} from '@/network/wallet'
+    import { mapState,mapMutations } from '@/store/modules/user'
 
     export default {
       name: "bvo-wallet",
@@ -85,13 +86,14 @@
           })
         },
         handleLogin() {
+          this.$store.commit('user/SET_ACCOUNTNAME',this.loginForm.accountName.trim())
+          console.log(this.$store.state.user.accountName);
           this.$refs.loginForm.validate(valid => {
             if (valid) {
               this.loading = true;
               return new Promise((resolve, reject) => {
-                walletLogin({
+                walletRegister({
                   accountName: this.loginForm.accountName.trim(),
-                  accountType: this.loginForm.accountType,
                   email: this.loginForm.email.trim(),
                   password: this.loginForm.password
                 }).then(response => {

@@ -35,7 +35,7 @@
           <el-dialog :visible.sync="dialogFormVisible" title="Withdraw">
             <el-form ref="form" :model="form" label-width="120px">
               <el-form-item label="Money Amout">
-                <el-input v-model="form.withdrawingMoney" />
+                <el-input v-model="form.flow" />
               </el-form-item>
               <el-form-item label="Password">
                 <el-input type="password" v-model="form.password" />
@@ -80,7 +80,7 @@
         dialogFormVisible: false,
         form: {
           accountName:'',
-          withdrawingMoney:'',
+          flow:'',
           password:''
         }
       }
@@ -90,27 +90,27 @@
     },
     methods: {
       fetchData() {
+        this.form.accountName = this.$store.state.user.accountName
+        console.log('accountName:'+this.form.accountName)
         this.listLoading = true
-        getAvailableMoney().then(response => {
-          this.list = response.data.items
+        getAvailableMoney(this.form.accountName).then(response => {
+          this.list = response.data
           this.listLoading = false
         })
       },
       closeDialog(){
         this.dialogFormVisible = false;
-        this.form.withdrawingMoney = '';
+        this.form.flow = '';
         this.form.password = '';
       },
-      withdrawClick(index){
-        console.log(index);
+      withdrawClick(){
+        console.log(this.form.accountName)
         this.dialogFormVisible = true;
-        // this.form.accountName = this.list[index].accountName;
-        this.form.accountName = index;
       },
       onWithdraw(){
         withDrawMoney({
           accountName: this.form.accountName,
-          withDrawMoney: this.form.withdrawingMoney,
+          flow: this.form.flow,
           password: this.form.password
         }).then(response => {
           console.log(response.code);
@@ -127,9 +127,6 @@
 </script>
 
 <style scoped>
-  .password-change-container{
-    padding: 3vh;
-  }
   .table-container{
     padding: 3vh;
   }

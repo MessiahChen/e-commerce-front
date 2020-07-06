@@ -4,7 +4,7 @@
       <div class="password-change-container">
         <el-button type="primary" @click="changePasswordVisible = true" >Change Password</el-button>
         <div class="dialog-container">
-          <el-dialog :visible.sync="changePasswordVisible" title="Withdraw">
+          <el-dialog :visible.sync="changePasswordVisible" title="Change password">
             <el-form ref="passwordForm" :model="passwordForm" label-width="120px">
               <el-form-item label="Old Password">
                 <el-input v-model="passwordForm.oldPassword" />
@@ -31,7 +31,7 @@
         >
           <el-table-column label="Account Name" align="center" >
             <template slot-scope="scope" >
-              {{ scope.row.accountName }}
+              {{ form.accountName }}
             </template>
           </el-table-column>
           <el-table-column label="Available Money" align="center">
@@ -41,7 +41,7 @@
           </el-table-column>
           <el-table-column label="Operation" align="center">
             <template slot-scope="scope">
-              <el-button type="primary" @click="withdrawClick(scope.$index)" >withdraw</el-button>
+              <el-button type="primary" @click="depositClick()" >deposit</el-button>
             </template>
           </el-table-column>
           <el-table-column label="Record" align="center">
@@ -51,16 +51,16 @@
           </el-table-column>
         </el-table>
         <div class="dialog-container">
-          <el-dialog :visible.sync="dialogFormVisible" title="Withdraw">
-            <el-form ref="form" :model="form" label-width="120px">
-              <el-form-item label="Money Amout">
-                <el-input v-model="form.withdrawingMoney" />
+          <el-dialog :visible.sync="dialogFormVisible" title="Deposit">
+            <el-form ref="form" :model="form" label-width="150px">
+              <el-form-item label="Deposit Amount：$">
+                <el-input v-model="form.flow" />
               </el-form-item>
               <el-form-item label="Password">
                 <el-input type="password" v-model="form.password" />
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" @click="onWithdraw">Withdraw</el-button>
+                <el-button type="primary" @click="onDeposit">Deposit</el-button>
                 <el-button @click="closeDialog">Cancel</el-button>
               </el-form-item>
             </el-form>
@@ -76,8 +76,8 @@
   import
   {
     getAvailableMoney,
-    withDrawMoney,
-    updatePassword
+    depositMoney,
+    changePassword
   }
   from '@/network/wallet'
 
@@ -105,7 +105,7 @@
         },
         form: {
           accountName:'',
-          withdrawingMoney:'',
+          flow: '',
           password:''
         }
       }
@@ -115,22 +115,26 @@
     },
     methods: {
       fetchData() {
+        this.form.accountName = this.$store.state.user.accountName
         this.listLoading = true
-        getAvailableMoney().then(response => {
-          this.list = response.data.items
+        getAvailableMoney({
+          accountName: this.form.accountName
+        }).then(response => {
+          this.list = response.data
           this.listLoading = false
         })
       },
       closeDialog(){
         this.dialogFormVisible = false;
         this.changePasswordVisible = false;
-        this.form.withdrawingMoney = '';
+        this.form.flow = '';
         this.form.password = '';
         this.passwordForm.oldPassword = '';
         this.passwordForm.newPassword = ''
       },
       onConfirm(){
-        updatePassword({
+        changePassword({
+          accountName:this.form.accountName,
           oldPassword:this.passwordForm.oldPassword,
           newPassword:this.passwordForm.newPassword
         }).then(response => {
@@ -138,16 +142,13 @@
         });
         this.closeDialog();
       },
-      withdrawClick(index){
-        console.log(index);
+      depositClick(){
         this.dialogFormVisible = true;
-        // this.form.accountName = this.list[index].accountName;
-        this.form.accountName = index;
       },
-      onWithdraw(){
-        withDrawMoney({
+      onDeposit(){
+        depositMoney({
           accountName: this.form.accountName,
-          withDrawMoney: this.form.withdrawingMoney,
+          flow: this.form.flow,
           password: this.form.password
         }).then(response => {
           console.log(response.code);

@@ -7,7 +7,8 @@ const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
-    avatar: ''
+    avatar: '',
+    accountName: ''
   }
 }
 
@@ -25,10 +26,17 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
-  }
+  },
+  SET_ACCOUNTNAME:(state,accountName)=> {
+    state.accountName = accountName
+  },
 }
 
 const actions = {
+  //set account
+  account(){
+
+  },
   // user login
   login({ commit }, userInfo) {
     const { username, password } = userInfo
