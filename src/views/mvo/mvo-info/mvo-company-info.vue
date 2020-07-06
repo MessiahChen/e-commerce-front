@@ -3,13 +3,13 @@
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="160px" class="demo-ruleForm">
       <el-form-item label="Company Name (CN)" prop="companyNameCN">
         <el-col :span="8">
-          <el-input v-model="ruleForm.companyNameCN"></el-input>
+          <el-input v-model="ruleForm.companyNameCN" placeholder="Please enter the Chinese name"></el-input>
         </el-col>
       </el-form-item>
 
       <el-form-item label="Company Name (EN)" prop="companyNameEN">
         <el-col :span="8">
-          <el-input v-model="ruleForm.companyNameEN"></el-input>
+          <el-input v-model="ruleForm.companyNameEN" placeholder="Please enter the English name"></el-input>
         </el-col>
       </el-form-item>
 
@@ -19,13 +19,13 @@
 
       <el-form-item label="GMC Report Type" prop="type">
         <el-col :span="8">
-          <el-input v-model="ruleForm.type"></el-input>
+          <el-input v-model="ruleForm.type" placeholder="Please enter the type"></el-input>
         </el-col>
       </el-form-item>
 
       <el-form-item label="GRC Report URL" prop="url">
         <el-col :span="8">
-          <el-input v-model="ruleForm.url"></el-input>
+          <el-input v-model="ruleForm.url" placeholder="Please enter the URL"></el-input>
         </el-col>
       </el-form-item>
 
@@ -72,6 +72,7 @@
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')">Save</el-button>
         <el-button @click="resetForm('ruleForm')">Reset</el-button>
+        <el-button type="info" @click="cancel('ruleForm')">Cancel</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -184,6 +185,11 @@
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
+      },
+      cancel(formName) {
+        this.$router.push({
+          path: '/mvo/myInfo'
+        });
       }
     }
   }
