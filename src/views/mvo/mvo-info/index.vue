@@ -16,7 +16,7 @@
         </el-table-column>
         </el-table-column>
         <el-table-column prop="coperation" label="Operation">
-          <el-button type="primary" circle size='small' icon="el-icon-edit" @click="editCompany((scope.$index))" ></el-button>
+          <el-button type="primary" circle size='small' icon="el-icon-edit" @click="editCompany('ruleForm')" ></el-button>
         </el-table-column>
       </el-table>
 
