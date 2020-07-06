@@ -61,7 +61,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'myinfo',
-        component: () => import('@/views/mvo/mvo-myinfo'),
+        component: () => import('@/views/mvo/mvo-info/index'),
         name: 'myinfo',
         meta: { title: 'My Info', icon: 'form', affix: true }
       },
@@ -114,7 +114,13 @@ export const constantRoutes = [
         component: () => import('@/views/mvo/mvo-wallet/mvo-transaction-record'),
         name: 'mvoTransactionRecord',
         hidden:true
-      }
+      },
+      {
+        path: 'mvoCompanyInfo',
+        component: () => import('@/views/mvo/mvo-info/mvo-company-info'),
+        name: 'mvoCompanyInfo',
+        hidden:true
+      },
     ]
   },
   {

@@ -68,4 +68,4 @@ Modern browsers and Internet Explorer 10+.
 
 ## License
 
-[MIT](https://gitee.com/ma_hongsheng/e-commerce-front/master/LICENSE) license.
+[MIT](https://gitee.com/ma_hongsheng/e-commerce-front/blob/master/LICENSE) license.
