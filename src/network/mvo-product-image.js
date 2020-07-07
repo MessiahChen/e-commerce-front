@@ -49,15 +49,15 @@ export function deleteProduct(proId){
 }
 export function getProductWhenUpdate(proId){
   return request({
-    url: 'http://localhost:9040/productImage/getProductInfoWhenUpdate',
+    url: 'http://localhost:9040/productImage/getProductCatWhenUpdate',
     method: 'get',
     params: proId
   })
 }
-export function updateProduct(productUpdateVO){
+export function updateProduct(productCatUpdateVO){
   return request({
-    url: 'http://localhost:9040/productImage/updateProductInfo',
+    url: 'http://localhost:9040/productImage/updateProductImage',
     method: 'patch',
-    data: productUpdateVO
+    data: productCatUpdateVO
   })
 }

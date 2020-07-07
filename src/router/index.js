@@ -70,20 +70,6 @@ export const constantRoutes = [
         component: () => import('@/views/mvo/mvo-product-entry/index'),
         name: 'productAdd',
         meta: { title: 'Product Entry', icon: 'edit', affix: true},
-        // children:[
-        //   {
-        //     path: 'showProductInfo',
-        //     component: () => import('@/views/mvo/mvo-product-entry/components/ShowProductInfo'),
-        //     name: 'showProductInfo',
-        //     meta:{ title: 'Show Product' }
-        //   },
-        //   {
-        //     path: 'addProductInfo',
-        //     component: () => import('@/views/mvo/mvo-product-entry/components/AddProductInfo'),
-        //     name: 'addProductInfo',
-        //     meta:{ title: 'Add Product' }
-        //   }
-        // ]
       },
       {
         path: 'productImage',
@@ -141,10 +127,10 @@ export const constantRoutes = [
         meta: { title: 'Store Manage', icon: 'component', affix: true }
       },
       {
-        path: 'goodsHistory',
-        component: () => import('@/views/bvo/bvo-goods-view'),
-        name: 'goodsHistory',
-        meta: { title: 'Goods Browse', icon: 'search', affix: true }
+        path: 'productBrowse',
+        component: () => import('@/views/bvo/bvo-product-browse/index'),
+        name: 'productBrowse',
+        meta: { title: 'Product Browse', icon: 'search', affix: true }
       },
       {
         path: 'wishList',

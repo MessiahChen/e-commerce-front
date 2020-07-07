@@ -46,7 +46,7 @@
           <el-form-item label="Brand Name">
             <el-col :span="12">
               <el-input v-model="temp.bname" placeholder="Please enter the brand name" />
-            <el-col>
+            </el-col>
           </el-form-item>
           <el-form-item label="Brand Logo">
             <el-upload
