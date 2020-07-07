@@ -110,13 +110,8 @@
     updateProduct
   } from '@/network/mvo-product-entry.js'
 
-  import AddProductInfo from './components/AddProductInfo.vue'
-
   export default {
     name: "mvo-product-entry",
-    components: {
-      AddProductInfo
-    },
     data() {
       return {
         productTitle: "",

@@ -6,7 +6,7 @@
         <el-input v-model="productTitle" placeholder="Please input product title" style="width: 40vw;"></el-input>
         <el-button class="pan-btn light-blue-btn" style="margin-left: 1vw;" type="text" @click="searchProductImageByTitle()">Search</el-button>
         <el-button class="pan-btn light-blue-btn" style="margin-left: 1vw;" type="text" @click="openAddDialog()">Add</el-button>
-        <el-button class="pan-btn light-blue-btn" style="margin-left: 1vw;" type="text" @click="batchDeleteproductImage()">Delete</el-button>
+        <el-button class="pan-btn light-blue-btn" style="margin-left: 1vw;" type="text" @click="batchDeleteproductCat()">Delete</el-button>
       </div>
 
       <el-table ref="productTable" v-loading="tableLoading" :data="productImages" border fit highlight-current-row
@@ -33,14 +33,15 @@
             <span>{{ row.status }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
+        <el-table-column label="Actions" align="center" width="250px" class-name="small-padding fixed-width">
           <template slot-scope="{row,$index}">
-            <el-button type="primary" size="mini" @click="handleUpdate(row)">
+            <el-button type="primary" size="mini" @click="getProductCatWhenUpdate(row)">
               Edit
             </el-button>
-            <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="deleteproductImage(row,$index)">
+            <el-button size="mini" type="danger" @click="deleteproductCat(row,$index)">
               Delete
             </el-button>
+            <el-button size="mini" type="success" v-if="row.status!='入仓中'">{{proOperation(row)}}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -49,15 +50,18 @@
       </el-pagination>
     </el-card>
 
-    <el-dialog title="Product Infomation" :visible.sync="ifOpenDialog" width="70%" center top="5vh">
+    <el-dialog title="Product Infomation" :visible.sync="ifOpenAddDialog" width="70%" center top="5vh" @closed="closeAddDialog()">
 
       <el-form ref="form" :model="productImage" label-width="150px">
         <el-form-item label="Product Title">
-          <el-input v-model="productImage.title"></el-input>
+          <el-select v-model="productImage.proId" clearable placeholder="请选择">
+            <el-option v-for="item in productImages" :key="item.proId" :label="item.title" :value="item.proId">
+            </el-option>
+          </el-select>
         </el-form-item>
 
         <el-form-item label="Product Category">
-          <el-cascader v-model="productCat" :options="productCats" :props="{ value: 'catId', label: 'catName', children :'viceCats'}"></el-cascader>
+          <el-cascader v-model="productImage.category" :options="productCats" :props="{ value: 'catId', label: 'catName', children :'viceCats'}"></el-cascader>
         </el-form-item>
 
         <el-form-item label="Upload Images">
@@ -66,11 +70,32 @@
         </el-form-item>
 
       </el-form>
-
-
       <span slot="footer" class="dialog-footer">
-        <el-button @click="ifOpenDialog = false">Cancel</el-button>
-        <el-button type="primary" @click="ifOpenDialog = false">Save</el-button>
+        <el-button @click="ifOpenAddDialog = false">Cancel</el-button>
+        <el-button type="primary" @click="addProductCategory()">Save</el-button>
+      </span>
+    </el-dialog>
+
+    <el-dialog title="Product Infomation" :visible.sync="ifOpenUpdateDialog" width="70%" center top="5vh" @closed="closeUpdateDialog()">
+
+      <el-form ref="form" :model="productUpdateImage" label-width="150px">
+        <el-form-item label="Product Title">
+          <el-input disabled v-model="productUpdateImage.title"></el-input>
+        </el-form-item>
+
+        <el-form-item label="Product Category">
+          <el-cascader v-model="productUpdateImage.category" :options="productCats" :props="{ value: 'catId', label: 'catName', children :'viceCats'}"></el-cascader>
+        </el-form-item>
+
+        <el-form-item label="Upload Images">
+          <el-button class="pan-btn light-blue-btn" type="text">选择图片</el-button>
+          <el-button class="pan-btn light-blue-btn" style="margin-left: 1vw;" type="text">上传图片</el-button>
+        </el-form-item>
+
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="ifOpenUpdateDialog = false">Cancel</el-button>
+        <el-button type="primary" @click="updateProductCategory()">Save</el-button>
       </span>
     </el-dialog>
   </div>
@@ -101,7 +126,8 @@
         pageNum: 1,
         ifOnlyOnePage: false,
         // 是否打开弹窗
-        ifOpenDialog: false,
+        ifOpenAddDialog: false,
+        ifOpenUpdateDialog: false,
         // 已选商品分类
         productCat: "",
         productCats: [{
@@ -114,18 +140,30 @@
         }],
         // 添加新商品
         productImage: {
-          ean: "",
-          height: "",
-          length: "",
-          model: "",
-          retailPrice: "",
-          skuCd: "",
-          title: "",
-          upc: "",
+          proId: "",
           userId: "",
-          warrantyDay: "",
-          weight: "",
-          width: ""
+          category: []
+        },
+        productUpdateImage: {
+          proId: "",
+          title: "",
+          userId: "",
+          category: []
+        }
+      }
+    },
+    computed: {
+      proOperation() {
+        return function(row) {
+          var operation = "";
+          if (row.status == "待入仓") {
+            operation = "入仓"
+          } else if (row.status == "待上架") {
+            operation = "上架"
+          } else if (row.status == "上架中") {
+            operation = "下架"
+          }
+          return operation
         }
       }
     },
@@ -146,10 +184,6 @@
             this.totalPage = response.data.totalPage
             this.pageNum = response.data.pageNum
             resolve()
-            console.log(response.data)
-            console.log(this.pageSize)
-            console.log(this.totalPage)
-            console.log(this.pageNum)
             this.tableLoading = false
           }).catch(error => {
             reject(error);
@@ -171,10 +205,6 @@
             this.totalPage = response.data.totalPage
             this.pageNum = response.data.pageNum
             resolve()
-            console.log(response.data)
-            console.log(this.pageSize)
-            console.log(this.totalPage)
-            console.log(this.pageNum)
             this.tableLoading = false
           }).catch(error => {
             reject(error);
@@ -183,40 +213,76 @@
         })
       },
       openAddDialog() {
-        // this.getAllImageCategory();
-        this.ifOpenDialog = true;
+        this.getAllImageCategory();
+        this.ifOpenAddDialog = true;
       },
       getAllImageCategory() {
         return new Promise((resolve, reject) => {
           getAllCategory().then(response => {
-            this.productCats = response.data.list
+            this.productCats = response.data
             resolve()
-            console.log(response.data)
-            console.log(this.pageSize)
-            console.log(this.totalPage)
-            console.log(this.pageNum)
           }).catch(error => {
             reject(error);
           })
         })
       },
-      batchDeleteproductImage() {
-        var data = this.$refs.productTable.selection;
-        for (var i = 0; i < data.length; i++) {
-          axios.delete('http://localhost:9040/productEntry/deleteproductImage?proId=' + data[i].proId).then(response => {
-            console.log(response.data)
+      addProductCategory() {
+        console.log(this.productImage)
+        return new Promise((resolve, reject) => {
+          addProduct(this.productImage).then(response => {
+            console.log(response)
+            resolve()
           }).catch(error => {
-            console.log(error)
+            reject(error)
           })
+        })
+      },
+      uploadImages() {
+
+      },
+      closeAddDialog() {
+        this.productImage = {
+          proId: "",
+          userId: "",
+          category: []
         }
+      },
+      getProductCatWhenUpdate(row) {
+        this.ifOpenUpdateDialog = true
+        this.productUpdateImage.proId = row.proId
+        this.productUpdateImage.title = row.title
+        this.getAllImageCategory();
+      },
+      updateProductCategory() {
+        var productCatUpdateVO = {
+          proId: this.productUpdateImage.proId,
+          userId: this.productUpdateImage.userId,
+          category: this.productUpdateImage.category
+        }
+        return new Promise((resolve, reject) => {
+          updateProduct(productCatUpdateVO).then(response => {
+            console.log(response)
+            this.getAllproductImage()
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
+        })
+      },
+      closeUpdateDialog() {
+        this.productUpdateImage = {
+          proId: "",
+          title: "",
+          userId: "",
+          category: []
+        }
+      },
+      batchDeleteproductCat() {
+
         this.getAllproductImage()
       },
-      deleteproductImage(row, index) {
-        axios.delete('http://localhost:9040/productEntry/deleteproductImage?proId=' + row.proId).then(response => {
-          console.log(response.data)
-        }).catch(error => {
-          console.log(error)
-        })
+      deleteproductCat(row, index) {
+
         this.getAllproductImage()
       }
     }
