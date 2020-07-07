@@ -11,9 +11,7 @@
         </el-table-column>
         <el-table-column prop="type" label="GMC Report Type">
         </el-table-column>
-        </el-table-column>
         <el-table-column prop="url" label="GMC Report URL">
-        </el-table-column>
         </el-table-column>
         <el-table-column prop="coperation" label="Operation">
           <el-button type="primary" circle size='small' icon="el-icon-edit" @click="editCompany('ruleForm')" ></el-button>
@@ -26,9 +24,7 @@
         </el-table-column>
         <el-table-column prop="bname" label="Brand Name">
         </el-table-column>
-        </el-table-column>
         <el-table-column prop="logo" label="Brand Logo">
-        </el-table-column>
         </el-table-column>
         <el-table-column prop="boperation" label="Operation">
           <template slot-scope="{row,$index}">
