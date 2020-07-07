@@ -65,13 +65,19 @@
     methods: {
       fetchData() {
         this.listLoading = true
-        getTransactionRecord(
-          {
-            accountName: this.$store.state.user.accountName
-          }
-        ).then(response => {
-          this.list = response.data
-          this.listLoading = false
+        return new Promise((resolve, reject) => {
+          getTransactionRecord(
+            {
+              accountName: this.$store.state.user.accountName
+            }
+          ).then(response => {
+            this.list = response.data
+            console.log(this.list)
+            this.listLoading = false
+          }).catch(error => {
+            console.log(error);
+            reject(error);
+          })
         })
       }
     }

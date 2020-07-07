@@ -56,10 +56,11 @@
 
   import
   {
+    changePassword,
     getAvailableMoney,
     withDrawMoney,
   }
-  from '@/network/wallet'
+    from '@/network/wallet'
 
   export default {
     name: "mvo-available-money",
@@ -92,11 +93,16 @@
       fetchData() {
         this.form.accountName = this.$store.state.user.accountName
         this.listLoading = true
-        getAvailableMoney({
-          accountName: this.form.accountName
-        }).then(response => {
-          this.list = response.data;
-          this.listLoading = false
+        return new Promise((resolve, reject) => {
+          getAvailableMoney({
+            accountName: this.form.accountName
+          }).then(response => {
+            this.list = response.data;
+            this.listLoading = false
+          }).catch(error => {
+            console.log(error);
+            reject(error);
+          })
         })
       },
       closeDialog(){
@@ -109,14 +115,20 @@
         this.dialogFormVisible = true;
       },
       onWithdraw(){
-        withDrawMoney({
-          accountName: this.form.accountName,
-          flow: this.form.flow,
-          password: this.form.password
-        }).then(response => {
-          console.log(response.code);
-        });
-        this.closeDialog();
+        return new Promise((resolve, reject) => {
+          withDrawMoney({
+            accountName: this.form.accountName,
+            flow: this.form.flow,
+            password: this.form.password
+          }).then(response => {
+            console.log('mvo-available-money onWithdraw() withDrawMoney code is ');
+            console.log(response.code);
+            this.closeDialog();
+          }).catch(error => {
+            console.log(error);
+            reject(error);
+          })
+        })
       },
       goToRecord(){
         this.$router.push({

@@ -67,3 +67,18 @@ export function changePassword(data) {
     data
   })
 }
+
+export function pay(data) {
+  console.log('pay');
+  console.log(data)
+  return request({
+    url: 'http://localhost:9050/wallet/pay',
+    method: 'patch',
+    header: {
+      'Content-Type': 'application/json' //如果写成contentType会报错
+    },
+    data
+  })
+}
+
+

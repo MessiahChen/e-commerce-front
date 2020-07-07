@@ -77,9 +77,9 @@
   {
     getAvailableMoney,
     depositMoney,
-    changePassword
+    changePassword, walletRegister
   }
-  from '@/network/wallet'
+    from '@/network/wallet'
 
   export default {
     name: "bvo-available-money",
@@ -117,11 +117,16 @@
       fetchData() {
         this.form.accountName = this.$store.state.user.accountName
         this.listLoading = true
-        getAvailableMoney({
-          accountName: this.form.accountName
-        }).then(response => {
-          this.list = response.data;
-          this.listLoading = false
+        return new Promise((resolve, reject) => {
+          getAvailableMoney({
+            accountName: this.form.accountName
+          }).then(response => {
+            this.list = response.data;
+            this.listLoading = false
+          }).catch(error => {
+            console.log(error);
+            reject(error);
+          })
         })
       },
       closeDialog(){
@@ -132,30 +137,41 @@
         this.passwordForm.oldPassword = '';
         this.passwordForm.newPassword = ''
       },
+
       onConfirm(){
-        changePassword({
-          accountName:this.form.accountName,
-          oldPassword:this.passwordForm.oldPassword,
-          newPassword:this.passwordForm.newPassword
-        }).then(response => {
-          console.log('bvo-available-money onConfirm() changePasssword code is ');
-          console.log(response.code);
-        });
-        this.closeDialog();
+        return new Promise((resolve, reject) => {
+          changePassword({
+            accountName:this.form.accountName,
+            oldPassword:this.passwordForm.oldPassword,
+            newPassword:this.passwordForm.newPassword
+          }).then(response => {
+            console.log('bvo-available-money onConfirm() changePasssword code is ');
+            console.log(response.code);
+            this.closeDialog();
+          }).catch(error => {
+            console.log(error);
+            reject(error);
+          })
+        })
       },
       depositClick(){
         this.dialogFormVisible = true;
       },
       onDeposit(){
-        depositMoney({
-          accountName: this.form.accountName,
-          flow: this.form.flow,
-          password: this.form.password
-        }).then(response => {
-          console.log('bvo-available-money onDeposit() changePasssword code is ');
-          console.log(response.code);
-        });
-        this.closeDialog();
+        return new Promise((resolve, reject) => {
+          depositMoney({
+            accountName: this.form.accountName,
+            flow: this.form.flow,
+            password: this.form.password
+          }).then(response => {
+            console.log('bvo-available-money onDeposit() changePasssword code is ');
+            console.log(response.code);
+            this.closeDialog();
+          }).catch(error => {
+            console.log(error);
+            reject(error);
+          })
+        })
       },
       goToRecord(){
         this.$router.push({
