@@ -33,10 +33,7 @@ const mutations = {
 }
 
 const actions = {
-  //set account
-  account(){
 
-  },
   // user login
   login({ commit }, userInfo) {
     const { username, password } = userInfo

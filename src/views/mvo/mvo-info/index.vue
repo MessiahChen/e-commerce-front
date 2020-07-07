@@ -46,7 +46,7 @@
           <el-form-item label="Brand Name">
             <el-col :span="12">
               <el-input v-model="temp.bname" placeholder="Please enter the brand name" />
-            <el-col>
+            </el-col>
           </el-form-item>
           <el-form-item label="Brand Logo">
             <el-upload
@@ -129,11 +129,11 @@
             this.brandData.unshift(this.temp);
             this.dialogFormVisible = false;
             this.$notify({
-                title: 'Success',
-                message: 'Created Successfully',
-                type: 'success',
-                duration: 2000
-              });
+              title: 'Success',
+              message: 'Created Successfully',
+              type: 'success',
+              duration: 2000
+            });
           }
         });
       },

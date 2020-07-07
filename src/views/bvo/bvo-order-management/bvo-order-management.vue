@@ -13,19 +13,15 @@
     <div class="tab-container">
       <el-tabs v-model="activeName" style="margin-top:15px;" type="border-card" @tab-click="handleClick">
         <el-tab-pane label="Awaiting Payment" name="AP">
-          <el-table :data="list" border fit highlight-current-row style="width: 100%">
-            <el-table-column
-              v-loading="loading"
-              align="center"
-              label="ID"
-              width="65"
-              element-loading-text="请给我点时间！"
-            >
-              <template slot-scope="scope">
-                <span>{{ scope.row.id }}</span>
-              </template>
+          <el-table
+            @selection-change="apChangeCheckBoxValue"
+            :data="APlist"
+            border
+            fit
+            highlight-current-row
+            style="width: 100%">
+            <el-table-column align="center" type="selection">
             </el-table-column>
-
             <el-table-column align="center" width="150px" label="Title">
               <template slot-scope="scope">
                 <el-button type="text" @click="intoTitle(scope.row.title)">{{scope.row.title}}</el-button>
@@ -63,15 +59,13 @@
             </el-table-column>
 
             <el-table-column  align="center" label="Operation" width="110">
-              <template slot-scope="scope">
-                <span>{{ scope.row.skuNo }}</span>
-              </template>
+              <el-button type="primary">Pay Now</el-button>
             </el-table-column>
 
           </el-table>
         </el-tab-pane>
         <el-tab-pane label="Awaiting Shipment" name="AS">
-          <el-table :data="list" border fit highlight-current-row style="width: 100%">
+          <el-table :data="ASlist" border fit highlight-current-row style="width: 100%">
             <el-table-column
               v-loading="loading"
               align="center"
@@ -123,7 +117,7 @@
           </el-table>
         </el-tab-pane>
         <el-tab-pane label="Shiped" name="SH">
-          <el-table :data="list" border fit highlight-current-row style="width: 100%">
+          <el-table :data="SHlist" border fit highlight-current-row style="width: 100%">
             <el-table-column
               v-loading="loading"
               align="center"
@@ -181,7 +175,7 @@
           </el-table>
         </el-tab-pane>
         <el-tab-pane label="Completed Orders" name="CO">
-          <el-table :data="list" border fit highlight-current-row style="width: 100%">
+          <el-table :data="COlist" border fit highlight-current-row style="width: 100%">
             <el-table-column
               v-loading="loading"
               align="center"
@@ -239,7 +233,7 @@
           </el-table>
         </el-tab-pane>
         <el-tab-pane label="Cancelled Orders" name="CA">
-          <el-table :data="list" border fit highlight-current-row style="width: 100%">
+          <el-table :data="CAlist" border fit highlight-current-row style="width: 100%">
             <el-table-column
               v-loading="loading"
               align="center"
@@ -296,7 +290,7 @@
 </template>
 
 <script>
-  import {getOrderMangementData} from '@/network/orderManagement'
+  import {getOrderMangementData} from '@/network/order-management'
 
   import TabPane from "@/views/bvo/bvo-order-management/TabPane/TabPane";
 
@@ -307,10 +301,16 @@
       },
       data() {
         return {
+          apCheckBoxData:[],
           searchForm: {
             key: ''
           },
-          list: null,
+          APlist: null,
+          ASlist: null,
+          SHlist: null,
+          COlist: null,
+          CAlist: null,
+          payList: [],
           listQuery: {
             page: 1,
             limit: 5,
@@ -319,6 +319,9 @@
           activeName: 'AP',
           loading: false
         }
+      },
+      created() {
+        this.getList()
       },
       methods: {
         onSubmit() {
@@ -329,13 +332,30 @@
         },
         getList(){
           this.loading = true;
-          getOrderMangementData(this.listQuery).then(response => {
-            this.list = response.data.items
+          getOrderMangementData().then(response => {
+            this.APlist = response.data.items
+            this.ASlist = response.data.items
+            this.SHlist = response.data.items
+            this.COlist = response.data.items
+            this.CAlist = response.data.items
             this.loading = false
           })
         },
         intoTitle(){
           //转到商品页
+        },
+        addID(id){
+          console.log(id)
+          this.payList.push(id)
+          console.log(this.payList);
+        },
+        apChangeCheckBoxValue(val){
+          console.log(val);
+          console.log(val[0].id)
+          if(this.apCheckBoxData.indexOf(val[0].id)==-1){
+            this.apCheckBoxData.push(val)
+          }
+          console.log(this.apCheckBoxData);
         }
       }
     }

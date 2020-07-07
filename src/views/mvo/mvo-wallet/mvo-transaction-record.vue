@@ -1,34 +1,39 @@
 <template>
   <div class="balance-container">
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      element-loading-text="Loading"
-      border
-      fit
-      highlight-current-row
-    >
-      <el-table-column label="Transaction Number" align="center" >
-        <template slot-scope="scope">
-          {{ scope.row.transactionNumber }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Available Money" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.transactionMoney }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Create Time" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.createTime }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Status" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.status }}
-        </template>
-      </el-table-column>
-    </el-table>
+    <div class="table-container">
+      <el-table
+        v-loading="listLoading"
+        :data="list"
+        element-loading-text="Loading"
+        border
+        fit
+        highlight-current-row
+      >
+        <el-table-column label="Transaction Number" align="center" >
+          <template slot-scope="scope">
+            {{ scope.row.transactionNumber }}
+          </template>
+        </el-table-column>
+        <el-table-column label="Available Money" align="center">
+          <template slot-scope="scope">
+            {{ scope.row.transactionMoney }}
+          </template>
+        </el-table-column>
+        <el-table-column label="Create Time" align="center">
+          <template slot-scope="scope">
+            {{ scope.row.createTime }}
+          </template>
+        </el-table-column>
+        <el-table-column label="Status" align="center">
+          <template slot-scope="scope">
+            <span v-if="scope.row.status == 1">失败</span>
+            <span v-if="scope.row.status == 2">处理中</span>
+            <span v-if="scope.row.status == 4">已完成</span>
+<!--            {{ scope.row.status }}-->
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
   </div>
 
 </template>
@@ -72,3 +77,12 @@
     }
   }
 </script>
+
+<style scoped>
+  .table-container{
+    padding: 3vh;
+  }
+  .balance-container{
+    padding-bottom: 3vh;
+  }
+</style>

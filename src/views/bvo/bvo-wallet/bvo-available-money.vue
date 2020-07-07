@@ -36,7 +36,7 @@
           </el-table-column>
           <el-table-column label="Available Money" align="center">
             <template slot-scope="scope">
-              {{ scope.row.avaliableMoney }}
+              {{ scope.row.availableMoney }}
             </template>
           </el-table-column>
           <el-table-column label="Operation" align="center">
@@ -120,7 +120,7 @@
         getAvailableMoney({
           accountName: this.form.accountName
         }).then(response => {
-          this.list = response.data
+          this.list = response.data;
           this.listLoading = false
         })
       },
@@ -138,6 +138,7 @@
           oldPassword:this.passwordForm.oldPassword,
           newPassword:this.passwordForm.newPassword
         }).then(response => {
+          console.log('bvo-available-money onConfirm() changePasssword code is ');
           console.log(response.code);
         });
         this.closeDialog();
@@ -151,6 +152,7 @@
           flow: this.form.flow,
           password: this.form.password
         }).then(response => {
+          console.log('bvo-available-money onDeposit() changePasssword code is ');
           console.log(response.code);
         });
         this.closeDialog();

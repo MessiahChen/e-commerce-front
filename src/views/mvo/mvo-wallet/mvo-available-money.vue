@@ -12,12 +12,12 @@
         >
           <el-table-column label="Account Name" align="center" >
             <template slot-scope="scope">
-              {{ scope.row.accountName }}
+              {{ form.accountName }}
             </template>
           </el-table-column>
           <el-table-column label="Available Money" align="center">
             <template slot-scope="scope">
-              {{ scope.row.avaliableMoney }}
+              {{ scope.row.availableMoney }}
             </template>
           </el-table-column>
           <el-table-column label="Operation" align="center">
@@ -33,8 +33,8 @@
         </el-table>
         <div class="dialog-container">
           <el-dialog :visible.sync="dialogFormVisible" title="Withdraw">
-            <el-form ref="form" :model="form" label-width="120px">
-              <el-form-item label="Money Amout">
+            <el-form ref="form" :model="form" label-width="150px">
+              <el-form-item label="Money Amout : $">
                 <el-input v-model="form.flow" />
               </el-form-item>
               <el-form-item label="Password">
@@ -59,7 +59,7 @@
     getAvailableMoney,
     withDrawMoney,
   }
-    from '@/network/wallet'
+  from '@/network/wallet'
 
   export default {
     name: "mvo-available-money",
@@ -91,10 +91,11 @@
     methods: {
       fetchData() {
         this.form.accountName = this.$store.state.user.accountName
-        console.log('accountName:'+this.form.accountName)
         this.listLoading = true
-        getAvailableMoney(this.form.accountName).then(response => {
-          this.list = response.data
+        getAvailableMoney({
+          accountName: this.form.accountName
+        }).then(response => {
+          this.list = response.data;
           this.listLoading = false
         })
       },

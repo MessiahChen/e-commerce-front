@@ -1,61 +1,69 @@
 import request from '@/utils/request'
 
-export function walletRegister(params) {
-  console.log(params)
+export function walletRegister(data) {
+  console.log(data)
   return request({
-    // url: '/vue-admin-template/table/list',
     url: 'http://localhost:9050/wallet/register',
     method: 'put',
-    params
+    header: {
+      'Content-Type': 'application/json' //如果写成contentType会报错
+    },
+    data
   })
 }
 
-export function getAvailableMoney(params) {
-  console.log(params)
+export function getAvailableMoney(data) {
+  console.log(data)
   return request({
-    // url: '/vue-admin-template/table/list',
     url: 'http://localhost:9050/wallet/getInfo',
-    method: 'get',
-    params
-  })
-}
-
-export function getTransactionRecord(params) {
-  console.log(params)
-  return request({
-    // url: '/vue-admin-template/table/list',
-    url: 'http://localhost:9050/wallet/check',
     method: 'post',
-    // method:'get',
-    params
+    data
   })
 }
 
-export function withDrawMoney(params) {
-  console.log(params)
+export function getTransactionRecord(data) {
+  console.log(data)
   return request({
-    url: 'http://localhost:9050/wallet/withdraw',
-    // url: '/vue-admin-template/table/list',
-    method: 'get',
-    params
-  })
-}
-export function depositMoney(params) {
-  console.log(params)
-  return request({
-    url: 'http://localhost:9050/wallet/deposit',
-    // url: '/vue-admin-template/table/list',
-    method: 'get',
-    params
-  })
-}
-
-export function changePassword(params) {
-  console.log(params)
-  return request({
-    // url: '/vue-admin-template/table/list',
-    url: 'http://location:9050/wallet/changePassword',
+    url: 'http://localhost:9050/walletFlow/check',
     method: 'post',
-    params
+    header: {
+      'Content-Type': 'application/json' //如果写成contentType会报错
+    },
+    data
+  })
+}
+
+export function withDrawMoney(data) {
+  console.log(data)
+  return request({
+    url: 'http://localhost:9050/walletFlow/withdraw',
+    method: 'patch',
+    header: {
+      'Content-Type': 'application/json' //如果写成contentType会报错
+    },    data
+  })
+}
+export function depositMoney(data) {
+  console.log(data)
+  return request({
+    url: 'http://localhost:9050/walletFlow/deposit',
+    method: 'patch',
+    header: {
+      'Content-Type': 'application/json' //如果写成contentType会报错
+    },
+    data
+  })
+}
+
+export function changePassword(data) {
+  console.log('changePassword');
+  console.log(data)
+  return request({
+    url: 'http://localhost:9050/wallet/changePassword',
+    method: 'patch',
+    header: {
+      'Content-Type': 'application/json' //如果写成contentType会报错
+    },
+    data
   })
 }

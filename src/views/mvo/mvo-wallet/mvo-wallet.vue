@@ -27,6 +27,7 @@
             <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
           </span>
         </el-form-item>
+        <el-button :loading="loading" type="primary" style="width:40%;margin-bottom:30px;" @click.native.prevent="handleRegister">register</el-button>
         <el-button :loading="loading" type="primary" style="width:40%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
       </el-form>
     </div>
@@ -34,90 +35,120 @@
 </template>
 
 <script>
-  import {walletLogin, walletRegister} from '@/network/wallet'
+  import {
+    walletRegister,
+    getAvailableMoney
+  } from '@/network/wallet'
 
-    export default {
-      name: "mvo-wallet",
-      data(){
-        const validatePassword = (rule, value, callback) => {
-          if (value.length < 3) {
-            callback(new Error('The password can not be less than 3 digits'))
-          } else {
-            callback()
-          }
-        }
-        return {
-          loginForm: {
-            accountName: '',
-            accountType: 1,
-            email:'',
-            password:''
-          },
-          loginRules: {
-            accountName: [{
-              required: true,
-              trigger: 'blur',
-            }],
-            email: [{
-              required: true,
-              trigger: 'blur',
-            }],
-            password: [{
-              required: true,
-              trigger: 'blur',
-              validator: validatePassword
-            }]
-          },
-          loading: false,
-          passwordType: 'password',
-          redirect: undefined,
-        }
-      },
-      methods: {
-        showPwd() {
-          if (this.passwordType === 'password') {
-            this.passwordType = ''
-          } else {
-            this.passwordType = 'password'
-          }
-          this.$nextTick(() => {
-            this.$refs.password.focus()
-          })
-        },
-        handleLogin() {
-          this.$store.commit('user/SET_ACCOUNTNAME',this.loginForm.accountName.trim())
-          console.log(this.$store.state.user.accountName);
-          this.$refs.loginForm.validate(valid => {
-            if (valid) {
-              this.loading = true;
-              return new Promise((resolve, reject) => {
-                walletRegister({
-                  accountName: this.loginForm.accountName.trim(),
-                  email: this.loginForm.email.trim(),
-                  password: this.loginForm.password
-                }).then(response => {
-                  console.log(response.code)
-                  resolve()
-                  this.$router.push({
-                    path: '/mvo/mvoAvailableMoney'
-                  });
-                  this.loading = false
-                }).catch(error => {
-                  reject(error);
-                  this.$router.push({
-                    path: '/mvo/mvoAvailableMoney'
-                  });
-                  this.loading = false
-                })
-              })
-            } else {
-              console.log('error submit!!')
-              return false
-            }
-          })
+  export default {
+    name: "mvo-wallet",
+    data(){
+      const validatePassword = (rule, value, callback) => {
+        if (value.length < 3) {
+          callback(new Error('The password can not be less than 3 digits'))
+        } else {
+          callback()
         }
       }
+      return {
+        loginForm: {
+          accountName: '',
+          accountType: 2,
+          email:'',
+          password:''
+        },
+        loginRules: {
+          accountName: [{
+            required: true,
+            trigger: 'blur',
+          }],
+          email: [{
+            required: true,
+            trigger: 'blur',
+          }],
+          password: [{
+            required: true,
+            trigger: 'blur',
+            validator: validatePassword
+          }]
+        },
+        loading: false,
+        passwordType: 'password',
+        redirect: undefined,
+      }
+    },
+    methods: {
+      showPwd() {
+        if (this.passwordType === 'password') {
+          this.passwordType = ''
+        } else {
+          this.passwordType = 'password'
+        }
+        this.$nextTick(() => {
+          this.$refs.password.focus()
+        })
+      },
+      handleLogin() {
+        console.log('login')
+        this.$store.commit('user/SET_ACCOUNTNAME',this.loginForm.accountName.trim())
+        this.$refs.loginForm.validate(valid => {
+          if (valid) {
+            this.loading = true;
+            return new Promise((resolve, reject) => {
+              getAvailableMoney({
+                accountName: this.loginForm.accountName.trim(),
+              }).then(response => {
+                console.log('code');
+                console.log(response.code)
+                resolve()
+                this.$router.push({
+                  path: '/mvo/mvoAvailableMoney'
+                });
+                this.loading = false
+              }).catch(error => {
+                reject(error);
+                this.loading = false
+              })
+            })
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
+      },
+      handleRegister(){
+        console.log('register')
+        this.$store.commit('user/SET_ACCOUNTNAME',this.loginForm.accountName.trim())
+        this.$refs.loginForm.validate(valid => {
+          if (valid) {
+            this.loading = true;
+            return new Promise((resolve, reject) => {
+              walletRegister({
+                accountName: this.loginForm.accountName.trim(),
+                email: this.loginForm.email.trim(),
+                password: this.loginForm.password
+              }).then(response => {
+                console.log('code');
+                console.log(response.code)
+                resolve()
+                this.$router.push({
+                  path: '/mvo/mvoAvailableMoney'
+                });
+                this.loading = false
+              }).catch(error => {
+                console.log(error);
+                reject(error);
+                this.loading = false
+              })
+            })
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
+      }
     }
+  }
 </script>
 
 <style lang="scss">

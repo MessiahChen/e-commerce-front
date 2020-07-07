@@ -27,6 +27,7 @@
             <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
           </span>
         </el-form-item>
+        <el-button :loading="loading" type="primary" style="width:40%;margin-bottom:30px;" @click.native.prevent="handleRegister">register</el-button>
         <el-button :loading="loading" type="primary" style="width:40%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
       </el-form>
     </div>
@@ -34,8 +35,10 @@
 </template>
 
 <script>
-    import {walletRegister} from '@/network/wallet'
-    import { mapState,mapMutations } from '@/store/modules/user'
+    import {
+      walletRegister,
+      getAvailableMoney
+    } from '@/network/wallet'
 
     export default {
       name: "bvo-wallet",
@@ -86,8 +89,36 @@
           })
         },
         handleLogin() {
+          console.log('login')
           this.$store.commit('user/SET_ACCOUNTNAME',this.loginForm.accountName.trim())
-          console.log(this.$store.state.user.accountName);
+          this.$refs.loginForm.validate(valid => {
+            if (valid) {
+              this.loading = true;
+              return new Promise((resolve, reject) => {
+                getAvailableMoney({
+                  accountName: this.loginForm.accountName.trim(),
+                }).then(response => {
+                  console.log('code');
+                  console.log(response.code)
+                  resolve()
+                  this.$router.push({
+                    path: '/bvo/bvoAvailableMoney'
+                  });
+                  this.loading = false
+                }).catch(error => {
+                  reject(error);
+                  this.loading = false
+                })
+              })
+            } else {
+              console.log('error submit!!')
+              return false
+            }
+          })
+        },
+        handleRegister(){
+          console.log('register')
+          this.$store.commit('user/SET_ACCOUNTNAME',this.loginForm.accountName.trim())
           this.$refs.loginForm.validate(valid => {
             if (valid) {
               this.loading = true;
@@ -97,6 +128,7 @@
                   email: this.loginForm.email.trim(),
                   password: this.loginForm.password
                 }).then(response => {
+                  console.log('code');
                   console.log(response.code)
                   resolve()
                   this.$router.push({
@@ -104,10 +136,8 @@
                   });
                   this.loading = false
                 }).catch(error => {
+                  console.log(error);
                   reject(error);
-                  this.$router.push({
-                    path: '/bvo/bvoAvailableMoney'
-                  });
                   this.loading = false
                 })
               })
