@@ -126,7 +126,7 @@ export const constantRoutes = [
       },
       {
         path: 'productBrowse',
-        component: () => import('@/views/bvo/bvo-product-browse/index'),
+        component: () => import('@/views/bvo/bvo-product-detail/index'),
         name: 'productBrowse',
         meta: { title: 'Product Browse', icon: 'search', affix: true }
       },
