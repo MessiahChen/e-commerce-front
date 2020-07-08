@@ -36,13 +36,11 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
   {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
   },
-
   {
     path: '/',
     component: Layout,
@@ -206,6 +204,17 @@ export const constantRoutes = [
         meta: { title: 'Withdraw Aduit', icon: 'money', affix: true }
       }
     ]
+  },
+  {
+    path: '/pay',
+    component: Layout,
+    children: [{
+      path: 'pay',
+      name: 'pay',
+      component: () => import('@/views/pay/index'),
+      meta: { title: 'pay', icon: 'money' },
+      // hidden:true
+    }]
   },
   // {
   //   path: '/example',

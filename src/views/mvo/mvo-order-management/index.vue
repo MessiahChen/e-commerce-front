@@ -25,31 +25,31 @@
             </el-table-column>
             <el-table-column align="center" width="150px" label="Title">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.productTitle)">{{ scope.row.productTitle }}</el-button>
+                <el-button type="text" @click="gotoTitle(scope.row.title)">{{scope.row.title}}</el-button>
               </template>
             </el-table-column>
 
             <el-table-column width="110px" align="center" label="Price">
               <template slot-scope="scope">
-                <span>{{ scope.row.productPrice }}</span>
+                <span>{{ scope.row.SALES_PRICE }}</span>
               </template>
             </el-table-column>
 
             <el-table-column width="120px" align="center" label="QTY">
               <template slot-scope="scope">
-                <span>{{ scope.row.productNum }}</span>
+                <span>{{ scope.row.QTY }}</span>
               </template>
             </el-table-column>
 
             <el-table-column align="center" label="Sku" width="95">
               <template slot-scope="scope">
-                <span>{{ scope.row.productSku }}</span>
+                <span>{{ scope.row.skuNo }}</span>
               </template>
             </el-table-column>
 
             <el-table-column  align="center" label="Order No" width="110">
               <template slot-scope="scope">
-                <span>{{ scope.row.productOrderNum }}</span>
+                <span>{{ scope.row.ORDER_NO }}</span>
               </template>
             </el-table-column>
 
@@ -76,31 +76,31 @@
 
             <el-table-column align="center" width="150px" label="Title">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.productTitle)">{{scope.row.productTitle}}</el-button>
+                <el-button type="text" @click="gotoTitle(scope.row.title)">{{scope.row.title}}</el-button>
               </template>
             </el-table-column>
 
             <el-table-column width="110px" align="center" label="Price">
               <template slot-scope="scope">
-                <span>{{ scope.row.productPrice }}</span>
+                <span>{{ scope.row.SALES_PRICE }}</span>
               </template>
             </el-table-column>
 
             <el-table-column width="120px" align="center" label="QTY">
               <template slot-scope="scope">
-                <span>{{ scope.row.productNum }}</span>
+                <span>{{ scope.row.QTY }}</span>
               </template>
             </el-table-column>
 
             <el-table-column align="center" label="Sku" width="95">
               <template slot-scope="scope">
-                <span>{{ scope.row.productSku }}</span>
+                <span>{{ scope.row.skuNo }}</span>
               </template>
             </el-table-column>
 
             <el-table-column  align="center" label="Order No" width="110">
               <template slot-scope="scope">
-                <span>{{ scope.row.productOrderNum }}</span>
+                <span>{{ scope.row.ORDER_NO }}</span>
               </template>
             </el-table-column>
 
@@ -120,31 +120,31 @@
 
             <el-table-column align="center" width="150px" label="Title">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.productTitle)">{{scope.row.productTitle}}</el-button>
+                <el-button type="text" @click="gotoTitle(scope.row.title)">{{scope.row.title}}</el-button>
               </template>
             </el-table-column>
 
             <el-table-column width="110px" align="center" label="Price">
               <template slot-scope="scope">
-                <span>{{ scope.row.productPrice }}</span>
+                <span>{{ scope.row.SALES_PRICE }}</span>
               </template>
             </el-table-column>
 
             <el-table-column width="120px" align="center" label="QTY">
               <template slot-scope="scope">
-                <span>{{ scope.row.productNum }}</span>
+                <span>{{ scope.row.QTY }}</span>
               </template>
             </el-table-column>
 
             <el-table-column align="center" label="Sku" width="95">
               <template slot-scope="scope">
-                <span>{{ scope.row.productSku }}</span>
+                <span>{{ scope.row.skuNo }}</span>
               </template>
             </el-table-column>
 
             <el-table-column  align="center" label="Order No" width="110">
               <template slot-scope="scope">
-                <span>{{ scope.row.productOrderNum }}</span>
+                <span>{{ scope.row.ORDER_NO }}</span>
               </template>
             </el-table-column>
 
@@ -170,31 +170,31 @@
 
             <el-table-column align="center" width="150px" label="Title">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.productTitle)">{{scope.row.productTitle}}</el-button>
+                <el-button type="text" @click="gotoTitle(scope.row.title)">{{scope.row.title}}</el-button>
               </template>
             </el-table-column>
 
             <el-table-column width="110px" align="center" label="Price">
               <template slot-scope="scope">
-                <span>{{ scope.row.productPrice }}</span>
+                <span>{{ scope.row.SALES_PRICE }}</span>
               </template>
             </el-table-column>
 
             <el-table-column width="120px" align="center" label="QTY">
               <template slot-scope="scope">
-                <span>{{ scope.row.productNum }}</span>
+                <span>{{ scope.row.QTY }}</span>
               </template>
             </el-table-column>
 
             <el-table-column align="center" label="Sku" width="95">
               <template slot-scope="scope">
-                <span>{{ scope.row.productSku }}</span>
+                <span>{{ scope.row.skuNo }}</span>
               </template>
             </el-table-column>
 
             <el-table-column  align="center" label="Order No" width="110">
               <template slot-scope="scope">
-                <span>{{ scope.row.productOrderNum }}</span>
+                <span>{{ scope.row.ORDER_NO }}</span>
               </template>
             </el-table-column>
 
@@ -220,31 +220,31 @@
 
             <el-table-column align="center" width="150px" label="Title">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.productTitle)">{{scope.row.productTitle}}</el-button>
+                <el-button type="text" @click="gotoTitle(scope.row.title)">{{scope.row.title}}</el-button>
               </template>
             </el-table-column>
 
             <el-table-column width="110px" align="center" label="Price">
               <template slot-scope="scope">
-                <span>{{ scope.row.productPrice }}</span>
+                <span>{{ scope.row.SALES_PRICE }}</span>
               </template>
             </el-table-column>
 
             <el-table-column width="120px" align="center" label="QTY">
               <template slot-scope="scope">
-                <span>{{ scope.row.productNum }}</span>
+                <span>{{ scope.row.QTY }}</span>
               </template>
             </el-table-column>
 
             <el-table-column align="center" label="Sku" width="95">
               <template slot-scope="scope">
-                <span>{{ scope.row.productSku }}</span>
+                <span>{{ scope.row.skuNo }}</span>
               </template>
             </el-table-column>
 
             <el-table-column  align="center" label="Order No" width="110">
               <template slot-scope="scope">
-                <span>{{ scope.row.productOrderNum }}</span>
+                <span>{{ scope.row.ORDER_NO }}</span>
               </template>
             </el-table-column>
 
@@ -268,11 +268,8 @@
   }
   from '@/network/order-management'
 
-  import TabPane from "@/views/bvo/bvo-order-management/TabPane/TabPane";
-  import {walletRegister} from "@/network/wallet";
-
     export default {
-      name: "bvo-order-management",
+      name: "index",
       components:{
         TabPane
       },
@@ -282,11 +279,11 @@
           searchForm: {
             searchWord: ''
           },
-          APlist: [],
-          ASlist: [],
-          SHlist: [],
-          COlist: [],
-          CAlist: [],
+          APlist: null,
+          ASlist: null,
+          SHlist: null,
+          COlist: null,
+          CAlist: null,
           payList: [],
           listQuery: {
             page: 1,
@@ -314,26 +311,26 @@
               console.log(response)
               // 1. AwaitingPayment 2. AwaitingShipment 3. SHIPPED 已发货 4. Complete 已完成5. Canceled已取消
               for(let i = 0; i < response.data.length; i++){
+                console.log(response.data[i].type);
                 if(response.data[i].type == 1){
-                  // console.log('AP');
-                  this.APlist.push(response.data[i])
-                  console.log(this.APlist);
+                  console.log('AP');
+                  this.ASlist = response.data
                 }
                 if(response.data[i].type == 2){
-                  // console.log('AS');
-                  this.ASlist.push(response.data[i])
+                  console.log('AS');
+                  this.ASlist = response.data
                 }
                 if(response.data[i].type == 3){
-                  // console.log('SH');
-                  this.SHlist.push(response.data[i])
+                  console.log('AS');
+                  this.SHlist = response.data
                 }
                 if(response.data[i].type == 4){
-                  // console.log('CO');
-                  this.COlist.push(response.data[i])
+                  console.log('AS');
+                  this.COlist = response.data
                 }
                 if(response.data[i].type == 5){
-                  // console.log('CA');
-                  this.CAlist.push(response.data[i])
+                  console.log('AS');
+                  this.CAlist = response.data
                 }
               }
               resolve()
@@ -399,7 +396,7 @@
 
         // 处理pay相关事件点击
         payNow(item){
-          console.log('bvo-order-management payNow() item');
+          console.log('mvo-order-management payNow() item');
           console.log(item);
           this.paylist.splice(0, this.paylist.length)
           this.paylist.push(item)

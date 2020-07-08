@@ -69,7 +69,6 @@ export function changePassword(data) {
 }
 
 export function pay(data) {
-  console.log('pay');
   console.log(data)
   return request({
     url: 'http://localhost:9050/wallet/pay',
@@ -80,5 +79,31 @@ export function pay(data) {
     data
   })
 }
+
+export function getAdminFlow(data) {
+  console.log(data)
+  return request({
+    url: 'http://localhost:9050/walletAdmin/getAllFlow',
+    method: 'post',
+    header: {
+      'Content-Type': 'application/json' //如果写成contentType会报错
+    },
+    data
+  })
+}
+
+export function aduit(data) {
+  console.log(data)
+  return request({
+    url: 'http://localhost:9050/walletAdmin/audit',
+    method: 'patch',
+    header: {
+      'Content-Type': 'application/json' //如果写成contentType会报错
+    },
+    data
+  })
+}
+
+
 
 
