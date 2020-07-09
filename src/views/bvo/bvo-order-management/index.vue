@@ -281,12 +281,12 @@
           SHlist: [],
           COlist: [],
           CAlist: [],
-          payList: [],
           listQuery: {
             page: 1,
             limit: 5,
             type: this.type
           },
+          paylist: [],
           activeName: 'AP',
           loading: false
         }
@@ -350,7 +350,7 @@
           }
         },
         handleClick(tab, event) {
-          // console.log(tab, event);
+          console.log(tab, event);
         },
 
         //跳转到其他界面：title、pay、track
@@ -367,7 +367,7 @@
           this.$store.commit('order/SET_PAYLIST',this.paylist)
           //跳转到pay界面
           this.$router.push({
-            path: '/pay/pay'
+            path: '/other/pay'
           });
 
         },

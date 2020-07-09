@@ -133,6 +133,23 @@ export function cancal(data) {
   })
 }
 
+// 快递,跨域问题？？？
+export function getExpressTrack(params) {
+  return request({
+    url: 'https://way.jd.com/jisuapi/query',
+    method: 'get',
+    params
+  })
+}
+
+export function baidu(params) {
+  return request({
+    url: 'https://www.baidu.com',
+    method: 'get',
+    params
+  })
+}
+
 
 
 

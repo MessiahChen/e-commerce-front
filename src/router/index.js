@@ -206,15 +206,25 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/pay',
+    path: '/other',
     component: Layout,
-    children: [{
+    meta: { title: 'Other', icon: 'money' },
+    children: [
+      {
       path: 'pay',
       name: 'pay',
       component: () => import('@/views/pay/index'),
       meta: { title: 'pay', icon: 'money' },
       // hidden:true
-    }]
+      },
+      {
+        path: 'express',
+        name: 'express',
+        component: () => import('@/views/express/index'),
+        meta: { title: 'express', icon: 'shopping' },
+        // hidden:true
+      },
+    ]
   },
   // {
   //   path: '/example',
