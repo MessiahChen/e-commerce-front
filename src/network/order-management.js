@@ -1,5 +1,7 @@
 import request from '@/utils/request'
 
+// bvo
+
 export function getOrderMangementData(params) {
   return request({
     url: '/vue-admin-template/table/list',
@@ -80,6 +82,58 @@ export function shipment(data) {
     data
   })
 }
+
+export function getExpressFee(data) {
+  console.log(data)
+  return request({
+    url: 'http://localhost:9030/bvoOrder/getFeeBySaoId',
+    method: 'post',
+    header: {
+      'Content-Type': 'application/json' //如果写成contentType会报错
+    },
+    data
+  })
+}
+
+// mvo
+
+export function mvoGetSalList(data) {
+  console.log(data)
+  return request({
+    url: 'http://localhost:9030/order/sao',
+    method: 'post',
+    header: {
+      'Content-Type': 'application/json' //如果写成contentType会报错
+    },
+    data
+  })
+}
+
+export function sendExpress(data) {
+  console.log(data)
+  return request({
+    url: 'http://localhost:9030/order/shipment',
+    method: 'post',
+    header: {
+      'Content-Type': 'application/json' //如果写成contentType会报错
+    },
+    data
+  })
+}
+
+export function cancal(data) {
+  console.log(data)
+  return request({
+    url: 'http://localhost:9030/order/shipment',
+    method: 'post',
+    header: {
+      'Content-Type': 'application/json' //如果写成contentType会报错
+    },
+    data
+  })
+}
+
+
 
 
 

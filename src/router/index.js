@@ -77,7 +77,7 @@ export const constantRoutes = [
       },
       {
         path: 'orderManagement',
-        component: () => import('@/views/mvo/mvo-order-management'),
+        component: () => import('@/views/mvo/mvo-order-management/index'),
         name: 'orderManagement',
         meta: { title: 'Order Manage', icon: 'list', affix: true }
       },
@@ -138,7 +138,7 @@ export const constantRoutes = [
       },
       {
         path: 'orderManagement',
-        component: () => import('@/views/bvo/bvo-order-management/bvo-order-management'),
+        component: () => import('@/views/bvo/bvo-order-management/index'),
         name: 'orderManagement',
         meta: { title: 'Order Manage', icon: 'list', affix: true }
       },

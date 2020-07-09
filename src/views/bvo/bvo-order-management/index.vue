@@ -268,14 +268,8 @@
   }
   from '@/network/order-management'
 
-  import TabPane from "@/views/bvo/bvo-order-management/TabPane/TabPane";
-  import {walletRegister} from "@/network/wallet";
-
     export default {
       name: "bvo-order-management",
-      components:{
-        TabPane
-      },
       data() {
         return {
           apSelection:[],
@@ -293,7 +287,6 @@
             limit: 5,
             type: this.type
           },
-          paylist: [],
           activeName: 'AP',
           loading: false
         }
@@ -357,7 +350,7 @@
           }
         },
         handleClick(tab, event) {
-          console.log(tab, event);
+          // console.log(tab, event);
         },
 
         //跳转到其他界面：title、pay、track
@@ -371,10 +364,12 @@
         //转到付款
         gotoPay(){
           console.log(this.paylist);
+          this.$store.commit('order/SET_PAYLIST',this.paylist)
           //跳转到pay界面
           this.$router.push({
-            // path: '/pay'
+            path: '/pay/pay'
           });
+
         },
         //转到快递
         gotoTrack(){
@@ -400,15 +395,13 @@
         // 处理pay相关事件点击
         payNow(item){
           console.log('bvo-order-management payNow() item');
-          console.log(item);
           this.paylist.splice(0, this.paylist.length)
           this.paylist.push(item)
           this.gotoPay();
         },
         payNowSelected(){
-          // console.log(this.apSelection);
           this.paylist.splice(0, this.paylist.length)
-          this.paylist.push(this.apSelection)
+          this.paylist = this.apSelection
           this.gotoPay();
         }
       }
