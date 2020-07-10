@@ -38,7 +38,7 @@ module.exports = {
     },
     // TODO
     // Add Proxy to connect to backend 跨域的时候把注释去掉
-    // proxy {
+    // proxy: {
     //   [process.env.VUE_APP_BASE_API]: {
     //     target: process.env.VUE_APP_BASE_API,
     //     changeOrigin: true,
@@ -46,7 +46,7 @@ module.exports = {
     //       ['^' + process.env.VUE_APP_BASE_API]: ''
     //     }
     //   }
-    // }
+    // },
     // before: require('./mock/mock-server.js')
     before: require('./mock/mock-server.js')
   },

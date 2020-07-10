@@ -2,7 +2,7 @@
   <div class="express-container">
     <el-timeline>
         <el-timeline-item v-for="i in newlist" :timestamp="i.time" placement="top">
-          <el-card style="width: 50%">
+          <el-card style="width: 100%">
             {{i.status}}
           </el-card>
         </el-timeline-item>
@@ -74,6 +74,7 @@
         nnn(){
           return new Promise((resolve, reject) => {
             baidu({
+              wd: 123
             }).then(response => {
               console.log('code');
               console.log(response.code)
@@ -92,6 +93,7 @@
 <style scoped>
   .express-container{
     padding-top: 5vh;
+    padding-right: 5vh;
   }
 
 </style>

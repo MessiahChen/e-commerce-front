@@ -156,8 +156,19 @@ export function getExpressTrack(params) {
 
 export function baidu(params) {
   return request({
-    url: 'https://www.baidu.com',
+    url: 'https://www.baidu.com/s',
     method: 'get',
+    // header:{
+    //   'Bdpagetype': '3',
+    //   'Bdqid': '0xd13fe66c0004880d',
+    //   'Cache-Control': 'private',
+    //   'Ckpacknum': 2,
+    //   'Ckrndstr': 'c0004880d',
+    //   'Connection': 'keep-alive',
+    //   'Content-Encoding': 'gzip',
+    //   'Content-Type': 'text/html;charset=utf-8',
+    //   'Server': 'BWS/1.1',
+    // },
     params
   })
 }
