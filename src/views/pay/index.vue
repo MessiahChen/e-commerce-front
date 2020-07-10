@@ -40,7 +40,7 @@
 
         <el-table-column  align="center" label="Total" >
           <template slot-scope="scope">
-            <span>{{ scope.row.total }}</span>
+            <span>{{ scope.row.productPrice * scope.row.productNum }}</span>
           </template>
         </el-table-column>
 
@@ -68,10 +68,24 @@
           <el-input :disabled="true" v-model="form.expressfee" style="width: 100%"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">Pay Now</el-button>
+          <el-button type="primary" @click="onPay">Pay Now</el-button>
         </el-form-item>
         </el-form>
     </div>
+    <div class="pay-dialog-container">
+      <el-dialog :visible.sync="dialogFormVisible" title="Input Password">
+        <el-form ref="payForm" :model="payForm" label-width="150px">
+          <el-form-item label="Password">
+            <el-input type="password" v-model="payForm.password" />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit">Confirm</el-button>
+            <el-button @click="closeDialog">Cancel</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+    </div>
+
   </div>
 </template>
 
@@ -81,10 +95,11 @@
   {
     getExpressFee
   }
-    from '@/network/order-management'
+  from '@/network/order-management'
+
+  import { pay,getAdminFlow } from '@/network/wallet'
 
   import area from '@/views/pay/select_area/select_area';
-
 
   export default {
     name: 'pay',
@@ -96,7 +111,11 @@
           receiver: 'lilei',
           mobile: '13988888888',
           zipcode: '510000',
-          expressfee: 0
+          expressfee: 100
+        },
+        payForm:{
+          flow: 0,
+          password: ''
         },
         payList: [],
         saoIdList: [],
@@ -105,6 +124,7 @@
           city: 0,
           district: 0
         },
+        dialogFormVisible: false,
       }
     },
     created() {
@@ -115,14 +135,42 @@
         console.log('submit!');
         this.saoIdList.splice(0, this.saoIdList.length);
         for (let i = 0; i<this.payList.length; i++){
-          // console.log(this.payList[i].saoId);
           this.saoIdList.push(this.payList[i].saoId)
-          // console.log(this.payList[i].saoId);
+          this.payForm.flow += this.payList[i].productPrice * this.payList[i].productNum
         }
-        console.log(this.saoIdList);
+        this.payForm.flow += this.form.expressfee
+        // console.log(this.saoIdList);
+
+        return new Promise((resolve, reject) => {
+          pay({
+            // accountName: this.$store.state.user.accountName,
+            accountName: '20200707',
+            flow: this.payForm.flow,
+            password: this.payForm.password,
+            orderNums: this.saoIdList
+          }).then(response => {
+            console.log('code');
+            console.log(response.code)
+            console.log(response)
+            this.form.expressfee = 100
+            resolve()
+            this.$router.go(-1)
+            this.loading = false
+          }).catch(error => {
+            reject(error);
+            this.loading = false
+          })
+        })
+      },
+      onPay(){
+        this.dialogFormVisible = true;
+      },
+      closeDialog(){
+        this.dialogFormVisible = false;
+        this.payForm.password = '';
       },
       handleChange(value) {
-        console.log(value);
+        // console.log(value);
         this.address.province = value[0]
         this.address.city = value[1]
         this.address.district = value[2]
@@ -136,24 +184,22 @@
         this.getExpressFee()
       },
       getExpressFee(){
-        this.form.expressfee = 100
-        // return new Promise((resolve, reject) => {
-        //   getExpressFee({
-        //     province: this.address.province,
-        //   }).then(response => {
-        //     console.log('code');
-        //     console.log(response.code)
-        //     this.form.expressfee = 100
-        //     resolve()
-        //     this.$router.push({
-        //       path: '/bvo/bvoAvailableMoney'
-        //     });
-        //     this.loading = false
-        //   }).catch(error => {
-        //     reject(error);
-        //     this.loading = false
-        //   })
-        // })
+
+        return new Promise((resolve, reject) => {
+          getExpressFee({
+            string: this.address.province,
+          }).then(response => {
+            console.log('code');
+            console.log(response)
+            this.form.expressfee = response.data
+            // this.form.expressfee = 100
+            resolve()
+            this.loading = false
+          }).catch(error => {
+            reject(error);
+            this.loading = false
+          })
+        })
       }
     }
   }

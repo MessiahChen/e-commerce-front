@@ -113,9 +113,14 @@
     created() {
       this.fetchData()
     },
+    computed:{
+      getAccountName(){
+        return this.$store.state.user.accountName
+      }
+    },
     methods: {
       fetchData() {
-        this.form.accountName = this.$store.state.user.accountName
+        this.form.accountName = this.getAccountName
         this.listLoading = true
         return new Promise((resolve, reject) => {
           getAvailableMoney({

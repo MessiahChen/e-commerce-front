@@ -71,7 +71,7 @@ export function changePassword(data) {
 export function pay(data) {
   console.log(data)
   return request({
-    url: 'http://localhost:9050/wallet/pay',
+    url: 'http://localhost:9050/walletFlow/pay',
     method: 'patch',
     header: {
       'Content-Type': 'application/json' //如果写成contentType会报错

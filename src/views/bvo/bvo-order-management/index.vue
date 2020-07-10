@@ -55,7 +55,7 @@
 
             <el-table-column  align="center" label="Total" width="110">
               <template slot-scope="scope">
-                <span>{{ scope.row.total }}</span>
+                <span>{{ scope.row.productPrice *scope.row.productNum }}</span>
               </template>
             </el-table-column>
 
@@ -106,7 +106,7 @@
 
             <el-table-column  align="center" label="Total" width="110">
               <template slot-scope="scope">
-                <span>{{ scope.row.total }}</span>
+                <span>{{ scope.row.productPrice *scope.row.productNum }}</span>
               </template>
             </el-table-column>
 
@@ -150,13 +150,13 @@
 
             <el-table-column  align="center" label="Total" width="110">
               <template slot-scope="scope">
-                <span>{{ scope.row.total }}</span>
+                <span>{{ scope.row.productPrice *scope.row.productNum }}</span>
               </template>
             </el-table-column>
 
             <el-table-column  align="center" label="Tracking No" width="110">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTrack(scope.row.TrackingNo)">{{scope.row.TrackingNo}}</el-button>
+                <el-button type="text" @click="gotoTrack(scope.row.trackingNo)">{{scope.row.trackingNo}}</el-button>
               </template>
             </el-table-column>
 
@@ -200,13 +200,13 @@
 
             <el-table-column  align="center" label="Total" width="110">
               <template slot-scope="scope">
-                <span>{{ scope.row.total }}</span>
+                <span>{{ scope.row.productPrice *scope.row.productNum }}</span>
               </template>
             </el-table-column>
 
             <el-table-column  align="center" label="Tracking No" width="110">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTrack(scope.row.TrackingNo)">{{scope.row.TrackingNo}}</el-button>
+                <el-button type="text" @click="gotoTrack(scope.row.trackingNo)">{{scope.row.trackingNo}}</el-button>
               </template>
             </el-table-column>
 
@@ -250,7 +250,7 @@
 
             <el-table-column  align="center" label="Total" width="110">
               <template slot-scope="scope">
-                <span>{{ scope.row.total }}</span>
+                <span>{{ scope.row.productPrice *scope.row.productNum }}</span>
               </template>
             </el-table-column>
 
@@ -298,9 +298,11 @@
         fetchData(){
           this.loading = true;
 
+          // 获取数据，通过 dsrid
           return new Promise((resolve, reject) => {
             getVosByDsrId({
-              i:1
+              // i 为 dsrid
+              i: 1
             }).then(response => {
               console.log('code');
               console.log(response.code)
@@ -372,9 +374,10 @@
 
         },
         //转到快递
-        gotoTrack(){
+        gotoTrack(trackingNo){
+          this.$store.commit('order/SET_TRACKINGNO',trackingNo)
           this.$router.push({
-            // path: '/track'
+            path: '/other/express'
           });
         },
 

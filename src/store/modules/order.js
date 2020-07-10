@@ -1,6 +1,7 @@
 const getDefaultState = () => {
   return {
-    payList: []
+    payList: [],
+    trackingNo: 0
   }
 }
 
@@ -12,6 +13,9 @@ const mutations = {
   },
   SET_PAYLIST:(state,payList)=> {
     state.payList = payList
+  },
+  SET_TRACKINGNO:(state,trackingNo)=> {
+    state.trackingNo = trackingNo
   },
 }
 

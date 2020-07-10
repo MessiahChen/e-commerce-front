@@ -62,13 +62,18 @@
     created() {
       this.fetchData()
     },
+    computed:{
+      getAccountName(){
+        return this.$store.state.user.accountName
+      }
+    },
     methods: {
       fetchData() {
         this.listLoading = true
         return new Promise((resolve, reject) => {
           getTransactionRecord(
             {
-              accountName: this.$store.state.user.accountName
+              accountName: this.getAccountName
             }
           ).then(response => {
             this.list = response.data

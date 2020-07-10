@@ -84,9 +84,9 @@ export function shipment(data) {
 }
 
 export function getExpressFee(data) {
-  console.log(data)
+  // console.log(data)
   return request({
-    url: 'http://localhost:9030/bvoOrder/getFeeBySaoId',
+    url: 'http://localhost:9030/bvoOrder/getFeeByProvinceCode',
     method: 'post',
     header: {
       'Content-Type': 'application/json' //如果写成contentType会报错
@@ -122,6 +122,18 @@ export function sendExpress(data) {
 }
 
 export function cancal(data) {
+  console.log(data)
+  return request({
+    url: 'http://localhost:9030/order/cancel',
+    method: 'post',
+    header: {
+      'Content-Type': 'application/json' //如果写成contentType会报错
+    },
+    data
+  })
+}
+
+export function deliver(data) {
   console.log(data)
   return request({
     url: 'http://localhost:9030/order/shipment',

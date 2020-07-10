@@ -151,7 +151,7 @@
 
             <el-table-column  align="center" label="Total" >
               <template slot-scope="scope">
-                <span>{{ scope.row.total }}</span>
+                <span>{{ scope.row.productNum * scope.row.productPrice }}</span>
               </template>
             </el-table-column>
 
@@ -340,45 +340,45 @@
       fetchData(){
         this.loading = true;
 
-        // return new Promise((resolve, reject) => {
-        //   mvoGetSalList({
-        //     i:1
-        //   }).then(response => {
-        //     console.log('code');
-        //     console.log(response.code)
-        //     console.log(response)
-        //     // 1. AwaitingPayment 2. AwaitingShipment 3. SHIPPED 已发货 4. Complete 已完成5. Canceled已取消
-        //     for(let i = 0; i < response.data.length; i++){
-        //       if(response.data[i].type == 1){
-        //         // console.log('AP');
-        //         this.APlist.push(response.data[i])
-        //         console.log(this.APlist);
-        //       }
-        //       if(response.data[i].type == 2){
-        //         // console.log('AS');
-        //         this.ASlist.push(response.data[i])
-        //       }
-        //       if(response.data[i].type == 3){
-        //         // console.log('SH');
-        //         this.SHlist.push(response.data[i])
-        //       }
-        //       if(response.data[i].type == 4){
-        //         // console.log('CO');
-        //         this.COlist.push(response.data[i])
-        //       }
-        //       if(response.data[i].type == 5){
-        //         // console.log('CA');
-        //         this.CAlist.push(response.data[i])
-        //       }
-        //     }
-        //     resolve()
-        //     this.loading = false
-        //   }).catch(error => {
-        //     console.log(error);
-        //     reject(error);
-        //     this.loading = false
-        //   })
-        // })
+        return new Promise((resolve, reject) => {
+          mvoGetSalList({
+            i: 11
+          }).then(response => {
+            console.log('code');
+            console.log(response.code)
+            console.log(response)
+            // 1. AwaitingPayment 2. AwaitingShipment 3. SHIPPED 已发货 4. Complete 已完成5. Canceled已取消
+            for(let i = 0; i < response.data.length; i++){
+              if(response.data[i].type == 1){
+                // console.log('AP');
+                this.APlist.push(response.data[i])
+                console.log(this.APlist);
+              }
+              if(response.data[i].type == 2){
+                // console.log('AS');
+                this.ASlist.push(response.data[i])
+              }
+              if(response.data[i].type == 3){
+                // console.log('SH');
+                this.SHlist.push(response.data[i])
+              }
+              if(response.data[i].type == 4){
+                // console.log('CO');
+                this.COlist.push(response.data[i])
+              }
+              if(response.data[i].type == 5){
+                // console.log('CA');
+                this.CAlist.push(response.data[i])
+              }
+            }
+            resolve()
+            this.loading = false
+          }).catch(error => {
+            console.log(error);
+            reject(error);
+            this.loading = false
+          })
+        })
       },
       // 查询，查询出什么不知道，与后端沟通
       onSearch() {
@@ -420,20 +420,20 @@
       onCancel(item){
         this.cancelSaoid = item.saoId
         console.log(this.cancelSaoid);
-        // return new Promise((resolve, reject) => {
-        //   cancal({
-        //     // 订单编号
-        //     i: 1
-        //   }).then(response => {
-        //     console.log('code');
-        //     console.log(response.code)
-        //     resolve()
-        //     this.loading = false
-        //   }).catch(error => {
-        //     reject(error);
-        //     this.loading = false
-        //   })
-        // })
+        return new Promise((resolve, reject) => {
+          cancal({
+            // 订单编号
+            i: this.cancelSaoid
+          }).then(response => {
+            console.log('code');
+            console.log(response.code)
+            resolve()
+            this.loading = false
+          }).catch(error => {
+            reject(error);
+            this.loading = false
+          })
+        })
 
       },
 

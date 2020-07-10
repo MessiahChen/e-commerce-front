@@ -37,7 +37,8 @@
               status: "北京石景山区金顶街公司进行揽件扫描"
             }
           ],
-          newlist: []
+          newlist: [],
+          number: 0
         }
       },
       created() {
@@ -45,6 +46,9 @@
       },
       methods:{
         fetchData(){
+          this.number = this.$store.state.order.trackingNo
+          console.log(this.number);
+
           // return new Promise((resolve, reject) => {
           //   getExpressTrack({
           //     appkey: '07be25240a660f534f33b13e18a0a2b3',
