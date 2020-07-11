@@ -6,7 +6,7 @@
     <div class="item-protect-container">
       <div class="item-protect-box">
         <p class="item-protect-title-box">
-          <Avatar style="background-color: #e4393c" icon="ribbon-a" />
+          <el-avatar style="background-color: #e4393c" icon="ribbon-a" />
           <span class="item-protect-title">卖家服务</span>
         </p>
         <p class="item-protect-detail">
@@ -15,7 +15,7 @@
       </div>
       <div class="item-protect-box">
         <p class="item-protect-title-box">
-          <Avatar style="background-color: #e4393c" icon="cash" />
+          <el-avatar style="background-color: #e4393c" icon="cash" />
           <span class="item-protect-title">平台承诺</span>
         </p>
         <p class="item-protect-detail">
@@ -24,7 +24,7 @@
       </div>
       <div class="item-protect-box">
         <p class="item-protect-title-box">
-          <Avatar style="background-color: #e4393c" icon="locked" />
+          <el-avatar style="background-color: #e4393c" icon="locked" />
           <span class="item-protect-title">正品行货</span>
         </p>
         <p class="item-protect-detail">
@@ -33,7 +33,7 @@
       </div>
       <div class="item-protect-box">
         <p class="item-protect-title-box">
-          <Avatar style="background-color: #e4393c" icon="settings" />
+          <el-avatar style="background-color: #e4393c" icon="settings" />
           <span class="item-protect-title">全国联保</span>
         </p>
         <p class="item-protect-detail">

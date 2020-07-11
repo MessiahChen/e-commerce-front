@@ -4,6 +4,7 @@
       <div class="seckill-content">
         <h2 style="margin-left: 17px;">{{productsWithCat.catName}}</h2>
         <el-card class="seckill-item" v-for="product in productsWithCat.products" :key="product.proId" shadow="hover">
+          <el-button type="danger" class="delete" icon="el-icon-delete" circle></el-button>
           <div class="seckill-item-img">
             <router-link :to="'productDetail/'+ product.proId"><img :src="product.image"></router-link>
           </div>
@@ -20,6 +21,7 @@
       </div>
     </el-row>
   </div>
+
 </template>
 
 <script>
@@ -30,9 +32,9 @@
     deleteProduct,
     getProductWhenUpdate,
     updateProduct
-  } from "@/network/bvo-product-browse.js"
+  } from "@/network/bvo-product-wishlist.js"
   export default {
-    name: "bvo-goods-view",
+    name: "bvo-product-wishlist",
     data() {
       return {
         currentDate: new Date(),
@@ -70,13 +72,14 @@
   }
 </script>
 
-<style scoped>
+<style>
   .seckill-content {
     width: 100%;
     height: 100%;
   }
 
   .seckill-item {
+    position: relative;
     width: 250px;
     height: 310px;
     /* margin-top: 15px; */
@@ -107,6 +110,18 @@
   .seckill-item-img:hover img {
     margin-top: 6px;
     transition: margin-top 0.3s;
+  }
+
+  .seckill-item .delete {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    display: none;
+  }
+
+  .seckill-item:hover .delete {
+    display: initial;
+    /*当鼠标hover时展示*/
   }
 
   .seckill-item-info {

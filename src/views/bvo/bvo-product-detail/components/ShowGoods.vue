@@ -32,7 +32,7 @@
             <div class="item-price-row">
               <p>
                 <span class="item-price-title">优 惠 价</span>
-                <span class="item-price-full-cut" v-for="(item,index) in productInfo.minRetailPrice" :key="index">{{item}}</span>
+                <span class="item-price-full-cut">{{productInfo.minRetailPrice}}</span>
               </p>
             </div>
             <div class="item-price-row">
@@ -51,25 +51,6 @@
             </div>
           </div>
         </div>
-        <!-- 选择颜色 -->
-        <!-- <div class="item-select">
-          <div class="item-select-title">
-            <p>选择颜色</p>
-          </div>
-          <div class="item-select-column">
-            <div class="item-select-row" v-for="(items, index) in productInfo.setMeal" :key="index">
-              <div class="item-select-box" v-for="(item, index1) in items" :key="index1" @click="select(index, index1)"
-                :class="{'item-select-box-active': ((index * 3) + index1) === selectBoxIndex}">
-                <div class="item-select-img">
-                  <img :src="item.img" alt="">
-                </div>
-                <div class="item-select-intro">
-                  <p>{{item.intro}}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
         <!-- 白条分期 -->
         <div class="item-select">
           <div class="item-select-title">
@@ -78,8 +59,8 @@
           <div class="item-select-row">
             <div class="item-select-class" v-for="(item,index) in hirePurchase" :key="index">
               <el-tooltip class="item" effect="dark" :content="item.tooltip" placement="top">
-                    <span>{{item.type}}</span>
-                  </el-tooltip>
+                <span>{{item.type}}</span>
+              </el-tooltip>
             </div>
           </div>
         </div>
@@ -96,6 +77,11 @@
 </template>
 
 <script>
+  import {
+    mapState,
+    mapActions
+  } from 'vuex';
+
   export default {
     name: 'ShowGoods',
     data() {
@@ -104,23 +90,12 @@
         count: 1,
         selectBoxIndex: 0,
         imgIndex: 0,
-        productInfo: { // 商品详情
-          proId: 1,
-          images: ["https://e-commerce-oss.oss-cn-beijing.aliyuncs.com/images/1593771713868.png","https://e-commerce-oss.oss-cn-beijing.aliyuncs.com/images/item-detail-2.jpg"],
-          title: '这是一个测试',
-          tags: ["手机","电脑"],
-          minRetailPrice: ["1","2"],
-          promotion: ["跨店满减"],
-          remarksNum: 100,
-          setMeal: [],
-          hot: [],
-          goodsDetail: [],
-          param: [],
-          remarks: []
-        },
       };
     },
     computed: {
+      ...mapState({
+        productInfo: state => state.bvo.productInfo
+      }),
       hirePurchase() {
         const three = this.price * this.count / 3;
         const sex = this.price * this.count / 6;

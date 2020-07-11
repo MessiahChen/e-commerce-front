@@ -126,13 +126,19 @@ export const constantRoutes = [
       },
       {
         path: 'productBrowse',
-        component: () => import('@/views/bvo/bvo-product-detail/index'),
+        component: () => import('@/views/bvo/bvo-product-browse/index'),
         name: 'productBrowse',
         meta: { title: 'Product Browse', icon: 'search', affix: true }
       },
       {
+        path: 'productDetail/:id',
+        component: () => import('@/views/bvo/bvo-product-detail/index'),
+        name: 'productDetail',
+        hidden:true
+      },
+      {
         path: 'wishList',
-        component: () => import('@/views/bvo/bvo-wishList'),
+        component: () => import('@/views/bvo/bvo-product-wishlist/index'),
         name: 'wishList',
         meta: { title: 'Wishlist', icon: 'star', affix: true }
       },

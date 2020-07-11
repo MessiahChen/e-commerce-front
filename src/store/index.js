@@ -5,6 +5,7 @@ import app from './modules/app'
 import settings from './modules/settings'
 import user from './modules/user'
 import order from './modules/order'
+import bvo from './modules/bvo.js'
 
 Vue.use(Vuex)
 
@@ -14,6 +15,7 @@ const store = new Vuex.Store({
     settings,
     user,
     order,
+    bvo,
   },
   getters
 })
