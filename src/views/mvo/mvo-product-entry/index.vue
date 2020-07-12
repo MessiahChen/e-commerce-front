@@ -1,12 +1,12 @@
 <template>
   <div>
-    <el-card class="box-card">
+    <el-card class="box-card" shadow="never">
       <div slot="header" class="clearfix">
         <span>Product Title：</span>
         <el-input v-model="productTitle" placeholder="Please input product title" style="width: 40vw;"></el-input>
-        <el-button class="pan-btn light-blue-btn" style="margin-left: 1vw;" type="text" @click="searchProductByTitle()">Search</el-button>
-        <el-button class="pan-btn light-blue-btn" style="margin-left: 1vw;" type="text" @click="ifOpenDialog = true">Add</el-button>
-        <el-button class="pan-btn light-blue-btn" style="margin-left: 1vw;" type="text" @click="batchDeleteProductInfo()">Delete</el-button>
+        <el-button class="pan-btn tiffany-btn" type="text" @click="searchProductByTitle()">Search</el-button>
+        <el-button class="pan-btn light-blue-btn" type="text" @click="ifOpenDialog = true">Add</el-button>
+        <el-button class="pan-btn pink-btn" type="text" @click="batchDeleteProductInfo()">Delete</el-button>
       </div>
 
       <el-table ref="productTable" v-loading="tableLoading" :data="productInfos" border fit highlight-current-row style="width: 100%;">
@@ -44,14 +44,15 @@
         </el-table-column>
       </el-table>
 
-      <el-pagination background layout="prev, pager, next" :page-size="pageSize" :page-count="totalPage" :current-page.sync="pageNum"
-        :hide-on-single-page="ifOnlyOnePage" style="margin: 1vw auto;text-align: center;" @current-change="getAllProductInfo()">
+      <el-pagination background layout="prev, pager, next" :page-size="pageSize" :page-count="totalPage"
+        :current-page.sync="pageNum" :hide-on-single-page="ifOnlyOnePage" style="margin: 1vw auto;text-align: center;"
+        @current-change="getAllProductInfo()">
       </el-pagination>
     </el-card>
 
-    <el-dialog :title="dialogFunction" :visible.sync="ifOpenDialog" width="70%" center top="5vh" destroy-on-close
+    <el-dialog :title="dialogFunction" :visible.sync="ifOpenDialog" width="75%" center top="5vh" destroy-on-close
       @closed="closeDialog()">
-      <el-form ref="form" :model="productInfo" label-width="100px">
+      <el-form ref="form" :model="productInfo" label-width="160px">
         <el-form-item label="商品标题">
           <el-input v-model="productInfo.title"></el-input>
         </el-form-item>
@@ -69,7 +70,7 @@
             <el-input v-model="productInfo.weight"></el-input>
           </el-form-item>
         </div>
-
+        <el-button @click="haha()">aaa</el-button>
         <el-form-item label="商品sku编码">
           <el-input v-model="productInfo.skuCd"></el-input>
         </el-form-item>
@@ -89,6 +90,14 @@
         <el-form-item label="保修期">
           <el-input v-model="productInfo.warrantyDay"></el-input>
         </el-form-item>
+
+        <el-form-item label="eBay Description">
+          <quill-editor ref="ebayTextEditor" v-model="ebayContent" :options="editorOption" style="height:300px;"></quill-editor>
+        </el-form-item>
+
+        <el-form-item label="Amazon Description">
+          <quill-editor ref="amazonTextEditor" v-model="amazonContent" :options="editorOption" style="height:300px;"></quill-editor>
+        </el-form-item>
       </el-form>
 
       <span slot="footer" class="dialog-footer">
@@ -101,6 +110,13 @@
 </template>
 
 <script>
+  import 'quill/dist/quill.core.css'
+  import 'quill/dist/quill.snow.css'
+  import 'quill/dist/quill.bubble.css'
+
+  import {
+    quillEditor
+  } from 'vue-quill-editor'
   import {
     getAllProduct,
     searchProduct,
@@ -120,7 +136,7 @@
         productInfos: null,
         tableLoading: true,
         // 分页控件变量
-        pageSize: 2,
+        pageSize: 8,
         totalPage: 1,
         pageNum: 1,
         ifOnlyOnePage: false,
@@ -142,8 +158,16 @@
           weight: "",
           width: "",
           manId: 1
-        }
+        },
+        ebayContent: "",
+        amazonContent: "",
+        editorOption: {
+          placeholder: "编辑文章内容"
+        },
       }
+    },
+    components: {
+      quillEditor
     },
     created() {
       this.getAllProductInfo();
@@ -297,8 +321,18 @@
           manId: 1
         }
       },
-      changeit(){
+      changeit() {
         console.log(this.pageNum)
+      },
+      onEditorChange({
+        editor,
+        html,
+        text
+      }) {
+        this.content = html;
+      },
+      haha() {
+        console.log(this.ebayContent)
       }
     }
   }
@@ -306,6 +340,15 @@
 
 <style scoped rel="stylesheet/scss" lang="scss">
   @import "src/styles/btn.scss";
+
+  .pan-btn {
+    margin-left: 1vw;
+    width: 130px;
+  }
+
+  .box-card {
+    border-bottom: none;
+  }
 
   .el-form {
     display: flex;

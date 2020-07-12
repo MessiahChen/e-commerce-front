@@ -4,16 +4,16 @@
       <div slot="header" class="clearfix">
         <span>Product Title：</span>
         <el-input v-model="productTitle" placeholder="Please input product title" style="width: 40vw;"></el-input>
-        <el-button class="pan-btn light-blue-btn" style="margin-left: 1vw;" type="text" @click="searchProductImageByTitle()">Search</el-button>
-        <el-button class="pan-btn light-blue-btn" style="margin-left: 1vw;" type="text" @click="openAddDialog()">Add</el-button>
-        <el-button class="pan-btn light-blue-btn" style="margin-left: 1vw;" type="text" @click="batchDeleteproductCat()">Delete</el-button>
+        <el-button class="pan-btn tiffany-btn" type="text" @click="searchProductImageByTitle()">Search</el-button>
+        <el-button class="pan-btn light-blue-btn" type="text" @click="openAddDialog()">Add</el-button>
+        <el-button class="pan-btn pink-btn" type="text" @click="batchDeleteproductCat()">Delete</el-button>
       </div>
 
       <el-table ref="productTable" v-loading="tableLoading" :data="productImages" border fit highlight-current-row
         style="width: 100%;">
         <el-table-column align="center" type="selection" width="100px">
         </el-table-column>
-        <el-table-column label="Product Title" align="center">
+        <el-table-column label="Product Title" width="200px" align="center">
           <template slot-scope="{row}">
             <span>{{ row.title }}</span>
           </template>
@@ -23,9 +23,9 @@
             <span>{{ row.categoryName }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Image" align="center">
+        <el-table-column label="Image" width="220px" align="center">
           <template slot-scope="{row}">
-            <span>{{ row.imageUri }}</span>
+            <img :src="row.imageUri" alt="" style="width: 200px;">
           </template>
         </el-table-column>
         <el-table-column label="Status" width="150px" align="center">
@@ -33,7 +33,7 @@
             <span>{{ row.status }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Actions" align="center" width="250px" class-name="small-padding fixed-width">
+        <el-table-column label="Actions" align="center" class-name="small-padding fixed-width">
           <template slot-scope="{row,$index}">
             <el-button type="primary" size="mini" @click="getProductCatWhenUpdate(row)">
               Edit
@@ -65,10 +65,18 @@
         </el-form-item>
 
         <el-form-item label="Upload Images">
-          <el-button class="pan-btn light-blue-btn" type="text">选择图片</el-button>
-          <el-button class="pan-btn light-blue-btn" style="margin-left: 1vw;" type="text">上传图片</el-button>
+          <el-upload action="#" multiple accept="image/png, image/jpeg" list-type="picture-card" :on-preview="handlePictureCardPreview"
+            :on-remove="handleRemove" :auto-upload="false">
+            <i class="el-icon-plus"></i>
+          </el-upload>
+          <el-dialog :visible.sync="dialogVisible" append-to-body>
+            <img width="100%" :src="dialogImageUrl" alt="">
+          </el-dialog>
         </el-form-item>
 
+        <el-form-item>
+          <el-button>上传图片</el-button>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="ifOpenAddDialog = false">Cancel</el-button>
@@ -111,6 +119,8 @@
     updateProduct,
     getAllCategory
   } from '@/network/mvo-product-image.js'
+  // import UploadImage from "@/views/mvo/mvo-product-image/components/UploadImage.vue"
+
   export default {
     name: "mvo-product-image",
     data() {
@@ -149,7 +159,11 @@
           title: "",
           userId: "",
           category: []
-        }
+        },
+        imageList: [],
+        dialogImageUrl: '',
+        dialogVisible: false,
+        disabled: false
       }
     },
     computed: {
@@ -282,8 +296,14 @@
         this.getAllproductImage()
       },
       deleteproductCat(row, index) {
-
         this.getAllproductImage()
+      },
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePictureCardPreview(file) {
+        this.dialogImageUrl = file.url;
+        this.dialogVisible = true;
       }
     }
   }
@@ -291,6 +311,11 @@
 
 <style scoped rel="stylesheet/scss" lang="scss">
   @import "src/styles/btn.scss";
+
+  .pan-btn {
+    margin-left: 1vw;
+    width: 130px;
+  }
 
   .dialog-span {
     // width: 50%;
