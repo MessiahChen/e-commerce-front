@@ -1,73 +1,166 @@
 <template>
-  <div>
-    <el-row v-for="productsWithCat in productsWithCats">
-      <div class="seckill-content">
-        <h2 style="margin-left: 17px;">{{productsWithCat.catName}}</h2>
-        <el-card class="seckill-item" v-for="product in productsWithCat.products" :key="product.proId" shadow="hover">
-          <el-button type="danger" class="delete" icon="el-icon-delete" circle></el-button>
-          <div class="seckill-item-img">
-            <router-link :to="'productDetail/'+ product.proId"><img :src="product.image"></router-link>
+  <div style="position: relative;">
+    <el-tabs v-model="activeCat" type="border-card" @tab-click="handleTabClick">
+      <el-tab-pane label="全部商品" name="全部商品">
+        <el-row>
+          <div class="seckill-content">
+            <el-card class="seckill-item" v-for="product in productsFromWishlist" :key="product.proId" shadow="hover">
+              <el-button type="danger" class="delete" icon="el-icon-delete" circle @click="deleteProFromWit(product.proId)"></el-button>
+              <div class="seckill-item-img">
+                <router-link :to="'productDetail/'+ product.proId"><img :src="product.image"></router-link>
+              </div>
+              <div class="seckill-item-info">
+                <p>{{product.title}}</p>
+                <p>
+                  <span class="seckill-price text-danger">
+                    <svg-icon icon-class="money" />{{product.minRetailPrice}}
+                  </span>
+                  <span class="seckill-retail-price"><s>{{product.retailPrice}}</s></span>
+                </p>
+              </div>
+            </el-card>
           </div>
-          <div class="seckill-item-info">
-            <p>{{product.title}}</p>
-            <p>
-              <span class="seckill-price text-danger">
-                <svg-icon icon-class="money" />{{product.minRetailPrice}}
-              </span>
-              <span class="seckill-retail-price"><s>{{product.retailPrice}}</s></span>
-            </p>
+        </el-row>
+      </el-tab-pane>
+      <el-tab-pane v-for="cat in allCats" :key="cat.catId" :label="cat.catName" :name="cat.catName">
+        <el-row>
+          <div class="seckill-content">
+            <el-card class="seckill-item" v-for="product in productsFromWishlist" :key="product.proId" shadow="hover">
+              <el-button type="danger" class="delete" icon="el-icon-delete" circle></el-button>
+              <div class="seckill-item-img">
+                <router-link :to="'productDetail/'+ product.proId"><img :src="product.image"></router-link>
+              </div>
+              <div class="seckill-item-info">
+                <p>{{product.title}}</p>
+                <p>
+                  <span class="seckill-price text-danger">
+                    <svg-icon icon-class="money" />{{product.minRetailPrice}}
+                  </span>
+                  <span class="seckill-retail-price"><s>{{product.retailPrice}}</s></span>
+                </p>
+              </div>
+            </el-card>
           </div>
-        </el-card>
-      </div>
-    </el-row>
+        </el-row>
+      </el-tab-pane>
+    </el-tabs>
+    <el-button size="mini" style="position: absolute; right: 8px; top: 5px;">批量删除</el-button>
+
   </div>
 
 </template>
 
 <script>
   import {
-    getAllProduct,
-    searchProduct,
-    addProduct,
-    deleteProduct,
-    getProductWhenUpdate,
-    updateProduct
+    getAllCat,
+    getWishlist,
+    deletePro,
+    batchDeletePro
   } from "@/network/bvo-product-wishlist.js"
   export default {
     name: "bvo-product-wishlist",
     data() {
       return {
+        allCats: [{
+          catId: "",
+          catName: ""
+        }],
+        activeCat: "全部商品",
         currentDate: new Date(),
-        productsWithCats: [{
-          catName: "",
-          products: [{
-            proId: "",
-            image: "",
-            title: "",
-            minRetailPrice: "",
-            retailPrice: ""
-          }]
+        productsFromWishlist: [{
+          proId: "",
+          image: "",
+          title: "",
+          minRetailPrice: "",
+          retailPrice: ""
         }],
       };
     },
     created() {
-      this.getAllProductInfo();
+      this.getAllCatFromWishlist();
+      this.getAllProFromWishlist();
     },
     methods: {
-      getAllProductInfo() {
-        this.tableLoading = true
+      getAllCatFromWishlist() {
         return new Promise((resolve, reject) => {
-          getAllProduct().then(response => {
-            this.productsWithCats = response.data
+          getWishlist({
+            dsrId: 1,
+            catId: ""
+          }).then(response => {
+            this.productsFromWishlist = response.data
             console.log(response.data)
             resolve()
-            this.tableLoading = false
           }).catch(error => {
             reject(error);
-            this.tableLoading = false
           })
         })
       },
+      getAllProFromWishlist() {
+        return new Promise((resolve, reject) => {
+          getAllCat({
+            dsrId: 1
+          }).then(response => {
+            this.allCats = response.data
+            console.log(response.data)
+            resolve()
+          }).catch(error => {
+            reject(error);
+          })
+        })
+      },
+      handleTabClick() {
+        var nextCatId = 0
+        if (this.activeCat == "全部商品") {
+          nextCatId = ""
+        } else {
+          for (var i = 0; i < this.allCats.length; i++) {
+            if (this.allCats[i].catName == this.activeCat) {
+              nextCatId = this.allCats[i].catId
+              break;
+            }
+          }
+        }
+        return new Promise((resolve, reject) => {
+          getWishlist({
+            dsrId: 1,
+            catId: nextCatId
+          }).then(response => {
+            this.productsFromWishlist = response.data
+            console.log(response.data)
+            resolve()
+          }).catch(error => {
+            reject(error);
+          })
+        })
+      },
+      deleteProFromWit(proIdDelete) {
+        return new Promise((resolve, reject) => {
+          deletePro({
+            dsrId: 1,
+            proId: proIdDelete
+          }).then(response => {
+            this.handleTabClick()
+            this.$message.success("删除成功！")
+            resolve()
+          }).catch(error => {
+            reject(error);
+          })
+        })
+      },
+      batchDeleteProFromWit() {
+        return new Promise((resolve, reject) => {
+          batchDeletePro({
+            dsrId: 1,
+            proIds: [1, 2, 3]
+          }).then(response => {
+            this.handleTabClick()
+            this.$message.success("批量删除成功！")
+            resolve()
+          }).catch(error => {
+            reject(error);
+          })
+        })
+      }
     }
   }
 </script>

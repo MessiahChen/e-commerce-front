@@ -1,61 +1,33 @@
 import request from '@/utils/request'
 
-export function getAllProduct() {
+export function getAllCat(dsrId) {
   return request({
-    url: 'http://localhost:9040/productBrowse/getAllProductWithStatD',
-    method: 'get'
+    url: 'http://localhost:9040/productWishlist/getAllCatFromWishlist',
+    method: 'get',
+    params: dsrId
   })
 }
 
-export function searchProduct(searchProductVO) {
+export function getWishlist(getWishlistVO) {
   return request({
-    url: 'http://localhost:9040/productEntry/searchProductByTitle',
-    method: 'post',
-    header: {
-      'Content-Type': 'application/json' //如果写成contentType会报错
-    },
-    data: searchProductVO
+    url: 'http://localhost:9040/productWishlist/getWishlistByIdAndCat',
+    method: 'get',
+    params: getWishlistVO
   })
 }
 
-export function addProduct(addProductVO){
+export function deletePro(deleteProVO) {
   return request({
-    url: 'http://localhost:9040/productEntry/addProductInfo',
-    method: 'put',
-    header: {
-      'Content-Type': 'application/json' //如果写成contentType会报错
-    },
-    data: addProductVO
-  })
-}
-
-export function deleteProduct(proId){
-  return request({
-    url: 'http://localhost:9040/productEntry/deleteProductInfo',
+    url: 'http://localhost:9040/productWishlist/deleteProFromWit',
     method: 'delete',
-    params: proId
-  })
-}
-export function getProductWhenUpdate(proId){
-  return request({
-    url: 'http://localhost:9040/productEntry/getProductInfoWhenUpdate',
-    method: 'get',
-    params: proId
-  })
-}
-export function updateProduct(productUpdateVO){
-  return request({
-    url: 'http://localhost:9040/productEntry/updateProductInfo',
-    method: 'patch',
-    data: productUpdateVO
+    params: deleteProVO
   })
 }
 
-export function getProductDetail(proId){
+export function batchDeletePro(deleteProVO) {
   return request({
-    url: 'http://localhost:9040/productBrowse/getProductInfoDetailById',
-    method: 'get',
-    params: proId
+    url: 'http://localhost:9040/productWishlist/batchDeleteProFromWit',
+    method: 'delete',
+    params: deleteProVO
   })
-  
 }
