@@ -444,21 +444,21 @@
         console.log(this.express.saoid);
         console.log(this.express.track)
 
-        // return new Promise((resolve, reject) => {
-        //   sendExpress({
-        //     //应该发送订单编号，快递单号
-        //     i: 1
-        //     track: this.express.track
-        //   }).then(response => {
-        //     console.log('code');
-        //     console.log(response.code)
-        //     resolve()
-        //     this.loading = false
-        //   }).catch(error => {
-        //     reject(error);
-        //     this.loading = false
-        //   })
-        // })
+        return new Promise((resolve, reject) => {
+          sendExpress({
+            //应该发送订单编号，快递单号
+            saoId: 1,
+            trackNo: this.express.track
+          }).then(response => {
+            console.log('code');
+            console.log(response.code)
+            resolve()
+            this.loading = false
+          }).catch(error => {
+            reject(error);
+            this.loading = false
+          })
+        })
 
       },
 
