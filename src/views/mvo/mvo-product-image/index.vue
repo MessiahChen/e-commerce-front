@@ -38,10 +38,10 @@
             <el-button type="primary" size="mini" @click="getProductCatWhenUpdate(row)">
               Edit
             </el-button>
-            <el-button size="mini" type="danger" @click="deleteproductCat(row,$index)">
+            <el-button size="mini" type="danger" @click="deleteProductCat(row,$index)">
               Delete
             </el-button>
-            <el-button size="mini" type="success" v-if="row.status!='入仓中'">{{proOperation(row)}}</el-button>
+            <el-button size="mini" type="success" v-if="row.status!='入仓中'" @click="handleStatus(row)">{{proOperation(row)}}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -55,7 +55,7 @@
       <el-form ref="form" :model="productImage" label-width="150px">
         <el-form-item label="Product Title">
           <el-select v-model="productImage.proId" clearable placeholder="请选择">
-            <el-option v-for="item in productImages" :key="item.proId" :label="item.title" :value="item.proId">
+            <el-option v-for="item in productWithNoImage" :key="item.proId" :label="item.title" :value="item.proId">
             </el-option>
           </el-select>
         </el-form-item>
@@ -65,18 +65,35 @@
         </el-form-item>
 
         <el-form-item label="Upload Images">
-          <el-upload action="#" multiple accept="image/png, image/jpeg" list-type="picture-card" :on-preview="handlePictureCardPreview"
-            :on-remove="handleRemove" :auto-upload="false">
+
+
+
+
+
+          <el-upload
+            ref="upload"
+            :action="uploadUrl"
+            multiple
+            accept="image/png, image/jpeg"
+            list-type="picture-card"
+            :auto-upload="false"
+            :file-list="urlList"
+            :http-request="uploadSectionFile"
+            :on-preview="handlePictureCardPreview"
+            :on-remove="handleRemove">
             <i class="el-icon-plus"></i>
           </el-upload>
           <el-dialog :visible.sync="dialogVisible" append-to-body>
             <img width="100%" :src="dialogImageUrl" alt="">
           </el-dialog>
+
         </el-form-item>
 
+
         <el-form-item>
-          <el-button>上传图片</el-button>
+          <el-button @click="uploadImages()">上传图片</el-button>
         </el-form-item>
+
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="ifOpenAddDialog = false">Cancel</el-button>
@@ -117,10 +134,13 @@
     deleteProduct,
     getProductWhenUpdate,
     updateProduct,
-    getAllCategory
+    getAllCategory,
+    changeStatus,
+    getOSSPolicy,
+    uploadToOSS
   } from '@/network/mvo-product-image.js'
   // import UploadImage from "@/views/mvo/mvo-product-image/components/UploadImage.vue"
-
+  import axios from 'axios'
   export default {
     name: "mvo-product-image",
     data() {
@@ -128,7 +148,8 @@
         productTitle: "",
         // Table变量
         tableKey: 0,
-        productImages: null,
+        productImages: [],
+        productWithNoImage: [],
         tableLoading: true,
         // 分页控件变量
         pageSize: 10,
@@ -163,7 +184,10 @@
         imageList: [],
         dialogImageUrl: '',
         dialogVisible: false,
-        disabled: false
+        disabled: false,
+        // 上传参数
+        uploadUrl:"",
+        urlList:[]
       }
     },
     computed: {
@@ -197,6 +221,14 @@
             this.productImages = response.data.list
             this.totalPage = response.data.totalPage
             this.pageNum = response.data.pageNum
+            console.log(this.productImages)
+            this.productWithNoImage = []
+            for (var i = 0; i < this.productImages.length; i++) {
+              if (this.productImages[i].imageUri == null) {
+                this.productWithNoImage.push(this.productImages[i])
+              }
+            }
+            console.log(this.productWithNoImage)
             resolve()
             this.tableLoading = false
           }).catch(error => {
@@ -244,6 +276,8 @@
         console.log(this.productImage)
         return new Promise((resolve, reject) => {
           addProduct(this.productImage).then(response => {
+            this.ifOpenAddDialog = false
+            this.getAllproductImage()
             console.log(response)
             resolve()
           }).catch(error => {
@@ -252,14 +286,7 @@
         })
       },
       uploadImages() {
-
-      },
-      closeAddDialog() {
-        this.productImage = {
-          proId: "",
-          userId: "",
-          category: []
-        }
+        this.$refs.upload.submit()
       },
       getProductCatWhenUpdate(row) {
         this.ifOpenUpdateDialog = true
@@ -276,6 +303,7 @@
         return new Promise((resolve, reject) => {
           updateProduct(productCatUpdateVO).then(response => {
             console.log(response)
+            this.ifOpenUpdateDialog = false
             this.getAllproductImage()
             resolve()
           }).catch(error => {
@@ -292,11 +320,116 @@
         }
       },
       batchDeleteproductCat() {
+        var data = this.$refs.productTable.selection;
+        console.log(data)
+        var proIds = []
+        for (var i = 0; i < data.length; i++) {
+          proIds[i] = data[i].proId
+        }
 
+        return new Promise((resolve, reject) => {
+          deleteProduct(proIds).then(response => {
+            console.log(response)
+            this.getAllproductImage()
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
+        })
         this.getAllproductImage()
       },
-      deleteproductCat(row, index) {
-        this.getAllproductImage()
+      deleteProductCat(row, index) {
+        var proIds = []
+        proIds[0] = row.proId
+
+        return new Promise((resolve, reject) => {
+          deleteProduct(proIds).then(response => {
+            console.log(response)
+            this.getAllproductImage()
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
+        })
+      },
+      closeAddDialog() {
+        this.productImage = {
+          proId: "",
+          userId: "",
+          category: []
+        }
+      },
+      handleStatus(row) {
+        var productStatusVO = {
+          proId: row.proId,
+          status: row.status
+        }
+        console.log(productStatusVO)
+        return new Promise((resolve, reject) => {
+          changeStatus(productStatusVO).then(response => {
+            console.log(response)
+            this.getAllproductImage()
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
+        })
+      },
+      uploadSectionFile(params){
+        console.log(params)
+
+        console.log(this.$refs.upload.uploadFiles)
+
+        return new Promise((resolve, reject) => {
+          getOSSPolicy().then(response => {
+            let uploadFileVO = new FormData();
+            //多个文件上传
+            uploadFileVO.append("Key", response.data.dir + params.file.name);
+            uploadFileVO.append("OSSAccessKeyId", response.data.accessKeyId);
+            uploadFileVO.append("Policy", response.data.policy);
+            uploadFileVO.append("Signature", response.data.signature);
+
+            uploadFileVO.append("success_action_status", '200');
+            // uploadFileVO.append("callback", response.data.callback);
+            uploadFileVO.append("dir", response.data.dir);
+            uploadFileVO.append("host", response.data.host);
+            uploadFileVO.append("file", params.file);
+
+            console.log(response.data.host + "/" + response.data.dir + params.file.name)
+            // var uploadFileVO = {
+            //   accessKeyId: response.data.accessKeyId,
+            //   callback: response.data.callback,
+            //   dir: response.data.dir,
+            //   host: response.data.host,
+            //   policy: response.data.policy,
+            //   signature: response.data.signature,
+            //   file: params.file
+            // }
+
+            return new Promise((resolve, reject) => {
+              uploadToOSS(uploadFileVO).then(response => {
+                console.log(response)
+                resolve()
+              }).catch(error => {
+                reject(error)
+              })
+            })
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
+        })
+
+
+
+
+        // var self = this,
+        //     file = params.file,
+        //     fileType = file.type,
+        //     isImage = fileType.indexOf('image') != -1,
+        //     isVideo = fileType.indexOf('video') != -1,
+        //     file_url = self.$refs.upload.uploadFiles[0].url;
+
       },
       handleRemove(file, fileList) {
         console.log(file, fileList);
@@ -304,7 +437,7 @@
       handlePictureCardPreview(file) {
         this.dialogImageUrl = file.url;
         this.dialogVisible = true;
-      }
+      },
     }
   }
 </script>

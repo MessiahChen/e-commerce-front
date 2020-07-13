@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getAllPar(getAllParVO) {
   return request({
-    url: 'http://localhost:9040/ParEntry/getAllPar',
+    url: 'http://localhost:9010/parameter/getAllParInfo',
     method: 'post',
     header: {
       'Content-Type': 'application/json' //如果写成contentType会报错
@@ -13,7 +13,7 @@ export function getAllPar(getAllParVO) {
 
 export function searchPar(searchParVO) {
   return request({
-    url: 'http://localhost:9040/ParEntry/searchParByTitle',
+    url: 'http://localhost:9010/parameter/searchPar',
     method: 'post',
     header: {
       'Content-Type': 'application/json' //如果写成contentType会报错
@@ -24,7 +24,7 @@ export function searchPar(searchParVO) {
 
 export function addPar(addParVO){
   return request({
-    url: 'http://localhost:9040/ParEntry/addParInfo',
+    url: 'http://localhost:9010/parameter/addParameter',
     method: 'put',
     header: {
       'Content-Type': 'application/json' //如果写成contentType会报错
@@ -33,34 +33,33 @@ export function addPar(addParVO){
   })
 }
 
-export function deletePar(proId){
+export function deletePar(parId){
   return request({
-    url: 'http://localhost:9040/ParEntry/deleteParInfo',
+    url: 'http://localhost:9010/parameter/deletePar',
     method: 'delete',
-    params: proId
+    params: parId
   })
 }
 
-export function batchDeletePar(proId){
+export function batchDeletePar(parIds){
   return request({
-    url: 'http://localhost:9040/ParEntry/deleteParInfo',
-    method: 'delete',
-    params: proId
+    url: 'http://localhost:9010/parameter/batchDeletePar',
+    method: 'post',
+    data: parIds
   })
 }
 
-export function getParWhenUpdate(proId){
+export function getParWhenUpdate(parId){
   return request({
-    url: 'http://localhost:9040/ParEntry/getParInfoWhenUpdate',
+    url: 'http://localhost:9010/parameter/getParWhenUpdate',
     method: 'get',
-    params: proId
+    params: parId
   })
 }
-export function updatePar(ParUpdateVO){
+export function updatePar(updateParVO){
   return request({
-    url: 'http://localhost:9040/ParEntry/updateParInfo',
-    method: 'patch',
-    data: ParUpdateVO
+    url: 'http://localhost:9010/parameter/updatePar',
+    method: 'post',
+    data: updateParVO
   })
 }
-

@@ -2,43 +2,37 @@
   <div>
     <el-card class="box-card" shadow="never">
       <div slot="header" class="clearfix">
-        <span style="margin-right: 10px;">字典类型</span>
-        <el-input v-model="cdmType" placeholder="Please input Cdm Type" style="width: 40vw;"></el-input>
-        <el-button class="pan-btn tiffany-btn" type="text" @click="searchCdmByType()">查找</el-button>
+        <span style="margin-right: 10px;">参数类型</span>
+        <el-input v-model="parCd" placeholder="Please input Par title" style="width: 40vw;"></el-input>
+        <el-button class="pan-btn tiffany-btn" type="text" @click="searchParByCd()">查找</el-button>
         <el-button class="pan-btn light-blue-btn" type="text" @click="ifOpenDialog = true">添加</el-button>
-        <el-button class="pan-btn pink-btn" type="text" @click="batchDeleteCdm()">删除</el-button>
+        <el-button class="pan-btn pink-btn" type="text" @click="batchDeletePar()">删除</el-button>
       </div>
 
-      <el-table ref="cdmTable" v-loading="tableLoading" :data="cdmInfos" border fit highlight-current-row style="width: 100%;">
+      <el-table ref="parTable" v-loading="tableLoading" :data="parInfos" border fit highlight-current-row style="width: 100%;">
         <el-table-column align="center" type="selection" width="100px">
         </el-table-column>
-        <el-table-column label="字典类型" align="center">
+        <el-table-column label="参数主键" align="center">
           <template slot-scope="{row}">
-            <span>{{ row.cdmType }}</span>
+            <span>{{ row.parCd }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="用途描述" width="200px" align="center">
+        <el-table-column label="参数值" width="200px" align="center">
+          <template slot-scope="{row}">
+            <span>{{ row.parValue }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="参数说明" width="150px" align="center">
           <template slot-scope="{row}">
             <span>{{ row.description }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="编码" width="150px" align="center">
-          <template slot-scope="{row}">
-            <span>{{ row.cdmCd }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="编码值" width="150px" align="center">
-          <template slot-scope="{row}">
-            <span>{{ row.cdmValue }}</span>
-          </template>
-        </el-table-column>
         <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
           <template slot-scope="{row,$index}">
-            <el-button type="primary" size="mini" @click="getCdmInfoWhenUpdate(row)">
+            <el-button type="primary" size="mini" @click="getParInfoWhenUpdate(row)">
               Edit
             </el-button>
-            <el-button size="mini" type="danger" @click="deleteCdmInfo(row,$index)">
+            <el-button size="mini" type="danger" @click="deleteParInfo(row,$index)">
               Delete
             </el-button>
           </template>
@@ -47,33 +41,29 @@
 
       <el-pagination background layout="prev, pager, next" :page-size="pageSize" :page-count="totalPage"
         :current-page.sync="pageNum" :hide-on-single-page="ifOnlyOnePage" style="margin: 1vw auto;text-align: center;"
-        @current-change="getAllCdmInfo()">
+        @current-change="getAllParInfo()">
       </el-pagination>
     </el-card>
 
     <el-dialog :title="dialogFunction" :visible.sync="ifOpenDialog" width="50%" center top="5vh" destroy-on-close
       @closed="closeDialog()">
-      <el-form ref="form" :model="cdmInfo" label-width="160px">
-        <el-form-item label="字典类型">
-          <el-input v-model="cdmInfo.cdmType"></el-input>
+      <el-form ref="form" :model="parInfo" label-width="140px">
+        <el-form-item label="参数主键">
+          <el-input v-model="parInfo.parCd"></el-input>
         </el-form-item>
 
-        <el-form-item label="用途描述">
-          <el-input v-model="cdmInfo.description"></el-input>
+        <el-form-item label="参数值">
+          <el-input v-model="parInfo.parValue"></el-input>
         </el-form-item>
 
-        <el-form-item label="编码">
-          <el-input v-model="cdmInfo.cdmCd"></el-input>
-        </el-form-item>
-
-        <el-form-item label="编码值">
-          <el-input v-model="cdmInfo.cdmValue"></el-input>
+        <el-form-item label="参数说明">
+          <el-input v-model="parInfo.description"></el-input>
         </el-form-item>
       </el-form>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="ifOpenDialog = false">Cancel</el-button>
-        <el-button type="primary" @click="dialogFunction == 'Add Code' ? addCdmInfo() : updateCdmInfo()">Save</el-button>
+        <el-button type="primary" @click="dialogFunction == 'Add Parameter' ? addParInfo() : updateParInfo()">Save</el-button>
       </span>
     </el-dialog>
 
@@ -82,22 +72,23 @@
 
 <script>
   import {
-    getAllCdm,
-    searchCdm,
-    addCdm,
-    deleteCdm,
-    getCdmWhenUpdate,
-    updateCdm
-  } from '@/network/admin-code.js'
+    getAllPar,
+    searchPar,
+    addPar,
+    deletePar,
+    getParWhenUpdate,
+    updatePar,
+    batchDeletePar
+  } from '@/network/admin-parameter.js'
 
   export default {
-    name: "admin-code",
+    name: "admin-parameter",
     data() {
       return {
-        cdmType: "",
+        parCd: "",
         // Table变量
         tableKey: 0,
-        cdmInfos: null,
+        parInfos: null,
         tableLoading: true,
         // 分页控件变量
         pageSize: 8,
@@ -106,31 +97,30 @@
         ifOnlyOnePage: false,
         // 是否打开弹窗
         ifOpenDialog: false,
-        dialogFunction: "Add Cdmameter",
+        dialogFunction: "Add Parameter",
         // 添加新商品
-        cdmInfo: {
-          cdmId: "",
-          cdmType: "",
-          cdmCd: "",
+        parInfo: {
+          parId: "",
+          parCd: "",
+          parValue: "",
           description: "",
-          cdmValue:"",
           userId: ""
         }
       }
     },
     created() {
-      this.getAllCdmInfo();
+      this.getAllParInfo();
     },
     methods: {
-      getAllCdmInfo() {
-        var getAllCdmVO = {
+      getAllParInfo() {
+        var getAllParVO = {
           pageNum: this.pageNum,
           pageSize: this.pageSize
         }
         this.tableLoading = true
         return new Promise((resolve, reject) => {
-          getAllCdm(getAllCdmVO).then(response => {
-            this.cdmInfos = response.data.list
+          getAllPar(getAllParVO).then(response => {
+            this.parInfos = response.data.list
             this.totalPage = response.data.totalPage
             this.pageNum = response.data.pageNum
             resolve()
@@ -145,103 +135,105 @@
           })
         })
       },
-      searchCdmByType() {
-        var searchCdmVO = {
-          cdmType: this.cdmType,
+      searchParByCd() {
+        var searchParVO = {
+          parCd: this.parCd,
           pageNum: this.pageNum,
           pageSize: this.pageSize,
         }
         this.tableLoading = true
         return new Promise((resolve, reject) => {
-          searchCdm(searchCdmVO).then(response => {
-            this.cdmInfos = response.data.list
+          searchPar(searchParVO).then(response => {
+            this.parInfos = response.data.list
             this.totalPage = response.data.totalPage
             this.pageNum = response.data.pageNum
             resolve()
             this.tableLoading = false
           }).catch(error => {
+            this.parInfos = []
             reject(error);
             this.tableLoading = false
           })
         })
       },
-      addCdmInfo() {
-        this.cdmInfo.userId = 1
+      addParInfo() {
+        this.parInfo.userId = 1
         return new Promise((resolve, reject) => {
-          addCdm(this.cdmInfo).then(response => {
-            this.$message.info("Add Cdm Successfully!")
+          addPar(this.parInfo).then(response => {
+            this.$message.info("Add Par Successfully!")
             this.ifOpenDialog = false;
-            this.getAllCdmInfo()
+            this.getAllParInfo()
             resolve()
           }).catch(error => {
             reject(error);
           })
         })
       },
-      getCdmInfoWhenUpdate(row) {
-        this.dialogFunction = "Modify Cdmameter"
+      getParInfoWhenUpdate(row) {
+        this.dialogFunction = "Modify Parameter"
         this.ifOpenDialog = true
         return new Promise((resolve, reject) => {
-          getCdmWhenUpdate({
-            proId: row.cdmId
+          getParWhenUpdate({
+            parId: row.parId
           }).then(response => {
-            this.cdmInfo.cdmId = row.cdmId
-            this.cdmInfo.cdmCd = response.data.cdmCd
-            this.cdmInfo.cdmType = response.data.cdmType
-            this.cdmInfo.cdmValue = response.data.cdmValue
-            this.cdmInfo.description = response.data.description
+            this.parInfo.parId = row.parId
+            this.parInfo.parCd = response.data.parCd
+            this.parInfo.parValue = response.data.parValue
+            this.parInfo.description = response.data.description
             resolve()
           }).catch(error => {
             reject(error);
           })
         })
       },
-      updateCdmInfo() {
-        this.cdmInfo.userId = 1
+      updateParInfo() {
+        this.parInfo.userId = 1
         return new Promise((resolve, reject) => {
-          updateCdm(this.cdmInfo).then(response => {
-            this.$message.info("Modify Cdm Successfully!")
+          updatePar(this.parInfo).then(response => {
+            this.$message.info("Modify Par Successfully!")
             this.ifOpenDialog = false;
             resolve()
-            this.getAllCdmInfo()
+            this.getAllParInfo()
           }).catch(error => {
             reject(error);
           })
         })
 
       },
-      deleteCdmInfo(row, index) {
+      deleteParInfo(row, index) {
         return new Promise((resolve, reject) => {
-          deleteCdm({
-            cdmId: row.cdmId
+          deletePar({
+            parId: row.parId
           }).then(response => {
             resolve()
-            this.getAllCdmInfo()
+            this.getAllParInfo()
           }).catch(error => {
             reject(error);
           })
         })
       },
-      batchDeleteCdm() {
-        var data = this.$refs.cdmTable.selection;
+      batchDeletePar() {
+        var data = this.$refs.parTable.selection;
         console.log(data)
+        var parIds = []
+        for (var i = 0; i < data.length; i++) {
+          parIds[i] = data[i].parId
+        }
+
         return new Promise((resolve, reject) => {
-          batchDeleteCdm({
-            cdmIds: data
-          }).then(response => {
+          batchDeletePar(parIds).then(response => {
             resolve()
-            this.getAllCdmInfo()
+            this.getAllParInfo()
           }).catch(error => {
             reject(error);
           })
         })
       },
       closeDialog() {
-        this.CdmInfo = {
-          cdmId: "",
-          cdmType: "",
-          cdmCd:"",
-          cdmValue: "",
+        this.parInfo = {
+          parId: "",
+          parCd: "",
+          parValue: "",
           description: "",
           userId: ""
         }
@@ -269,6 +261,6 @@
   }
 
   .el-form-item {
-    width: 60vw;
+    width: 40vw;
   }
 </style>

@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getAllCdm(getAllCdmVO) {
   return request({
-    url: 'http://localhost:9040/CdmEntry/getAllCdm',
+    url: 'http://localhost:9010/dataDictionary/getAllCdmInfo',
     method: 'post',
     header: {
       'Content-Type': 'application/json' //如果写成contentType会报错
@@ -13,7 +13,7 @@ export function getAllCdm(getAllCdmVO) {
 
 export function searchCdm(searchCdmVO) {
   return request({
-    url: 'http://localhost:9040/CdmEntry/searchCdmByTitle',
+    url: 'http://localhost:9010/dataDictionary/searchCdm',
     method: 'post',
     header: {
       'Content-Type': 'application/json' //如果写成contentType会报错
@@ -24,7 +24,7 @@ export function searchCdm(searchCdmVO) {
 
 export function addCdm(addCdmVO){
   return request({
-    url: 'http://localhost:9040/CdmEntry/addCdmInfo',
+    url: 'http://localhost:9010/dataDictionary/addCdmInfo',
     method: 'put',
     header: {
       'Content-Type': 'application/json' //如果写成contentType会报错
@@ -33,33 +33,33 @@ export function addCdm(addCdmVO){
   })
 }
 
-export function deleteCdm(proId){
+export function deleteCdm(cdmId){
   return request({
-    url: 'http://localhost:9040/CdmEntry/deleteCdmInfo',
+    url: 'http://localhost:9010/dataDictionary/deleteCdm',
     method: 'delete',
-    Cdmams: proId
+    params: cdmId
   })
 }
 
-export function batchDeleteCdm(proId){
+export function batchDeleteCdm(cdmIds){
   return request({
-    url: 'http://localhost:9040/CdmEntry/deleteCdmInfo',
-    method: 'delete',
-    Cdmams: proId
+    url: 'http://localhost:9010/dataDictionary/batchDeleteCdm',
+    method: 'post',
+    data: cdmIds
   })
 }
 
-export function getCdmWhenUpdate(proId){
+export function getCdmWhenUpdate(cdmId){
   return request({
-    url: 'http://localhost:9040/CdmEntry/getCdmInfoWhenUpdate',
+    url: 'http://localhost:9010/dataDictionary/getCdmWhenUpdate',
     method: 'get',
-    Cdmams: proId
+    params: cdmId
   })
 }
 export function updateCdm(CdmUpdateVO){
   return request({
-    url: 'http://localhost:9040/CdmEntry/updateCdmInfo',
-    method: 'patch',
+    url: 'http://localhost:9010/dataDictionary/updateCdm',
+    method: 'post',
     data: CdmUpdateVO
   })
 }

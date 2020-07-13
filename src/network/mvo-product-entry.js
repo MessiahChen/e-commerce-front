@@ -55,3 +55,10 @@ export function updateProduct(productUpdateVO){
   })
 }
 
+export function batchDeletePro(proIds){
+  return request({
+    url: 'http://localhost:9040/productEntry/batchDeleteProInfo',
+    method: 'post',
+    data: proIds
+  })
+}

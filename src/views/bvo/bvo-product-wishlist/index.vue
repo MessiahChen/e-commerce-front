@@ -1,6 +1,6 @@
 <template>
   <div style="position: relative;">
-    <el-tabs v-model="activeCat" type="border-card" @tab-click="handleTabClick">
+    <el-tabs v-model="activeCat" type="card" @tab-click="handleTabClick">
       <el-tab-pane label="全部商品" name="全部商品">
         <el-row>
           <div class="seckill-content">
@@ -165,6 +165,11 @@
 </script>
 
 <style>
+  .el-tabs {
+    border-top: 1px solid #EBEEF5;
+    /* margin-top: 1px; */
+  }
+
   .seckill-content {
     width: 100%;
     height: 100%;

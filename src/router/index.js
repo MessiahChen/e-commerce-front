@@ -193,13 +193,13 @@ export const constantRoutes = [
     children: [
       {
         path: 'code',
-        component: () => import('@/views/admin/admin-code'),
+        component: () => import('@/views/admin/admin-code/index'),
         name: 'code',
         meta: { title: 'Code Manage', icon: 'form', affix: true }
       },
       {
         path: 'parameter',
-        component: () => import('@/views/admin/admin-parameter'),
+        component: () => import('@/views/admin/admin-parameter/index'),
         name: 'storeManagement',
         meta: { title: 'Parameter Manage', icon: 'component', affix: true }
       },

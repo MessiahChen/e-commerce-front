@@ -123,7 +123,8 @@
     addProduct,
     deleteProduct,
     getProductWhenUpdate,
-    updateProduct
+    updateProduct,
+    batchDeletePro
   } from '@/network/mvo-product-entry.js'
 
   export default {
@@ -262,22 +263,20 @@
       batchDeleteProductInfo() {
         var data = this.$refs.productTable.selection;
         console.log(data)
-        // for (var i = 0; i < data.length; i++) {
-        //   return new Promise((resolve, reject) => {
-        //     deleteProduct({
-        //       proId: data[i].proId
-        //     }).then(response => {
-        //       resolve()
-        //       console.log(i)
-        //       console.log(data.length)
-        //       if (i == data.length - 1) {
-        //         this.getAllProductInfo()
-        //       }
-        //     }).catch(error => {
-        //       reject(error);
-        //     })
-        //   })
-        // }
+        
+        var proIds = []
+        for (var i = 0; i < data.length; i++) {
+          proIds[i] = data[i].proId
+        }
+        
+        return new Promise((resolve, reject) => {
+          batchDeletePro(proIds).then(response => {
+            resolve()
+            this.getAllProductInfo()()
+          }).catch(error => {
+            reject(error);
+          })
+        })
       },
       deleteProductInfo(row, index) {
         return new Promise((resolve, reject) => {
