@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div class="search-form">
-    <el-form :inline="true" :model="searchForm" class="demo-form-inline">
-      <el-form-item label="Title:">
-        <el-input v-model="searchForm.searchWord" placeholder="title"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onSearch">Search</el-button>
-      </el-form-item>
-    </el-form>
-  </div>
+<!--    <div class="search-form">-->
+<!--    <el-form :inline="true" :model="searchForm" class="demo-form-inline">-->
+<!--      <el-form-item label="Title:">-->
+<!--        <el-input v-model="searchForm.searchWord" placeholder="title"></el-input>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item>-->
+<!--        <el-button type="primary" @click="onSearch">Search</el-button>-->
+<!--      </el-form-item>-->
+<!--    </el-form>-->
+<!--  </div>-->
     <div class="tab-container">
       <el-tabs v-model="activeName" style="margin-top:15px;" type="border-card" @tab-click="handleClick">
         <el-tab-pane label="Awaiting Payment" name="AP">
