@@ -8,7 +8,7 @@ const getDefaultState = () => {
     token: getToken(),
     name: '',
     avatar: '',
-    accountName: ''
+    accountName: '20200707'
   }
 }
 

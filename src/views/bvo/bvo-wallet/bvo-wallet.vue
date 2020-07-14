@@ -22,13 +22,12 @@
             <svg-icon icon-class="password" />
           </span>
           <el-input :key="passwordType" ref="password" v-model="loginForm.password" :type="passwordType" placeholder="Password"
-                    name="password" tabindex="2" auto-complete="on" @keyup.enter.native="handleLogin" />
+                    name="password" tabindex="2" auto-complete="on" @keyup.enter.native="handleRegister" />
           <span class="show-pwd" @click="showPwd">
             <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
           </span>
         </el-form-item>
-        <el-button :loading="loading" type="primary" style="width:40%;margin-bottom:30px;" @click.native.prevent="handleRegister">register</el-button>
-        <el-button :loading="loading" type="primary" style="width:40%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+        <el-button :loading="loading" class="pan-btn light-blue-btn" style="width:40%;margin-bottom:30px;" @click.native.prevent="handleRegister">register</el-button>
       </el-form>
     </div>
   </div>
@@ -77,6 +76,14 @@
           redirect: undefined,
         }
       },
+      created() {
+        console.log(this.$store.state.user.accountName);
+        if(this.$store.state.user.accountName != ''){
+          this.$router.push({
+            path: '/bvo/bvoAvailableMoney'
+          });
+        }
+      },
       methods: {
         showPwd() {
           if (this.passwordType === 'password') {
@@ -88,34 +95,34 @@
             this.$refs.password.focus()
           })
         },
-        handleLogin() {
-          console.log('login')
-          this.$store.commit('user/SET_ACCOUNTNAME',this.loginForm.accountName.trim())
-          this.$refs.loginForm.validate(valid => {
-            if (valid) {
-              this.loading = true;
-              return new Promise((resolve, reject) => {
-                getAvailableMoney({
-                  accountName: this.loginForm.accountName.trim(),
-                }).then(response => {
-                  console.log('code');
-                  console.log(response.code)
-                  resolve()
-                  this.$router.push({
-                    path: '/bvo/bvoAvailableMoney'
-                  });
-                  this.loading = false
-                }).catch(error => {
-                  reject(error);
-                  this.loading = false
-                })
-              })
-            } else {
-              console.log('error submit!!')
-              return false
-            }
-          })
-        },
+        // handleLogin() {
+        //   console.log('login')
+        //   this.$store.commit('user/SET_ACCOUNTNAME',this.loginForm.accountName.trim())
+        //   this.$refs.loginForm.validate(valid => {
+        //     if (valid) {
+        //       this.loading = true;
+        //       return new Promise((resolve, reject) => {
+        //         getAvailableMoney({
+        //           accountName: this.loginForm.accountName.trim(),
+        //         }).then(response => {
+        //           console.log('code');
+        //           console.log(response.code)
+        //           resolve()
+        //           this.$router.push({
+        //             path: '/bvo/bvoAvailableMoney'
+        //           });
+        //           this.loading = false
+        //         }).catch(error => {
+        //           reject(error);
+        //           this.loading = false
+        //         })
+        //       })
+        //     } else {
+        //       console.log('error submit!!')
+        //       return false
+        //     }
+        //   })
+        // },
         handleRegister(){
           console.log('register')
           this.$store.commit('user/SET_ACCOUNTNAME',this.loginForm.accountName.trim())
@@ -150,6 +157,16 @@
       }
     }
 </script>
+
+<style scoped rel="stylesheet/scss" lang="scss">
+  @import "src/styles/btn.scss";
+
+  .pan-btn {
+    margin-left: 1vw;
+    width: 130px;
+  }
+
+</style>
 
 <style lang="scss">
 

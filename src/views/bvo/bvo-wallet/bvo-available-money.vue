@@ -2,7 +2,7 @@
   <div>
     <div class="availableMoney-container">
       <div class="password-change-container">
-        <el-button type="primary" @click="changePasswordVisible = true" >Change Password</el-button>
+        <el-button style="width: auto" class="pan-btn tiffany-btn" @click="changePasswordVisible = true" >Change Password</el-button>
         <div class="dialog-container">
           <el-dialog :visible.sync="changePasswordVisible" title="Change password">
             <el-form ref="passwordForm" :model="passwordForm" label-width="120px">
@@ -41,12 +41,12 @@
           </el-table-column>
           <el-table-column label="Operation" align="center">
             <template slot-scope="scope">
-              <el-button type="primary" @click="depositClick()" >deposit</el-button>
+              <el-button class="pan-btn light-blue-btn" @click="depositClick()" >deposit</el-button>
             </template>
           </el-table-column>
           <el-table-column label="Record" align="center">
             <template slot-scope="scope">
-              <el-button type="primary" @click="goToRecord" >record</el-button>
+              <el-button class="pan-btn light-blue-btn" @click="goToRecord" >record</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -187,7 +187,13 @@
   }
 </script>
 
-<style scoped>
+<style scoped rel="stylesheet/scss" lang="scss">
+  @import "src/styles/btn.scss";
+
+  .pan-btn {
+    margin-left: 1vw;
+    width: 130px;
+  }
   .password-change-container{
     padding: 3vh;
   }

@@ -22,12 +22,12 @@
           </el-table-column>
           <el-table-column label="Operation" align="center">
             <template slot-scope="scope">
-              <el-button type="primary" @click="withdrawClick(scope.$index)" >withdraw</el-button>
+              <el-button class="pan-btn light-blue-btn" @click="withdrawClick(scope.$index)" >withdraw</el-button>
             </template>
           </el-table-column>
           <el-table-column label="Record" align="center">
             <template slot-scope="scope">
-              <el-button type="primary" @click="goToRecord" >record</el-button>
+              <el-button  class="pan-btn light-blue-btn" @click="goToRecord" >record</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -143,7 +143,13 @@
   }
 </script>
 
-<style scoped>
+<style scoped rel="stylesheet/scss" lang="scss">
+  @import "src/styles/btn.scss";
+
+  .pan-btn {
+    margin-left: 1vw;
+    width: 130px;
+  }
   .table-container{
     padding: 3vh;
   }
