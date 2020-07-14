@@ -215,6 +215,7 @@ export const constantRoutes = [
     path: '/other',
     component: Layout,
     meta: { title: 'Other', icon: 'money' },
+    hidden:true,
     children: [
       {
       path: 'pay',
