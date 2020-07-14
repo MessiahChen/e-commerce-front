@@ -4,19 +4,19 @@
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
       <el-form-item label="Name:" prop="name">
         <el-col :span="8">
-          <el-input v-model="ruleForm.name" placeholder="Please enter the name"></el-input>
+          <el-input v-model="ruleForm.name" placeholder="Please enter the name" value={{ruleForm.name}}></el-input>
         </el-col>
       </el-form-item>
 
       <el-form-item label="E-mail" prop="email">
         <el-col :span="8">
-          <el-input v-model="ruleForm.email" placeholder="Please enter the e-mail"></el-input>
+          <el-input v-model="ruleForm.email" placeholder="Please enter the e-mail" value={{ruleForm.email}}></el-input>
         </el-col>
       </el-form-item>
 
       <el-form-item label="Phone" prop="phone">
         <el-col :span="8">
-          <el-input v-model="ruleForm.phone" placeholder="Please enter the phone"></el-input>
+          <el-input v-model="ruleForm.phone" placeholder="Please enter the phone" value=P{{ruleForm.phone}}></el-input>
         </el-col>
       </el-form-item>
 
@@ -29,13 +29,19 @@
 </template>
 
 <script>
+  import {
+    getBVOInfo,
+    initBVOInfo,
+    updateBVOInfo
+  } from '@/network/bvo-info.js'
+
   export default {
     data() {
       return {
         ruleForm: {
           name: '',
           email: '',
-          phone:'',
+          phone: '',
         },
         rules: {
           name: [{
@@ -57,6 +63,21 @@
       };
     },
     methods: {
+      getBVOInfo(){
+        var getBVOInfoVO = {
+          dsrID: 1
+        }
+        return new Promise((resolve, reject) => {
+          getBVOInfo(getBVOInfoVO).then(response => {
+            this.ruleForm.name = response.data.name;
+            this.ruleForm.email = response.data.email;
+            this.ruleForm.phone = response.data.phonenumber;
+            console.log("陈冠林");
+          }).catch(error => {
+            reject(error);
+          })
+        })
+      },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -72,6 +93,9 @@
           path: '/bvo/storeManagement'
         });
       }
+    },
+    mounted() {
+      this.getBVOInfo();
     }
   }
 </script>
