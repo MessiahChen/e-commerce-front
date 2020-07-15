@@ -4,19 +4,19 @@
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
       <el-form-item label="Name:" prop="name">
         <el-col :span="8">
-          <el-input v-model="ruleForm.name" placeholder="Please enter the name" value={{ruleForm.name}}></el-input>
+          <el-input v-model="ruleForm.name" placeholder="Please enter the name" :value="ruleForm.name"></el-input>
         </el-col>
       </el-form-item>
 
       <el-form-item label="E-mail" prop="email">
         <el-col :span="8">
-          <el-input v-model="ruleForm.email" placeholder="Please enter the e-mail" value={{ruleForm.email}}></el-input>
+          <el-input v-model="ruleForm.email" placeholder="Please enter the e-mail" :value="ruleForm.email" }}></el-input>
         </el-col>
       </el-form-item>
 
       <el-form-item label="Phone" prop="phone">
         <el-col :span="8">
-          <el-input v-model="ruleForm.phone" placeholder="Please enter the phone" value=P{{ruleForm.phone}}></el-input>
+          <el-input v-model="ruleForm.phone" placeholder="Please enter the phone" :value="ruleForm.phone"></el-input>
         </el-col>
       </el-form-item>
 
@@ -59,13 +59,27 @@
             message: 'Please enter the phone number',
             trigger: 'blur'
           }]
+        },
+        bvoInfo: {
+          dsrId: "",
+          name: "",
+          createdBy: "",
+          creationDate: "",
+          lastUpdateBy: "",
+          lastUpdateDate: "",
+          callCnt: "",
+          remark: "",
+          stsCd: "",
+          registerDate: "",
+          email: "",
+          phoneNumber: ""
         }
       };
     },
     methods: {
-      getBVOInfo(){
+      getBVOInfo() {
         var getBVOInfoVO = {
-          dsrID: 1
+          dsrId: 1
         }
         return new Promise((resolve, reject) => {
           getBVOInfo(getBVOInfoVO).then(response => {
@@ -73,6 +87,17 @@
             this.ruleForm.email = response.data.email;
             this.ruleForm.phone = response.data.phonenumber;
             console.log("陈冠林");
+          }).catch(error => {
+            reject(error);
+          })
+        })
+      },
+      initBVOInfo() {
+        return new Promise((resolve, reject) => {
+          initBVOInfo(this.bvoInfo).then(response => {
+            this.$message.info("BVO Info Inited Successfully!");
+            this.getBVOInfo();
+            resolve();
           }).catch(error => {
             reject(error);
           })
