@@ -205,13 +205,13 @@
 
             <el-table-column  align="center" label="Tracking No" >
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTrack(scope.row.TrackingNo)">{{scope.row.TrackingNo}}</el-button>
+                <el-button type="text" @click="gotoTrack(scope.row.trackingNo)">{{scope.row.trackingNo}}</el-button>
               </template>
             </el-table-column>
 
             <el-table-column  align="center" label="Operation" >
               <template slot-scope="scope">
-                <el-button class="pan-btn light-blue-btn" @click="onCancel(scope.row)"> Cancel</el-button>
+                <el-button style="width: auto" class="pan-btn light-blue-btn" @click="onCancel(scope.row)"> Cancel</el-button>
               </template>
             </el-table-column>
 
@@ -264,7 +264,7 @@
 
             <el-table-column  align="center" label="Tracking No" >
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTrack(scope.row.TrackingNo)">{{scope.row.TrackingNo}}</el-button>
+                <el-button type="text" @click="gotoTrack(scope.row.trackingNo)">{{scope.row.trackingNo}}</el-button>
               </template>
             </el-table-column>
 
@@ -486,6 +486,7 @@
 
       // 处理 onExpress 相关事件点击
       onExpress(item){
+        console.log(item);
         this.express.saoid = item.saoId
         this.sendExpressVisiable = true;
       },

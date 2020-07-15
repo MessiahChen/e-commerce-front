@@ -59,28 +59,79 @@
             message: 'Please enter the phone number',
             trigger: 'blur'
           }]
+        },
+        bvoInfo:{
+          dsrId:'',
+          name:'',
+          createdBy:'',
+          creationDate:'',
+          lastUpdateBy:'',
+          lastUpdateDate:'',
+          callCnt:'',
+          remark:'',
+          stsCd:'',
+          registerDate:'',
+          email:'',
+          phoneNumber:''
         }
       };
     },
     methods: {
       getBVOInfo(){
         var getBVOInfoVO = {
-          dsrID: 1
+          // TODO
+          dsrId: '4'
         }
         return new Promise((resolve, reject) => {
           getBVOInfo(getBVOInfoVO).then(response => {
             this.ruleForm.name = response.data.name;
             this.ruleForm.email = response.data.email;
-            this.ruleForm.phone = response.data.phonenumber;
-            console.log("陈冠林");
+            this.ruleForm.phone = response.data.phoneNumber;
           }).catch(error => {
             reject(error);
           })
         })
       },
+      initBVOInfo(){
+        this.readInfo();
+        return new Promise((resolve, reject) => {
+          initBVOInfo(this.bvoInfo).then(response => {
+            this.$message.info("Init Successfully");
+            this.getBVOInfo();
+            resolve();
+          }).catch(error => {
+            reject(error);
+          })
+        })
+      },
+      updateBVOInfo(){
+        this.readInfo();
+        return new Promise((resolve, reject) => {
+          updateBVOInfo(this.bvoInfo).then(response => {
+            this.$message.info("Update Successfully");
+            resolve();
+            this.getBVOInfo();
+          }).catch(error => {
+            reject(error);
+          })
+        })
+      },
+      readInfo(){
+        this.bvoInfo.name = this.ruleForm.name;
+        this.bvoInfo.email = this.ruleForm.email;
+        this.bvoInfo.phoneNumber = this.ruleForm.phone;
+        // TODO
+        this.bvoInfo.dsrId = '4';
+      },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
+            // if(this.ruleForm.name == '' && this.ruleForm.email == ''
+            // && this.ruleForm.phone == ''){
+            //   this.initBVOInfo();
+            // } else {
+              this.updateBVOInfo();
+            // }
             alert('submit!');
           } else {
             console.log('error submit!!');
@@ -95,6 +146,8 @@
       }
     },
     mounted() {
+      // TODO: 1.获取当前User的dsrId(man_buyer_id)
+      //       2.判断当前User对应dsr是否有数据。
       this.getBVOInfo();
     }
   }
