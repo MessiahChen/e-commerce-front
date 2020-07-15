@@ -25,8 +25,8 @@
           <div class="item-price-left">
             <div class="item-price-row">
               <p>
-                <span class="item-price-title">B I T 价</span>
-                <span class="item-price">￥{{price.toFixed(2)}}</span>
+                <span class="item-price-title">价 格</span>
+                <span class="item-price">￥{{productInfo.retailPrice}}</span>
               </p>
             </div>
             <div class="item-price-row">
@@ -51,24 +51,15 @@
             </div>
           </div>
         </div>
-        <!-- 白条分期 -->
-        <div class="item-select">
-          <div class="item-select-title">
-            <p>白条分期</p>
-          </div>
-          <div class="item-select-row">
-            <div class="item-select-class" v-for="(item,index) in hirePurchase" :key="index">
-              <el-tooltip class="item" effect="dark" :content="item.tooltip" placement="top">
-                <span>{{item.type}}</span>
-              </el-tooltip>
-            </div>
-          </div>
-        </div>
         <br>
         <div class="add-buy-car-box">
           <div class="add-buy-car">
-            <el-input-number v-model="count" :min="1" :max="10"></el-input-number>
-            <el-button type="danger" size="medium" @click="addShoppingCartBtn()" style="margin-left: 5px;">加入购物车</el-button>
+            <el-button type="danger" size="medium" @click="dropShipNow()" style="margin-left: 5px;">Dropship Now</el-button>
+            <el-button type="danger" size="medium" v-if="!productInfo.ifInWishlist" @click="addToWishlist()" style="margin-left: 5px;">Add
+              to Wish List</el-button>
+            <el-button type="danger" size="medium" v-if="productInfo.ifInWishlist" @click="deleteFromWishlist()" style="margin-left: 5px;">Delete
+              from
+              Wish List</el-button>
           </div>
         </div>
       </div>
@@ -82,12 +73,15 @@
     mapActions
   } from 'vuex';
 
+  import {
+    addWishlist,
+    deleteWishlist
+  } from "@/network/bvo-product-browse.js"
   export default {
     name: 'ShowGoods',
     data() {
       return {
         price: 32,
-        count: 1,
         selectBoxIndex: 0,
         imgIndex: 0,
       };
@@ -96,59 +90,53 @@
       ...mapState({
         productInfo: state => state.bvo.productInfo
       }),
-      hirePurchase() {
-        const three = this.price * this.count / 3;
-        const sex = this.price * this.count / 6;
-        const twelve = this.price * this.count / 12 * 1.0025;
-        const twentyFour = this.price * this.count / 24 * 1.005;
-        return [{
-            tooltip: '无手续费',
-            type: '不分期'
-          },
-          {
-            tooltip: '无手续费',
-            type: `￥${three.toFixed(2)} x 3期`
-          },
-          {
-            tooltip: '无手续费',
-            type: `￥${sex.toFixed(2)} x 6期`
-          },
-          {
-            tooltip: '含手续费：费率0.25%起，￥0.1起×12期',
-            type: `￥${twelve.toFixed(2)} x 12期`
-          },
-          {
-            tooltip: '含手续费：费率0.5%起，￥0.1起×12期',
-            type: `￥${twentyFour.toFixed(2)} x 24期`
-          }
-        ];
-      }
     },
     methods: {
       select(index1, index2) {
         this.selectBoxIndex = index1 * 3 + index2;
-        this.price = this.productInfo.setMeal[index1][index2].price;
+        this.price = this.productInfo.minRetailPrice;
       },
       showBigImg(index) {
         this.imgIndex = index;
       },
-      addShoppingCartBtn() {
-        const index1 = parseInt(this.selectBoxIndex / 3);
-        const index2 = this.selectBoxIndex % 3;
-        const date = new Date();
-        const goodsId = date.getTime();
-        const data = {
-          goods_id: goodsId,
-          title: this.productInfo.title,
-          count: this.count,
-          package: this.productInfo.setMeal[index1][index2]
-        };
+      dropShipNow() {
+
+      },
+      addToWishlist() {
+        var operateWishlistVO = {
+          userId: 1,
+          dsrId: 1,
+          proId: this.productInfo.proId,
+        }
+        return new Promise((resolve, reject) => {
+          addWishlist(operateWishlistVO).then(response => {
+            this.productInfo.ifInWishlist = true
+            resolve()
+          }).catch(error => {
+            reject(error);
+          })
+        })
+      },
+      deleteFromWishlist() {
+        var operateWishlistVO = {
+          userId: 1,
+          dsrId: 1,
+          proId: this.productInfo.proId,
+        }
+        return new Promise((resolve, reject) => {
+          deleteWishlist(operateWishlistVO).then(response => {
+            this.productInfo.ifInWishlist = false
+            resolve()
+          }).catch(error => {
+            reject(error);
+          })
+        })
       }
     },
     mounted() {
       const father = this;
       setTimeout(() => {
-        father.price = father.productInfo.setMeal[0][0].price || 0;
+        father.price = father.productInfo.minRetailPrice;
       }, 300);
     }
   };
@@ -225,6 +213,7 @@
 
   /*价格详情等*/
   .item-detail-price-row {
+    width: 47vw;
     padding: 5px;
     display: flex;
     flex-direction: row;

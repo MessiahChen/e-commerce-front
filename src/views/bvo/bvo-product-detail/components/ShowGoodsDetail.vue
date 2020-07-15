@@ -1,29 +1,20 @@
 <template>
   <div>
-    <!-- <div class="item-intro-show">
-      <div class="item-intro-recommend">
-        <div class="item-recommend-title">
-          <p>店铺热销</p>
-        </div>
-        <div class="item-intro-recommend-column">
-          <div class="item-recommend-column" v-for="(item, index) in productInfo.hot" :key="index">
-            <div class="item-recommend-img">
-              <img :src="item.img" alt="">
-            </div>
-            <div class="item-recommend-intro">
-              <span>
-                <span class="item-recommend-top-num">{{index + 1}}</span> 热销{{item.sale}}件</span>
-              <span class="item-recommend-price">￥{{item.price.toFixed(2)}}</span>
-            </div>
-          </div>
-        </div>
-      </div> -->
+
     <div class="item-intro-detail" ref="itemIntroDetail">
       <div class="item-intro-nav item-tabs">
         <el-tabs>
-          <el-tab-pane label="商品介绍">
+          <el-tab-pane label="eBay Description">
             <div class="remarks-title">
-              <span>商品介绍</span>
+              <span>eBay Description</span>
+            </div>
+            <div class="item-intro-img" ref="itemIntroGoods">
+              <img :src="item" alt="" v-for="(item,index) in productInfo.goodsDetail" :key="index">
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="Amazon Description">
+            <div class="remarks-title">
+              <span>Amazon Description</span>
             </div>
             <div class="item-intro-img" ref="itemIntroGoods">
               <img :src="item" alt="" v-for="(item,index) in productInfo.goodsDetail" :key="index">

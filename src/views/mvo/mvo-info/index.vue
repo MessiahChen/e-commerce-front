@@ -14,7 +14,7 @@
         <el-table-column prop="url" label="GMC Report URL">
         </el-table-column>
         <el-table-column prop="coperation" label="Operation">
-          <el-button type="primary" circle size='small' icon="el-icon-edit" @click="editCompany('ruleForm')" ></el-button>
+          <el-button type="primary" circle size='small' icon="el-icon-edit" @click="editCompany('ruleForm')"></el-button>
         </el-table-column>
       </el-table>
 
@@ -33,7 +33,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-button type="primary" @click="addBrand('ruleForm')" >Add Brand</el-button>
+      <el-button type="primary" @click="addBrand('ruleForm')">Add Brand</el-button>
     </el-form>
 
     <div class="dialog-container">
@@ -45,13 +45,8 @@
             </el-col>
           </el-form-item>
           <el-form-item label="Brand Logo">
-            <el-upload
-              :multiple="true"
-              :show-file-list="true"
-              :on-remove="handleRemove"
-              :on-success="handleSuccess"
-              :before-upload="beforeUpload"
-            >
+            <el-upload :multiple="true" :show-file-list="true" :on-remove="handleRemove" :on-success="handleSuccess"
+              :before-upload="beforeUpload">
               <el-button size="small">
                 Select Picture
               </el-button>
@@ -72,47 +67,73 @@
 </template>
 
 <script>
+  import {
+    getCompany,
+    initCompany,
+    updateCompany
+  } from '@/network/mvo-man-info.js'
+  
   export default {
     data() {
       return {
         dialogFormVisible: false,
         temp: [{
           bname: '',
-          logo:'',
-          boperation:''
+          logo: '',
+          boperation: ''
         }],
         companyData: [{
-          cn: '东软',
-          en: 'NeuSoft',
-          type: 'AAA',
-          url: 'www.baidu.com',
+          cn: '',
+          en: '',
+          type: '',
+          url: '',
           coperation: ''
         }],
         brandData: [{
-          bname: 'NAME',
+          bname: '',
           logo: '',
-          boperation:''
+          boperation: ''
         }]
       }
     },
     methods: {
+      getCompany() {
+        var getCompanyVO = {
+          // TODO
+          manId: '1'
+        }
+        return new Promise((resolve, reject) => {
+          getCompany(getCompanyVO).then(response => {
+            this.companyData = [{
+              cn: response.data.nameCn,
+              en: response.data.nameEn,
+              type: response.data.gmcReportType,
+              url: response.data.gmcReportUrl,
+              coperation: ''
+            }];
+            resolve();
+          }).catch(error => {
+            reject(error);
+          })
+        })
+      },
       editCompany(formName) {
         this.$router.push({
           path: '/mvo/mvoCompanyInfo'
         });
       },
-      editBrand(formName){
+      editBrand(formName) {
         console.log(formName);
         this.dialogFormVisible = true;
       },
       resetTemp() {
         this.temp = {
           bname: '',
-          logo:'',
-          boperation:''
+          logo: '',
+          boperation: ''
         }
       },
-      addBrand(formName){
+      addBrand(formName) {
         this.resetTemp();
         this.dialogFormVisible = true;
         this.$nextTick(() => {
@@ -133,7 +154,7 @@
           }
         });
       },
-      closeDialog(){
+      closeDialog() {
         this.dialogFormVisible = false;
       },
       handleDelete(row, index) {
@@ -148,7 +169,9 @@
       handleSubmit() {
         const arr = Object.keys(this.listObj).map(v => this.listObj[v])
         if (!this.checkAllSuccess()) {
-          this.$message('Please wait for all images to be uploaded successfully. If there is a network problem, please refresh the page and upload again!')
+          this.$message(
+            'Please wait for all images to be uploaded successfully. If there is a network problem, please refresh the page and upload again!'
+          )
           return
         }
         this.$emit('successCBK', arr)
@@ -186,11 +209,19 @@
           const img = new Image()
           img.src = _URL.createObjectURL(file)
           img.onload = function() {
-            _self.listObj[fileName] = { hasSuccess: false, uid: file.uid, width: this.width, height: this.height }
+            _self.listObj[fileName] = {
+              hasSuccess: false,
+              uid: file.uid,
+              width: this.width,
+              height: this.height
+            }
           }
           resolve(true)
         })
       }
+    },
+    mounted() {
+      this.getCompany();
     }
   }
 </script>
