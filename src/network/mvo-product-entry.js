@@ -5,7 +5,7 @@ export function getAllProduct(getAllProductVO) {
     url: 'http://localhost:9040/productEntry/getAllProduct',
     method: 'post',
     header: {
-      'Content-Type': 'application/json' //如果写成contentType会报错
+      'Content-Type': 'application/json' //如果写成contentType会报错,
     },
     data: getAllProductVO
   })
@@ -40,6 +40,7 @@ export function deleteProduct(proId){
     params: proId
   })
 }
+
 export function getProductWhenUpdate(proId){
   return request({
     url: 'http://localhost:9040/productEntry/getProductInfoWhenUpdate',
@@ -47,6 +48,7 @@ export function getProductWhenUpdate(proId){
     params: proId
   })
 }
+
 export function updateProduct(productUpdateVO){
   return request({
     url: 'http://localhost:9040/productEntry/updateProductInfo',

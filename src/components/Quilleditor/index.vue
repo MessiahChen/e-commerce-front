@@ -1,7 +1,7 @@
 <template>
   <div>
-    <quill-editor v-model="content" ref="myTextEditor" :options="editorOption" @change="onChange">
-      <div id="toolbar" slot="toolbar">
+    <quill-editor style="height: 25vh;" v-model="content" ref="myTextEditor" :options="editorOption" @change="onChange">
+      <div :id="id" slot="toolbar">
         <span class="ql-formats"><button type="button" class="ql-bold"></button></span>
         <span class="ql-formats"><button type="button" class="ql-italic"></button></span>
         <span class="ql-formats"><button type="button" class="ql-underline"></button></span>
@@ -152,6 +152,9 @@
   import axios from 'axios'
   export default {
     props: {
+      id: {
+        type: String
+      },
       /*编辑器的内容*/
       value: {
         type: String
@@ -186,11 +189,12 @@
       }
     },
     data() {
+      let _this = this
       return {
         content: '',
         editorOption: {
           modules: {
-            toolbar: '#toolbar'
+            toolbar: '#' + _this.id
           }
         },
         /*显示裁切控件*/

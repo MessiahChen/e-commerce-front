@@ -1,5 +1,6 @@
 <template>
-  <div style="position: relative;">
+  <div style="position: relative; min-height: calc(100vh - 50px);" v-loading="pageLoading" element-loading-text="拼命加载中"
+    element-loading-spinner="el-icon-loading">
     <el-tabs v-model="activeCat" type="card" @tab-click="handleTabClick">
       <el-tab-pane label="全部商品" name="全部商品">
         <el-row>
@@ -60,19 +61,11 @@
     name: "bvo-product-wishlist",
     data() {
       return {
-        allCats: [{
-          catId: "",
-          catName: ""
-        }],
+        pageLoading: true,
+        allCats: [], // {catId: "",catName: ""}
         activeCat: "全部商品",
         currentDate: new Date(),
-        productsFromWishlist: [{
-          proId: "",
-          image: "",
-          title: "",
-          minRetailPrice: "",
-          retailPrice: ""
-        }],
+        productsFromWishlist: [], // {proId: "",image: "",title: "",minRetailPrice: "",retailPrice: ""}
       };
     },
     created() {
@@ -101,6 +94,7 @@
           }).then(response => {
             this.allCats = response.data
             console.log(response.data)
+            this.pageLoading = false
             resolve()
           }).catch(error => {
             reject(error);
@@ -165,6 +159,14 @@
 </script>
 
 <style>
+  p {
+    width: 200px;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
   .el-tabs {
     border-top: 1px solid #EBEEF5;
     /* margin-top: 1px; */

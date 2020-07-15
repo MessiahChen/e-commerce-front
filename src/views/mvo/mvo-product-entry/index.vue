@@ -5,7 +5,7 @@
         <span>Product Title：</span>
         <el-input v-model="productTitle" placeholder="Please input product title" style="width: 40vw;"></el-input>
         <el-button class="pan-btn tiffany-btn" type="text" @click="searchProductByTitle()">Search</el-button>
-        <el-button class="pan-btn light-blue-btn" type="text" @click="ifOpenDialog = true">Add</el-button>
+        <el-button class="pan-btn light-blue-btn" type="text" @click="openAddDialog()">Add</el-button>
         <el-button class="pan-btn pink-btn" type="text" @click="batchDeleteProductInfo()">Delete</el-button>
       </div>
 
@@ -52,57 +52,58 @@
 
     <el-dialog :title="dialogFunction" :visible.sync="ifOpenDialog" width="75%" center top="5vh" destroy-on-close
       @closed="closeDialog()">
-      <el-form ref="form" :model="productInfo" label-width="160px">
-        <el-form-item label="商品标题">
+      <el-form ref="form" :model="productInfo" label-width="160px" :rules="addRules">
+        <el-form-item label="商品标题" prop="title">
           <el-input v-model="productInfo.title"></el-input>
         </el-form-item>
-        <div style="display: flex; flex-direction: row;">
-          <el-form-item label="长" style="width: 15vw;">
+        <div style="display: flex; flex-direction: row;margin-left: 75px;">
+          <el-form-item label="长" label-width="70px" style="width: 13vw;" prop="length">
             <el-input v-model="productInfo.length"></el-input>
           </el-form-item>
-          <el-form-item label="宽" style="width: 15vw;">
+          <el-form-item label="宽" label-width="70px" style="width: 13vw;" prop="width">
             <el-input v-model="productInfo.width"></el-input>
           </el-form-item>
-          <el-form-item label="高" style="width: 15vw;">
+          <el-form-item label="高" label-width="70px" style="width: 13vw;" prop="height">
             <el-input v-model="productInfo.height"></el-input>
           </el-form-item>
-          <el-form-item label="重量" style="width: 15vw;">
+          <el-form-item label="重量" label-width="70px" style="width: 13vw;" prop="weight">
             <el-input v-model="productInfo.weight"></el-input>
           </el-form-item>
         </div>
-        <el-button @click="haha()">aaa</el-button>
-        <el-form-item label="商品sku编码">
+        <el-form-item label="商品sku编码" prop="sku">
           <el-input v-model="productInfo.skuCd"></el-input>
         </el-form-item>
 
-        <el-form-item label="商品ean编码">
+        <el-form-item label="商品ean编码" prop="ean">
           <el-input v-model="productInfo.ean"></el-input>
         </el-form-item>
 
-        <el-form-item label="商品型号">
+        <el-form-item label="商品型号" prop="model">
           <el-input v-model="productInfo.model"></el-input>
         </el-form-item>
 
-        <el-form-item label="借卖价格">
+        <el-form-item label="借卖价格" prop="retailPrice">
           <el-input v-model="productInfo.retailPrice"></el-input>
         </el-form-item>
 
-        <el-form-item label="保修期">
+        <el-form-item label="保修期" prop="warrantyDay">
           <el-input v-model="productInfo.warrantyDay"></el-input>
         </el-form-item>
 
-        <el-form-item label="eBay Description" style="margin-bottom: 60px;">
-          <editor ref="ebayTextEditor" :fileName="'file'" :canCrop="canCrop" :uploadUrl="uploadUrl" v-model="ebayContent"></editor>
+        <el-form-item label="eBay Description" style="margin-bottom: 12vh;">
+          <ebayEditor id="ebayTextEditor" ref="ebayTextEditor" :fileName="'file'" :canCrop="canCrop" :uploadUrl="uploadUrl"
+            v-model="productInfo.eBayDescription"></ebayEditor>
         </el-form-item>
 
-        <el-form-item label="Amazon Description" style="margin-top: 60px; margin-bottom: 80px;">
-          <editor ref="amazonTextEditor" :fileName="'file'" :canCrop="canCrop" :uploadUrl="uploadUrl" v-model="amazonContent"></editor>
+        <el-form-item label="Amazon Description" style="margin-top: 12vh; margin-bottom: 120px;">
+          <amazonEditor id="amazonTextEditor" ref="amazonTextEditor" :fileName="'file'" :canCrop="canCrop" :uploadUrl="uploadUrl"
+            v-model="productInfo.amazonDescription"></amazonEditor>
         </el-form-item>
       </el-form>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="ifOpenDialog = false">Cancel</el-button>
-        <el-button type="primary" @click="dialogFunction == 'Add Product' ? addProductInfo() : updateProductInfo()">Save</el-button>
+        <el-button type="primary" @click="dialogFunction == 'Add Product' ? addProductInfo() : updateProductInfo()">{{dialogFunction}}</el-button>
       </span>
     </el-dialog>
 
@@ -110,15 +111,16 @@
 </template>
 
 <script>
+  // import {
+  //   quillEditor
+  // } from 'vue-quill-editor'
+
+  import ebayEditor from '@/components/Quilleditor/index.vue'
+  import amazonEditor from '@/components/Quilleditor/index.vue'
+
   import 'quill/dist/quill.core.css'
   import 'quill/dist/quill.snow.css'
   import 'quill/dist/quill.bubble.css'
-
-  import {
-    quillEditor
-  } from 'vue-quill-editor'
-
-  import editor from '@/components/Quilleditor/index.vue'
   import {
     getAllProduct,
     searchProduct,
@@ -160,7 +162,9 @@
           warrantyDay: "",
           weight: "",
           width: "",
-          manId: 1
+          manId: 1,
+          eBayDescription: "",
+          amazonDescription: ""
         },
         // 副文本编辑器
         ebayContent: "",
@@ -168,11 +172,71 @@
         canCrop: false,
         /*测试上传图片的接口，返回结构为{url:''}*/
         uploadUrl: 'http://localhost:9040/upload/uploadImage',
+        addRules: {
+          title: [{
+              required: true,
+              message: '请输入活动名称',
+              trigger: 'blur'
+            },
+            {
+              min: 5,
+              max: 100,
+              message: '商品标题中包含搜索关键字，品牌名，颜色，大小，型号。',
+              trigger: 'blur'
+            }
+          ],
+          width: [{
+            required: true,
+            message: '请填写宽度',
+            trigger: 'blur'
+          }],
+          height: [{
+            required: true,
+            message: '请填写高度',
+            trigger: 'blur'
+          }],
+          length: [{
+            required: true,
+            message: '请填写长度',
+            trigger: 'blur'
+          }],
+          weight: [{
+            required: true,
+            message: '请填写重量',
+            trigger: 'blur'
+          }],
+          sku: [{
+            required: true,
+            message: '请填写sku',
+            trigger: 'blur'
+          }],
+          ean: [{
+            required: true,
+            message: '请填写ean',
+            trigger: 'change'
+          }],
+          model: [{
+            required: true,
+            message: '请填写型号',
+            trigger: 'change'
+          }],
+          retailPrice: [{
+            required: true,
+            message: '请填写价格',
+            trigger: 'change'
+          }],
+          warrantyDay: [{
+            required: true,
+            message: '请填写保修期',
+            trigger: 'blur'
+          }]
+        }
       }
     },
     components: {
-      quillEditor,
-      editor
+      // quillEditor,
+      ebayEditor,
+      amazonEditor
     },
     created() {
       this.getAllProductInfo();
@@ -224,16 +288,18 @@
         })
       },
       addProductInfo() {
-        return new Promise((resolve, reject) => {
-          addProduct(this.productInfo).then(response => {
-            this.$message.info("Add Product Successfully!")
-            this.ifOpenDialog = false;
-            this.getAllProductInfo()
-            resolve()
-          }).catch(error => {
-            reject(error);
-          })
-        })
+        console.log(this.productInfo.eBayDescription)
+        console.log(this.productInfo.amazonDescription)
+        // return new Promise((resolve, reject) => {
+        //   addProduct(this.productInfo).then(response => {
+        //     this.$message.info("Add Product Successfully!")
+        //     this.ifOpenDialog = false;
+        //     this.getAllProductInfo()
+        //     resolve()
+        //   }).catch(error => {
+        //     reject(error);
+        //   })
+        // })
       },
       getProductInfoWhenUpdate(row) {
         this.dialogFunction = "Modify Product"
@@ -256,7 +322,9 @@
               userId: "",
               warrantyDay: response.data.warrantyDay,
               weight: response.data.weight,
-              width: response.data.width
+              width: response.data.width,
+              eBayDescription: response.data.eBayDescription,
+              amazonDescription: response.data.amazonDescription
             }
             resolve()
           }).catch(error => {
@@ -321,7 +389,9 @@
           warrantyDay: "",
           weight: "",
           width: "",
-          manId: 1
+          manId: 1,
+          eBayDescription: "",
+          amazonDescription: ""
         }
       },
       changeit() {
@@ -330,6 +400,10 @@
       haha() {
         console.log(this.ebayContent)
         console.log(this.amazonContent)
+      },
+      openAddDialog(){
+        this.ifOpenDialog = true
+        this.dialogFunction = "Add Product"
       }
     }
   }

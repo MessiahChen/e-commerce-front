@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div
+    style="min-height: calc(100vh - 50px);"
+    v-loading="pageLoading" element-loading-text="拼命加载中"
+    element-loading-spinner="el-icon-loading">
     <el-row v-for="productsWithCat in productsWithCats">
       <div class="seckill-content">
         <h2 style="margin-left: 17px;">{{productsWithCat.catName}}</h2>
@@ -35,17 +38,19 @@
     name: "bvo-goods-view",
     data() {
       return {
+        pageLoading:true,
         currentDate: new Date(),
-        productsWithCats: [{
-          catName: "",
-          products: [{
-            proId: "",
-            image: "",
-            title: "",
-            minRetailPrice: "",
-            retailPrice: ""
-          }]
-        }],
+        productsWithCats: [],
+        // {
+        //   catName: "",
+        //   products: [{
+        //     proId: "",
+        //     image: "",
+        //     title: "",
+        //     minRetailPrice: "",
+        //     retailPrice: ""
+        //   }]
+        // }
       };
     },
     created() {
@@ -60,6 +65,7 @@
             console.log(response.data)
             resolve()
             this.tableLoading = false
+            this.pageLoading = false
           }).catch(error => {
             reject(error);
             this.tableLoading = false
