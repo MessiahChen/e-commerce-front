@@ -92,11 +92,11 @@
         </el-form-item>
 
         <el-form-item label="eBay Description" style="margin-bottom: 60px;">
-          <quill-editor ref="ebayTextEditor" v-model="ebayContent" :options="editorOption" style="height:250px;"></quill-editor>
+          <editor ref="ebayTextEditor" :fileName="'file'" :canCrop="canCrop" :uploadUrl="uploadUrl" v-model="ebayContent"></editor>
         </el-form-item>
 
         <el-form-item label="Amazon Description" style="margin-top: 60px; margin-bottom: 80px;">
-          <quill-editor ref="amazonTextEditor" v-model="amazonContent" :options="editorOption" style="height:250px;"></quill-editor>
+          <editor ref="amazonTextEditor" :fileName="'file'" :canCrop="canCrop" :uploadUrl="uploadUrl" v-model="amazonContent"></editor>
         </el-form-item>
       </el-form>
 
@@ -117,6 +117,8 @@
   import {
     quillEditor
   } from 'vue-quill-editor'
+
+  import editor from '@/components/Quilleditor/index.vue'
   import {
     getAllProduct,
     searchProduct,
@@ -160,15 +162,17 @@
           width: "",
           manId: 1
         },
+        // 副文本编辑器
         ebayContent: "",
         amazonContent: "",
-        editorOption: {
-          placeholder: "编辑文章内容"
-        },
+        canCrop: false,
+        /*测试上传图片的接口，返回结构为{url:''}*/
+        uploadUrl: 'http://localhost:9040/upload/uploadImage',
       }
     },
     components: {
-      quillEditor
+      quillEditor,
+      editor
     },
     created() {
       this.getAllProductInfo();
@@ -323,15 +327,9 @@
       changeit() {
         console.log(this.pageNum)
       },
-      onEditorChange({
-        editor,
-        html,
-        text
-      }) {
-        this.content = html;
-      },
       haha() {
         console.log(this.ebayContent)
+        console.log(this.amazonContent)
       }
     }
   }

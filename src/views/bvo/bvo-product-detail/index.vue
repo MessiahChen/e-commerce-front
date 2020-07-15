@@ -31,7 +31,8 @@
       getProductInfoDetail() {
         return new Promise((resolve, reject) => {
           getProductDetail({
-            proId: this.$route.params.id
+            proId: this.$route.params.id,
+            dsrId: 1
           }).then(response => {
 
             var data = response.data
@@ -40,6 +41,7 @@
               images: data.images,
               title: data.title,
               tags: [data.mainCatName, data.viceCatName],
+              retailPrice: data.retailPrice,
               minRetailPrice: data.minRetailPrice,
               promotion: ["跨店满减"],
               remarksNum: 100,
@@ -55,7 +57,8 @@
                   content: "10435663237"
                 }
               ],
-              remarks: []
+              remarks: [],
+              ifInWishlist: data.ifInWishlist
             }
             this.$store.commit("bvo/SET_PRODUCT_INFO", productInfo)
             console.log(this.$store.state.bvo.productInfo)
