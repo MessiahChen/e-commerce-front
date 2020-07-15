@@ -16,7 +16,7 @@
 
       <el-form-item label="Phone" prop="phone">
         <el-col :span="8">
-          <el-input v-model="ruleForm.phone" placeholder="Please enter the phone" value="ruleForm.phone"></el-input>
+          <el-input v-model="ruleForm.phone" placeholder="Please enter the phone" :value="ruleForm.phone"></el-input>
         </el-col>
       </el-form-item>
 
@@ -59,20 +59,55 @@
             message: 'Please enter the phone number',
             trigger: 'blur'
           }]
+        },
+        bvoInfo:{
+          dsrId:'',
+          name:'',
+          createdBy:'',
+          creationDate:'',
+          lastUpdateBy:'',
+          lastUpdateDate:'',
+          callCnt:'',
+          remark:'',
+          stsCd:'',
+          registerDate:'',
+          email:'',
+          phoneNumber:''
         }
       };
     },
     methods: {
       getBVOInfo(){
         var getBVOInfoVO = {
-          dsrID: 1
+          dsrId: 1
         }
         return new Promise((resolve, reject) => {
           getBVOInfo(getBVOInfoVO).then(response => {
             this.ruleForm.name = response.data.name;
             this.ruleForm.email = response.data.email;
             this.ruleForm.phone = response.data.phonenumber;
-            console.log("陈冠林");
+          }).catch(error => {
+            reject(error);
+          })
+        })
+      },
+      initBVOInfo(){
+        return new Promise((resolve, reject) => {
+          initBVOInfo(this.bvoInfo).then(response => {
+            this.$message.info("Init Successfully");
+            this.getBVOInfo();
+            resolve();
+          }).catch(error => {
+            reject(error);
+          })
+        })
+      },
+      updateBVOInfo(){
+        return new Promise((resolve, reject) => {
+          updateBVOInfo(this.bvoInfo).then(response => {
+            this.$message.info("Update Successfully");
+            resolve();
+            this.getBVOInfo();
           }).catch(error => {
             reject(error);
           })
@@ -95,6 +130,8 @@
       }
     },
     mounted() {
+      // TODO: 1.获取当前User的dsrId(man_buyer_id)
+      //       2.判断当前User对应dsr是否有数据。
       this.getBVOInfo();
     }
   }
