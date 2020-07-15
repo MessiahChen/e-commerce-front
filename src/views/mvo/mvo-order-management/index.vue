@@ -1,19 +1,59 @@
 <template>
   <div>
-<!--    <div class="search-form">-->
-<!--      <el-form :inline="true" :model="searchForm" class="demo-form-inline">-->
-<!--        <el-form-item label="Title:">-->
-<!--          <el-input v-model="searchForm.searchWord" placeholder="title"></el-input>-->
-<!--        </el-form-item>-->
-<!--        <el-form-item>-->
-<!--          <el-button type="primary" @click="onSearch">Search</el-button>-->
-<!--        </el-form-item>-->
-<!--      </el-form>-->
-<!--    </div>-->
+    <div class="search-form">
+      <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+        <el-form-item label="Title:">
+          <el-input v-model="searchForm.searchWord" placeholder="title"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button class="pan-btn tiffany-btn" @click="onSearch">Search</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
     <div class="tab-container">
       <el-tabs v-model="activeName" style="margin-top:2vh;" type="border-card" @tab-click="handleClick">
+        <el-tab-pane v-if="getSearch" label="Search Result" name="GR">
+          <el-table
+            v-loading="listLoading"
+            ref="apTable"
+            :data="searchList"
+            border
+            fit
+            highlight-current-row
+            style="width: 100%">
+            <el-table-column align="center" label="Title">
+              <template slot-scope="scope">
+                <el-button type="text" @click="gotoTitle(scope.row.productTitle)">{{ scope.row.productTitle }}</el-button>
+              </template>
+            </el-table-column>
+
+            <el-table-column  align="center" label="Order No" >
+              <template slot-scope="scope">
+                <span>{{ scope.row.productOrderNum }}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column  align="center" label="Total" >
+              <template slot-scope="scope">
+                <span>{{ scope.row.productPrice *scope.row.productNum }}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column  align="center" label="Status" >
+              <template slot-scope="scope">
+                <span v-if="scope.row.type == 1">Awaiting Payment</span>
+                <span v-if="scope.row.type == 2">Awaiting Shipment</span>
+                <span v-if="scope.row.type == 3">Shipped</span>
+                <span v-if="scope.row.type == 4">Completed</span>
+                <span v-if="scope.row.type == 5">Cancelled</span>
+              </template>
+            </el-table-column>
+
+          </el-table>
+        </el-tab-pane>
         <el-tab-pane label="Awaiting Payment" name="AP">
           <el-table
+            v-loading="listLoading"
             ref="apTable"
             :data="APlist"
             border
@@ -61,6 +101,7 @@
         </el-tab-pane>
         <el-tab-pane label="Awaiting Shipment" name="AS">
           <el-table
+            v-loading="listLoading"
             :data="ASlist"
             border
             fit
@@ -105,7 +146,7 @@
 
             <el-table-column  align="center" label="Operation" >
               <template slot-scope="scope">
-                <el-button type="primary" @click="onExpress(scope.row)"> Deliver</el-button>
+                <el-button class="pan-btn light-blue-btn" @click="onExpress(scope.row)"> Deliver</el-button>
               </template>
             </el-table-column>
 
@@ -113,6 +154,7 @@
         </el-tab-pane>
         <el-tab-pane label="Shiped" name="SH">
           <el-table
+            v-loading="listLoading"
             :data="SHlist"
             border
             fit
@@ -163,13 +205,13 @@
 
             <el-table-column  align="center" label="Tracking No" >
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTrack(scope.row.TrackingNo)">{{scope.row.TrackingNo}}</el-button>
+                <el-button type="text" @click="gotoTrack(scope.row.trackingNo)">{{scope.row.trackingNo}}</el-button>
               </template>
             </el-table-column>
 
             <el-table-column  align="center" label="Operation" >
               <template slot-scope="scope">
-                <el-button type="primary" @click="onCancel(scope.row)"> Cancel</el-button>
+                <el-button style="width: auto" class="pan-btn light-blue-btn" @click="onCancel(scope.row)"> Cancel</el-button>
               </template>
             </el-table-column>
 
@@ -177,6 +219,7 @@
         </el-tab-pane>
         <el-tab-pane label="Completed Orders" name="CO">
           <el-table
+            v-loading="listLoading"
             :data="COlist"
             border
             fit
@@ -221,7 +264,7 @@
 
             <el-table-column  align="center" label="Tracking No" >
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTrack(scope.row.TrackingNo)">{{scope.row.TrackingNo}}</el-button>
+                <el-button type="text" @click="gotoTrack(scope.row.trackingNo)">{{scope.row.trackingNo}}</el-button>
               </template>
             </el-table-column>
 
@@ -229,6 +272,7 @@
         </el-tab-pane>
         <el-tab-pane label="Cancelled Orders" name="CA">
           <el-table
+            v-loading="listLoading"
             :data="CAlist"
             border
             fit
@@ -276,8 +320,6 @@
       </el-tabs>
     </div>
     <div class="send-express-container">
-<!--      <el-button type="primary" @click="onExpress({saoId:123})" > Deliver</el-button>-->
-<!--      <el-button type="primary" @click="onCancel({saoId:123})" > Cancel</el-button>-->
       <div class="dialog-container">
         <el-dialog :visible.sync="sendExpressVisiable" title="Send Express">
           <el-form ref="express" :model="express" label-width="120px">
@@ -310,35 +352,56 @@
     name: "mvo-order-management",
     data() {
       return {
+        express:{
+          track: 0,
+          saoid: '',
+        },
         searchForm: {
           searchWord: ''
         },
+        cancelSaoid: '',
+        activeName: 'AP',
+        listLoading: true,
+        getSearch: false,
+        sendExpressVisiable: false,
         APlist: [],
         ASlist: [],
         SHlist: [],
         COlist: [],
         CAlist: [],
-        listQuery: {
-          page: 1,
-          limit: 5,
-          type: this.type
-        },
-        activeName: 'AP',
-        sendExpressVisiable: false,
-        express:{
-          track: 0,
-          saoid: '',
-        },
-        cancelSaoid: '',
-        loading: false
+        list: [],
+        searchList: [],
       }
     },
     created() {
       this.fetchData()
     },
+    computed:{
+      newAPList(){
+        return this.APlist;
+      },
+      newASList(){
+        return this.ASlist;
+      },
+      newSHList(){
+        return this.SHlist;
+      },
+      newCOList(){
+        return this.COlist;
+      },
+      newCAList(){
+        return this.CAlist;
+      },
+    },
     methods: {
       fetchData(){
-        this.loading = true;
+        this.listloading  = true;
+
+        this.APlist.splice(0,this.APlist.length)
+        this.ASlist.splice(0,this.ASlist.length)
+        this.SHlist.splice(0,this.SHlist.length)
+        this.COlist.splice(0,this.COlist.length)
+        this.CAlist.splice(0,this.CAlist.length)
 
         return new Promise((resolve, reject) => {
           mvoGetSalList({
@@ -347,8 +410,10 @@
             console.log('code');
             console.log(response.code)
             console.log(response)
+
             // 1. AwaitingPayment 2. AwaitingShipment 3. SHIPPED 已发货 4. Complete 已完成5. Canceled已取消
             for(let i = 0; i < response.data.length; i++){
+              this.list.push(response.data[i])
               if(response.data[i].type == 1){
                 // console.log('AP');
                 this.APlist.push(response.data[i])
@@ -372,24 +437,33 @@
               }
             }
             resolve()
-            this.loading = false
+            this.listLoading = false
           }).catch(error => {
             console.log(error);
             reject(error);
-            this.loading = false
           })
         })
       },
       // 查询，查询出什么不知道，与后端沟通
       onSearch() {
         console.log(this.searchForm.searchWord);
-        console.log(this.ASlist);
-        for (let i=0;i<this.ASlist.length;i++){
-          // console.log(this.ASlist[i].title);
-          if(this.ASlist[i].title.indexOf(this.searchForm.searchWord) != -1){
-            console.log(this.ASlist[i].title);
+        console.log(this.list);
+        this.searchList.splice(0,this.searchList.length)
+        for (let i=0;i<this.list.length;i++){
+          if(this.list[i].productTitle.indexOf(this.searchForm.searchWord) != -1){
+            console.log(this.list[i].productTitle);
+            this.searchList.push(this.list[i])
           }
         }
+        if(this.searchList.length != 0 && this.searchForm.searchWord != ''){
+          this.getSearch = true;
+          this.activeName = 'GR'
+        }else{
+          this.getSearch = false;
+          this.searchList.splice(0,this.searchList.length)
+          this.activeName = 'AP'
+        }
+        console.log(this.searchList);
       },
       handleClick(tab, event) {
         // console.log(tab, event);
@@ -412,6 +486,7 @@
 
       // 处理 onExpress 相关事件点击
       onExpress(item){
+        console.log(item);
         this.express.saoid = item.saoId
         this.sendExpressVisiable = true;
       },
@@ -428,10 +503,9 @@
             console.log('code');
             console.log(response.code)
             resolve()
-            this.loading = false
+            this.fetchData()
           }).catch(error => {
             reject(error);
-            this.loading = false
           })
         })
 
@@ -453,10 +527,9 @@
             console.log('code');
             console.log(response.code)
             resolve()
-            this.loading = false
+            this.fetchData()
           }).catch(error => {
             reject(error);
-            this.loading = false
           })
         })
 
@@ -475,7 +548,14 @@
 </script>
 
 
-<style scoped>
+<style scoped rel="stylesheet/scss" lang="scss">
+  @import "src/styles/btn.scss";
+
+  .pan-btn {
+    margin-left: 1vw;
+    width: 130px;
+  }
+
   .search-form{
     margin: 3vh;
   }
