@@ -79,19 +79,21 @@
     methods: {
       getBVOInfo(){
         var getBVOInfoVO = {
-          dsrId: 1
+          // TODO
+          dsrId: '4'
         }
         return new Promise((resolve, reject) => {
           getBVOInfo(getBVOInfoVO).then(response => {
             this.ruleForm.name = response.data.name;
             this.ruleForm.email = response.data.email;
-            this.ruleForm.phone = response.data.phonenumber;
+            this.ruleForm.phone = response.data.phoneNumber;
           }).catch(error => {
             reject(error);
           })
         })
       },
       initBVOInfo(){
+        this.readInfo();
         return new Promise((resolve, reject) => {
           initBVOInfo(this.bvoInfo).then(response => {
             this.$message.info("Init Successfully");
@@ -103,6 +105,7 @@
         })
       },
       updateBVOInfo(){
+        this.readInfo();
         return new Promise((resolve, reject) => {
           updateBVOInfo(this.bvoInfo).then(response => {
             this.$message.info("Update Successfully");
@@ -113,9 +116,22 @@
           })
         })
       },
+      readInfo(){
+        this.bvoInfo.name = this.ruleForm.name;
+        this.bvoInfo.email = this.ruleForm.email;
+        this.bvoInfo.phoneNumber = this.ruleForm.phone;
+        // TODO
+        this.bvoInfo.dsrId = '4';
+      },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
+            // if(this.ruleForm.name == '' && this.ruleForm.email == ''
+            // && this.ruleForm.phone == ''){
+            //   this.initBVOInfo();
+            // } else {
+              this.updateBVOInfo();
+            // }
             alert('submit!');
           } else {
             console.log('error submit!!');
