@@ -91,12 +91,12 @@
           <el-input v-model="productInfo.warrantyDay"></el-input>
         </el-form-item>
 
-        <el-form-item label="eBay Description">
-          <quill-editor ref="ebayTextEditor" v-model="ebayContent" :options="editorOption" style="height:300px;"></quill-editor>
+        <el-form-item label="eBay Description" style="margin-bottom: 60px;">
+          <quill-editor ref="ebayTextEditor" v-model="ebayContent" :options="editorOption" style="height:250px;"></quill-editor>
         </el-form-item>
 
-        <el-form-item label="Amazon Description">
-          <quill-editor ref="amazonTextEditor" v-model="amazonContent" :options="editorOption" style="height:300px;"></quill-editor>
+        <el-form-item label="Amazon Description" style="margin-top: 60px; margin-bottom: 80px;">
+          <quill-editor ref="amazonTextEditor" v-model="amazonContent" :options="editorOption" style="height:250px;"></quill-editor>
         </el-form-item>
       </el-form>
 
@@ -263,12 +263,12 @@
       batchDeleteProductInfo() {
         var data = this.$refs.productTable.selection;
         console.log(data)
-        
+
         var proIds = []
         for (var i = 0; i < data.length; i++) {
           proIds[i] = data[i].proId
         }
-        
+
         return new Promise((resolve, reject) => {
           batchDeletePro(proIds).then(response => {
             resolve()

@@ -68,18 +68,8 @@
 
 
 
-
-
-          <el-upload
-            ref="upload"
-            :action="uploadUrl"
-            multiple
-            accept="image/png, image/jpeg"
-            list-type="picture-card"
-            :auto-upload="false"
-            :file-list="urlList"
-            :http-request="uploadSectionFile"
-            :on-preview="handlePictureCardPreview"
+          <el-upload ref="upload" :action="uploadUrl" multiple accept="image/png, image/jpeg" list-type="picture-card"
+            :auto-upload="false" :file-list="urlList" :http-request="uploadSectionFile" :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove">
             <i class="el-icon-plus"></i>
           </el-upload>
@@ -88,6 +78,7 @@
           </el-dialog>
 
         </el-form-item>
+
 
 
         <el-form-item>
@@ -186,8 +177,8 @@
         dialogVisible: false,
         disabled: false,
         // 上传参数
-        uploadUrl:"",
-        urlList:[]
+        uploadUrl: "",
+        urlList: []
       }
     },
     computed: {
@@ -367,7 +358,6 @@
         console.log(productStatusVO)
         return new Promise((resolve, reject) => {
           changeStatus(productStatusVO).then(response => {
-            console.log(response)
             this.getAllproductImage()
             resolve()
           }).catch(error => {
@@ -375,61 +365,57 @@
           })
         })
       },
-      uploadSectionFile(params){
-        console.log(params)
+      getOSSPolicyBeforeUpload() {
+        return new Promise((resolve, reject) => {
+          axios.get('http://localhost:9040/aliyun/oss/policy').then((res) => {
+            resolve(res)
+          }).catch((err) => {
+            reject(err)
+          })
+        })
 
+        // return new Promise((resolve, reject) => {
+        //   axios.get("http://localhost:9040/aliyun/oss/policy").then()
+        //   getOSSPolicy().then(response => {
+        //     console.log(response)
+        //     resolve()
+        //   }).catch(error => {
+        //     reject(error)
+        //   })
+        // })
+      },
+      async uploadSectionFile(params) {
+        console.log(params)
         console.log(this.$refs.upload.uploadFiles)
 
+        let policy = await this.getOSSPolicyBeforeUpload()
+        let res = policy.data
+        console.log(res)
+        let uploadFileVO = new FormData();
+        //多个文件上传
+        uploadFileVO.append("Key", res.data.dir + params.file.name);
+        uploadFileVO.append("OSSAccessKeyId", res.data.accessKeyId);
+        uploadFileVO.append("Policy", res.data.policy);
+        uploadFileVO.append("Signature", res.data.signature);
+
+        uploadFileVO.append("success_action_status", '200');
+        uploadFileVO.append("callback", res.data.callback);
+        uploadFileVO.append("dir", res.data.dir);
+        uploadFileVO.append("host", res.data.host);
+        uploadFileVO.append("file", params.file);
+
+        let fileUrl = res.data.host + "/" + res.data.dir + params.file.name
+        console.log(fileUrl)
+        
         return new Promise((resolve, reject) => {
-          getOSSPolicy().then(response => {
-            let uploadFileVO = new FormData();
-            //多个文件上传
-            uploadFileVO.append("Key", response.data.dir + params.file.name);
-            uploadFileVO.append("OSSAccessKeyId", response.data.accessKeyId);
-            uploadFileVO.append("Policy", response.data.policy);
-            uploadFileVO.append("Signature", response.data.signature);
-
-            uploadFileVO.append("success_action_status", '200');
-            // uploadFileVO.append("callback", response.data.callback);
-            uploadFileVO.append("dir", response.data.dir);
-            uploadFileVO.append("host", response.data.host);
-            uploadFileVO.append("file", params.file);
-
-            console.log(response.data.host + "/" + response.data.dir + params.file.name)
-            // var uploadFileVO = {
-            //   accessKeyId: response.data.accessKeyId,
-            //   callback: response.data.callback,
-            //   dir: response.data.dir,
-            //   host: response.data.host,
-            //   policy: response.data.policy,
-            //   signature: response.data.signature,
-            //   file: params.file
-            // }
-
-            return new Promise((resolve, reject) => {
-              uploadToOSS(uploadFileVO).then(response => {
-                console.log(response)
-                resolve()
-              }).catch(error => {
-                reject(error)
-              })
-            })
+          uploadToOSS(uploadFileVO).then(response => {
+            this.$message.success("上传成功！")
+            console.log(response)
             resolve()
           }).catch(error => {
             reject(error)
           })
         })
-
-
-
-
-        // var self = this,
-        //     file = params.file,
-        //     fileType = file.type,
-        //     isImage = fileType.indexOf('image') != -1,
-        //     isVideo = fileType.indexOf('video') != -1,
-        //     file_url = self.$refs.upload.uploadFiles[0].url;
-
       },
       handleRemove(file, fileList) {
         console.log(file, fileList);
