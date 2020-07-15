@@ -5,10 +5,10 @@
     </div>
     <div class="login-container">
       <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on"
-               label-position="left">
+        label-position="left">
 
         <div class="title-container">
-          <h3 class="title" >Cross-border E-commerce Borrow-sell Platform</h3>
+          <h3 class="title">Cross-border E-commerce Borrow-sell Platform</h3>
         </div>
         <br>
 
@@ -17,25 +17,26 @@
         </div>
 
         <el-form-item prop="username">
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>
+          <span class="svg-container">
+            <svg-icon icon-class="user" />
+          </span>
           <el-input ref="username" v-model="loginForm.username" placeholder="Username" name="username" type="text"
-                    tabindex="1" auto-complete="on" />
+            tabindex="1" auto-complete="on" />
         </el-form-item>
 
         <el-form-item prop="password">
-        <span class="svg-container">
-          <svg-icon icon-class="password" />
-        </span>
+          <span class="svg-container">
+            <svg-icon icon-class="password" />
+          </span>
           <el-input :key="passwordType" ref="password" v-model="loginForm.password" :type="passwordType" placeholder="Password"
-                    name="password" tabindex="2" auto-complete="on" @keyup.enter.native="handleLogin" />
+            name="password" tabindex="2" auto-complete="on" @keyup.enter.native="handleLogin" />
           <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-        </span>
+            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+          </span>
         </el-form-item>
 
         <el-button :loading="loading" type="primary" style="width:40%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+        <el-button type="primary" style="width:40%;margin-bottom:30px;" @click="hhahah">Login</el-button>
 
         <!--      <div class="tips">
                 <span style="margin-right:20px;">username: admin</span>
@@ -58,6 +59,7 @@
     validUsername
   } from '@/utils/validate'
 
+  import axios from 'axios'
   export default {
     name: 'Login',
     data() {
@@ -76,7 +78,7 @@
         }
       }
       return {
-        imgSrc:require('@/assets/bg_images/bg1.jpg'),
+        imgSrc: require('@/assets/bg_images/bg1.jpg'),
         loginForm: {
           username: 'admin',
           password: '111111'
@@ -107,6 +109,15 @@
       }
     },
     methods: {
+      hhahah() {
+        axios.get("http://localhost:9010/user/refreshToken", {
+          headers : {
+            Authorization: "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdHJpbmciLCJjcmVhdGVkIjoxNTk0ODE3NzM0MTUzLCJleHAiOjE1OTU0MjI1MzR9._A401STtXdNqyfOum7yp1fI4G5FNIDJztMCTM5U6qtNJPjWMiC2QOixN6kT6-lQk8ywsqyDinAOipLmWtQxUKQ"
+          }
+        }).then(response => {
+          console.log(response)
+        })
+      },
       showPwd() {
         if (this.passwordType === 'password') {
           this.passwordType = ''
@@ -171,7 +182,7 @@
         caret-color: $cursor;
 
         &:-webkit-autofill {
-          box-shadow: 0 0 100px rgb(121,175,212) inset !important;
+          box-shadow: 0 0 100px rgb(121, 175, 212) inset !important;
           -webkit-text-fill-color: $cursor !important;
         }
       }
@@ -191,10 +202,11 @@
   $dark_gray:#000000;
   $light_gray:#eee;
 
-  .background{
-    width:100%;
-    height:100%;  /**宽高100%是为了图片铺满屏幕 */
-    z-index:-1;
+  .background {
+    width: 100%;
+    height: 100%;
+    /**宽高100%是为了图片铺满屏幕 */
+    z-index: -1;
     position: absolute;
   }
 
@@ -210,7 +222,7 @@
       padding: 160px 35px 0;
       margin: 0 auto;
       overflow: hidden;
-      text-align:center;
+      text-align: center;
     }
 
     .tips {
