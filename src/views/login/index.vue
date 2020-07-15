@@ -8,7 +8,8 @@
                label-position="left">
 
         <div class="title-container">
-          <h3 class="title" >Cross-border E-commerce Borrow-sell Platform</h3>
+          <h1 class="title" >Cross-border E-commerce </h1>
+          <h1 class="title" >Borrow-sell Platform</h1>
         </div>
         <br>
 
@@ -237,7 +238,7 @@
       position: relative;
 
       .title {
-        font-size: 26px;
+        font-size: 30px;
         color: $light_gray;
         margin: 0px auto 40px auto;
         text-align: center;

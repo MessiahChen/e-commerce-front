@@ -3,7 +3,7 @@
     <div class="search-form">
       <el-form :inline="true" :model="searchForm" class="demo-form-inline">
         <el-form-item label="Title:">
-          <el-input v-model="searchForm.searchWord" placeholder="title"></el-input>
+          <el-input style="width: 50vh" v-model="searchForm.searchWord" placeholder="Enter title to search"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button class="pan-btn tiffany-btn" @click="onSearch">Search</el-button>
