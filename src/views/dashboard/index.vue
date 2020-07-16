@@ -1,7 +1,7 @@
 <template>
-  <div class="dashboard-container">
+  <div class="dashboard-container" align="center">
     <div class="dashboard-text">name: {{ name }}</div>
-    <el-image :src="imgSrc" width="100%" height="100%" alt="" />
+    <el-image :src="imgSrc" width="100%" height="100%" alt="ECO电商平台" />
   </div>
 </template>
 

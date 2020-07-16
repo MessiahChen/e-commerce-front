@@ -45,8 +45,9 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination background layout="prev, pager, next" :page-size="pageSize" :page-count="totalPage" :current-page="pageNum"
-        :hide-on-single-page="ifOnlyOnePage" style="margin: 1vw auto;text-align: center;">
+      <el-pagination background layout="prev, pager, next" :page-size="pageSize" :page-count="totalPage"
+        :current-page.sync="pageNum" :hide-on-single-page="ifOnlyOnePage" style="margin: 1vw auto;text-align: center;"
+        @current-change="getAllproductImage()">
       </el-pagination>
     </el-card>
 
@@ -164,7 +165,8 @@
         productImage: {
           proId: "",
           userId: "",
-          category: []
+          category: [],
+          images:[]
         },
         productUpdateImage: {
           proId: "",
@@ -347,7 +349,8 @@
         this.productImage = {
           proId: "",
           userId: "",
-          category: []
+          category: [],
+          images:[]
         }
       },
       handleStatus(row) {
@@ -406,11 +409,11 @@
 
         let fileUrl = res.data.host + "/" + res.data.dir + params.file.name
         console.log(fileUrl)
-        
+
         return new Promise((resolve, reject) => {
           uploadToOSS(uploadFileVO).then(response => {
-            this.$message.success("上传成功！")
             console.log(response)
+            this.productImage.images.push(response.data)
             resolve()
           }).catch(error => {
             reject(error)

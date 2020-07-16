@@ -70,7 +70,7 @@
             <el-input v-model="productInfo.weight"></el-input>
           </el-form-item>
         </div>
-        <el-form-item label="商品sku编码" prop="sku">
+        <el-form-item label="商品sku编码" prop="skuCd">
           <el-input v-model="productInfo.skuCd"></el-input>
         </el-form-item>
 
@@ -92,7 +92,7 @@
 
         <el-form-item label="eBay Description" style="margin-bottom: 12vh;">
           <ebayEditor id="ebayTextEditor" ref="ebayTextEditor" :fileName="'file'" :canCrop="canCrop" :uploadUrl="uploadUrl"
-            v-model="productInfo.eBayDescription"></ebayEditor>
+            v-model="productInfo.ebayDescription"></ebayEditor>
         </el-form-item>
 
         <el-form-item label="Amazon Description" style="margin-top: 12vh; margin-bottom: 120px;">
@@ -163,7 +163,7 @@
           weight: "",
           width: "",
           manId: 1,
-          eBayDescription: "",
+          ebayDescription: "",
           amazonDescription: ""
         },
         // 副文本编辑器
@@ -205,7 +205,7 @@
             message: '请填写重量',
             trigger: 'blur'
           }],
-          sku: [{
+          skuCd: [{
             required: true,
             message: '请填写sku',
             trigger: 'blur'
@@ -288,18 +288,18 @@
         })
       },
       addProductInfo() {
-        console.log(this.productInfo.eBayDescription)
+        console.log(this.productInfo.ebayDescription)
         console.log(this.productInfo.amazonDescription)
-        // return new Promise((resolve, reject) => {
-        //   addProduct(this.productInfo).then(response => {
-        //     this.$message.info("Add Product Successfully!")
-        //     this.ifOpenDialog = false;
-        //     this.getAllProductInfo()
-        //     resolve()
-        //   }).catch(error => {
-        //     reject(error);
-        //   })
-        // })
+        return new Promise((resolve, reject) => {
+          addProduct(this.productInfo).then(response => {
+            this.$message.info("Add Product Successfully!")
+            this.ifOpenDialog = false;
+            this.getAllProductInfo()
+            resolve()
+          }).catch(error => {
+            reject(error);
+          })
+        })
       },
       getProductInfoWhenUpdate(row) {
         this.dialogFunction = "Modify Product"
@@ -323,7 +323,7 @@
               warrantyDay: response.data.warrantyDay,
               weight: response.data.weight,
               width: response.data.width,
-              eBayDescription: response.data.eBayDescription,
+              ebayDescription: response.data.ebayDescription,
               amazonDescription: response.data.amazonDescription
             }
             resolve()
@@ -390,7 +390,7 @@
           weight: "",
           width: "",
           manId: 1,
-          eBayDescription: "",
+          ebayDescription: "",
           amazonDescription: ""
         }
       },
