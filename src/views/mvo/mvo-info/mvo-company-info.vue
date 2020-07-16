@@ -46,15 +46,17 @@
   } from '@/network/mvo-man-info.js'
 
   export default {
-    components: { Tinymce },
+    components: {
+      Tinymce
+    },
     data() {
       return {
         ruleForm: {
           companyNameCN: '',
           companyNameEN: '',
-          intro:'',
-          type:'',
-          url:'',
+          intro: '',
+          type: '',
+          url: '',
         },
         rules: {
           companyNameCN: [{
@@ -82,6 +84,21 @@
             message: 'Please enter the GMC Report URL',
             trigger: 'blur'
           }]
+        },
+        companyInfo: {
+          manId: '',
+          nameEn: '',
+          nameCn: '',
+          gmcReportType: '',
+          gmcReportUrl: '',
+          createdBy: '',
+          creationDate: '',
+          lastUpdateBy: '',
+          lastUpdateDate: '',
+          callCnt: '',
+          remark: '',
+          stsCd: '',
+          description: ''
         }
       };
     },
@@ -95,13 +112,35 @@
           getCompany(getCompanyVO).then(response => {
             this.ruleForm.companyNameCN = response.data.nameCn;
             this.ruleForm.companyNameEN = response.data.nameEn;
+            // TODO: 后端与数据库交互的bug
             var intro = response.data.description;
             console.log(intro);
             console.log(response.data.description);
-            this.$refs.editor.setContent("intro");
+            this.$refs.editor.setContent("// TODO");
             this.ruleForm.type = response.data.gmcReportType;
             this.ruleForm.url = response.data.gmcReportUrl;
             resolve();
+          }).catch(error => {
+            reject(error);
+          })
+        })
+      },
+      readComanyInfo(){
+        this.companyInfo.nameCn = this.ruleForm.companyNameCN;
+        this.companyInfo.nameEn = this.ruleForm.companyNameEN;
+        this.companyInfo.description = this.ruleForm.intro;
+        this.companyInfo.gmcReportType = this.ruleForm.type;
+        this.companyInfo.gmcReportUrl = this.ruleForm.url;
+        // TODO
+        this.companyInfo.manId = '1';
+      },
+      updateCompany() {
+        this.readComanyInfo();
+        return new Promise((resolve, reject) => {
+          updateCompany(this.companyInfo).then(response => {
+            this.$message.info("Modify companyInfo Successfully!")
+            resolve()
+            this.getAllProductInfo()
           }).catch(error => {
             reject(error);
           })
