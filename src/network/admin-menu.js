@@ -1,66 +1,42 @@
 import request from '@/utils/request'
 
-export function getAllCdm(getAllCdmVO) {
+export function getAllMenu(getAllMenuVO) {
   return request({
-    url: 'http://localhost:9010/dataDictionary/getAllCdmInfo',
+    url: 'http://localhost:9010/dataDictionary/getAllMenuInfo',
     method: 'post',
     header: {
       'Content-Type': 'application/json' //如果写成contentType会报错
     },
-    data: getAllCdmVO
+    data: getAllMenuVO
   })
 }
 
-export function searchCdm(searchCdmVO) {
+export function searchMenu(searchMenuVO) {
   return request({
-    url: 'http://localhost:9010/dataDictionary/searchCdm',
+    url: 'http://localhost:9010/dataDictionary/searchMenu',
     method: 'post',
     header: {
       'Content-Type': 'application/json' //如果写成contentType会报错
     },
-    data: searchCdmVO
+    data: searchMenuVO
   })
 }
 
-export function addCdm(addCdmVO){
+export function addMenu(addMenuVO){
   return request({
-    url: 'http://localhost:9010/dataDictionary/addCdmInfo',
+    url: 'http://localhost:9010/dataDictionary/addMenuInfo',
     method: 'put',
     header: {
       'Content-Type': 'application/json' //如果写成contentType会报错
     },
-    data: addCdmVO
+    data: addMenuVO
   })
 }
 
-export function deleteCdm(cdmId){
+export function deleteMenu(menuId){
   return request({
-    url: 'http://localhost:9010/dataDictionary/deleteCdm',
+    url: 'http://localhost:9010/dataDictionary/deleteMenu',
     method: 'delete',
-    params: cdmId
+    params: menuId
   })
 }
-
-export function batchDeleteCdm(cdmIds){
-  return request({
-    url: 'http://localhost:9010/dataDictionary/batchDeleteCdm',
-    method: 'post',
-    data: cdmIds
-  })
-}
-
-export function getCdmWhenUpdate(cdmId){
-  return request({
-    url: 'http://localhost:9010/dataDictionary/getCdmWhenUpdate',
-    method: 'get',
-    params: cdmId
-  })
-}
-export function updateCdm(CdmUpdateVO){
-  return request({
-    url: 'http://localhost:9010/dataDictionary/updateCdm',
-    method: 'post',
-    data: CdmUpdateVO
-  })
-}
-

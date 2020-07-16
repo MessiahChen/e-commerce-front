@@ -1,66 +1,39 @@
 import request from '@/utils/request'
 
-export function getAllCdm(getAllCdmVO) {
+export function getAllRole(getAllRoleVO) {
   return request({
-    url: 'http://localhost:9010/dataDictionary/getAllCdmInfo',
+    url: 'http://localhost:9010/dataDictionary/getAllRoleInfo',
     method: 'post',
     header: {
       'Content-Type': 'application/json' //如果写成contentType会报错
     },
-    data: getAllCdmVO
+    data: getAllRoleVO
   })
 }
 
-export function searchCdm(searchCdmVO) {
+export function addRole(addRoleVO){
   return request({
-    url: 'http://localhost:9010/dataDictionary/searchCdm',
-    method: 'post',
-    header: {
-      'Content-Type': 'application/json' //如果写成contentType会报错
-    },
-    data: searchCdmVO
-  })
-}
-
-export function addCdm(addCdmVO){
-  return request({
-    url: 'http://localhost:9010/dataDictionary/addCdmInfo',
+    url: 'http://localhost:9010/dataDictionary/addRoleInfo',
     method: 'put',
     header: {
       'Content-Type': 'application/json' //如果写成contentType会报错
     },
-    data: addCdmVO
+    data: addRoleVO
   })
 }
 
-export function deleteCdm(cdmId){
+export function deleteRole(roleId){
   return request({
-    url: 'http://localhost:9010/dataDictionary/deleteCdm',
+    url: 'http://localhost:9010/dataDictionary/deleteRole',
     method: 'delete',
-    params: cdmId
+    params: roleId
   })
 }
 
-export function batchDeleteCdm(cdmIds){
+export function updateRole(roleUpdateVO){
   return request({
-    url: 'http://localhost:9010/dataDictionary/batchDeleteCdm',
+    url: 'http://localhost:9010/dataDictionary/updateRole',
     method: 'post',
-    data: cdmIds
+    data: roleUpdateVO
   })
 }
-
-export function getCdmWhenUpdate(cdmId){
-  return request({
-    url: 'http://localhost:9010/dataDictionary/getCdmWhenUpdate',
-    method: 'get',
-    params: cdmId
-  })
-}
-export function updateCdm(CdmUpdateVO){
-  return request({
-    url: 'http://localhost:9010/dataDictionary/updateCdm',
-    method: 'post',
-    data: CdmUpdateVO
-  })
-}
-
