@@ -310,6 +310,7 @@
 
     export default {
       name: "bvo-order-management",
+      inject: ["reload"],
       data() {
         return {
           searchForm: {

@@ -6,6 +6,8 @@ import settings from './modules/settings'
 import user from './modules/user'
 import order from './modules/order'
 import bvo from './modules/bvo.js'
+import permission from './modules/permission.js'
+import tagsView from './modules/tagsView.js'
 
 Vue.use(Vuex)
 
@@ -16,6 +18,8 @@ const store = new Vuex.Store({
     user,
     order,
     bvo,
+    permission,
+    tagsView
   },
   getters
 })

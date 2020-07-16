@@ -24,7 +24,7 @@ export function addBrand(addBrandVO){
 
 export function deleteBrand(brdId){
   return request({
-    url: 'http://localhost:9020/brand/deletebrand',
+    url: 'http://localhost:9020/brand/deleteBrand',
     method: 'delete',
     params: brdId
   })

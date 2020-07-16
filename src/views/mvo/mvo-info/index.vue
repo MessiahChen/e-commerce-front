@@ -29,7 +29,7 @@
         <el-table-column prop="boperation" label="Operation">
           <template slot-scope="{row,$index}">
             <el-button type="primary" circle size='small' icon="el-icon-edit" @click="editBrand('ruleForm')"></el-button>
-            <el-button type="danger" circle size='small' icon="el-icon-delete" @click="handleDelete(row,$index)"></el-button>
+            <el-button type="danger" circle size='small' icon="el-icon-delete" @click="deleteBrand(row)"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -72,7 +72,13 @@
     initCompany,
     updateCompany
   } from '@/network/mvo-man-info.js'
-  
+  import {
+    getBrands,
+    addBrand,
+    deleteBrand,
+    updateBrand
+  } from '@/network/mvo-brand-info.js'
+
   export default {
     data() {
       return {
@@ -89,11 +95,9 @@
           url: '',
           coperation: ''
         }],
-        brandData: [{
-          bname: '',
-          logo: '',
-          boperation: ''
-        }]
+        brandData: [],
+        pageSize: 10,
+        pageNum: 1
       }
     },
     methods: {
@@ -112,6 +116,45 @@
               coperation: ''
             }];
             resolve();
+          }).catch(error => {
+            reject(error);
+          })
+        })
+      },
+      getBrands(){
+        var getAllBrandVO = {
+          // TODO
+          manId: 1,
+          pageNum: this.pageNum,
+          pageSize: this.pageSize
+        }
+        return new Promise((resolve, reject) => {
+          getBrands(getAllBrandVO).then(response => {
+            this.totalPage = response.data.totalPage;
+            this.pageNum = response.data.pageNum;
+            var list = response.data.list;
+            for(let i in response.data.list){
+              this.brandData.push({brdId:list[i].brdId, bname:list[i].nameEn, logo:list[i].remark});
+            }
+            resolve()
+            console.log(response.data)
+            console.log(response.data.list)
+            console.log(this.pageSize)
+            console.log(this.totalPage)
+            console.log(this.pageNum)
+          }).catch(error => {
+            reject(error);
+          })
+        })
+      },
+      deleteBrand(row){
+        return new Promise((resolve, reject) => {
+          deleteBrand({
+            brdId: row.brdId
+          }).then(response => {
+            resolve();
+            this.getBrands();
+            location.reload();
           }).catch(error => {
             reject(error);
           })
@@ -157,15 +200,16 @@
       closeDialog() {
         this.dialogFormVisible = false;
       },
-      handleDelete(row, index) {
-        this.$notify({
-          title: 'Success',
-          message: 'Delete Successfully',
-          type: 'success',
-          duration: 2000
-        })
-        this.brandData.splice(index, 1)
-      },
+      // handleDelete(row, index) {
+      //   this.$notify({
+      //     title: 'Success',
+      //     message: 'Delete Successfully',
+      //     type: 'success',
+      //     duration: 2000
+      //   })
+      //   // this.brandData.splice(index, 1)
+      //   console.log(row);
+      // },
       handleSubmit() {
         const arr = Object.keys(this.listObj).map(v => this.listObj[v])
         if (!this.checkAllSuccess()) {
@@ -222,6 +266,7 @@
     },
     mounted() {
       this.getCompany();
+      this.getBrands();
     }
   }
 </script>

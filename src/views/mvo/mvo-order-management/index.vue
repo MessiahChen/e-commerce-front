@@ -350,6 +350,7 @@
 
   export default {
     name: "mvo-order-management",
+    inject: ["reload"],
     data() {
       return {
         express:{
@@ -503,7 +504,7 @@
             console.log('code');
             console.log(response.code)
             resolve()
-            this.fetchData()
+            this.reload();
           }).catch(error => {
             reject(error);
           })
@@ -527,7 +528,7 @@
             console.log('code');
             console.log(response.code)
             resolve()
-            this.fetchData()
+            this.reload();
           }).catch(error => {
             reject(error);
           })

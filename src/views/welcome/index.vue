@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container" align="center">
-    <div class="dashboard-text">name: {{ name }}</div>
+    <div class="dashboard-text"> {{ name }}</div>
     <el-image :src="imgSrc" width="100%" height="100%" alt="ECO电商平台" />
   </div>
 </template>
@@ -12,7 +12,7 @@ export default {
   name: 'Welcome',
   data(){
     return {
-      imgSrc:require('@/assets/images/orange-icon.png'),
+      imgSrc:require('@/assets/images/orange-brand.png'),
     }
   },
   computed: {
