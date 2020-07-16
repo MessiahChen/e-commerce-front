@@ -200,7 +200,7 @@ export const constantRoutes = [
       {
         path: 'parameter',
         component: () => import('@/views/admin/admin-parameter/index'),
-        name: 'storeManagement',
+        name: 'parameter',
         meta: { title: 'Parameter Manage', icon: 'component', affix: true }
       },
       {
@@ -208,6 +208,18 @@ export const constantRoutes = [
         component: () => import('@/views/admin/admin-withdraw-aduit'),
         name: 'goodsHistory',
         meta: { title: 'Withdraw Aduit', icon: 'money', affix: true }
+      },
+      {
+        path: 'menu',
+        component: () => import('@/views/admin/admin-menu/index'),
+        name: 'menu',
+        meta: { title: 'Menu Manage', icon: 'money', affix: true }
+      },
+      {
+        path: 'role',
+        component: () => import('@/views/admin/admin-role/index'),
+        name: 'role',
+        meta: { title: 'Role Manage', icon: 'money', affix: true }
       }
     ]
   },
