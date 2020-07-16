@@ -1,24 +1,24 @@
 <template>
-  <div
-    style="min-height: calc(100vh - 50px);"
-    v-loading="pageLoading" element-loading-text="拼命加载中"
+  <div style="min-height: calc(100vh - 50px);" v-loading="pageLoading" element-loading-text="拼命加载中"
     element-loading-spinner="el-icon-loading">
     <el-row v-for="productsWithCat in productsWithCats">
       <div class="seckill-content">
         <h2 style="margin-left: 17px;">{{productsWithCat.catName}}</h2>
         <el-card class="seckill-item" v-for="product in productsWithCat.products" :key="product.proId" shadow="hover">
-          <div class="seckill-item-img">
-            <router-link :to="'productDetail/'+ product.proId"><img :src="product.image"></router-link>
-          </div>
-          <div class="seckill-item-info">
-            <p>{{product.title}}</p>
-            <p>
-              <span class="seckill-price text-danger">
-                <svg-icon icon-class="money" />{{product.minRetailPrice}}
-              </span>
-              <span class="seckill-retail-price"><s>{{product.retailPrice}}</s></span>
-            </p>
-          </div>
+          <router-link :to="'productDetail/'+ product.proId">
+            <div class="seckill-item-img">
+              <img :src="product.image">
+            </div>
+            <div class="seckill-item-info">
+              <p>{{product.title}}</p>
+              <p>
+                <span class="seckill-price text-danger">
+                  <svg-icon icon-class="money" />{{product.minRetailPrice}}
+                </span>
+                <span class="seckill-retail-price"><s>{{product.retailPrice}}</s></span>
+              </p>
+            </div>
+          </router-link>
         </el-card>
       </div>
     </el-row>
@@ -38,19 +38,9 @@
     name: "bvo-goods-view",
     data() {
       return {
-        pageLoading:true,
+        pageLoading: true,
         currentDate: new Date(),
-        productsWithCats: [],
-        // {
-        //   catName: "",
-        //   products: [{
-        //     proId: "",
-        //     image: "",
-        //     title: "",
-        //     minRetailPrice: "",
-        //     retailPrice: ""
-        //   }]
-        // }
+        productsWithCats: [],// {catName: "", products: [{proId: "",image: "",title: "",minRetailPrice: "",retailPrice: ""}]}
       };
     },
     created() {
@@ -77,6 +67,14 @@
 </script>
 
 <style scoped>
+  p {
+    width: 200px;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
   .seckill-content {
     width: 100%;
     height: 100%;

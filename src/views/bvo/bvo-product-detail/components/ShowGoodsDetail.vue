@@ -1,86 +1,37 @@
 <template>
-  <div>
-
-    <div class="item-intro-detail" ref="itemIntroDetail">
-      <div class="item-intro-nav item-tabs">
-        <el-tabs>
-          <el-tab-pane label="eBay Description">
-            <div class="remarks-title">
-              <span>eBay Description</span>
-            </div>
-            <div class="item-intro-img" ref="itemIntroGoods">
-              <img :src="item" alt="" v-for="(item,index) in productInfo.goodsDetail" :key="index">
-            </div>
-          </el-tab-pane>
-          <el-tab-pane label="Amazon Description">
-            <div class="remarks-title">
-              <span>Amazon Description</span>
-            </div>
-            <div class="item-intro-img" ref="itemIntroGoods">
-              <img :src="item" alt="" v-for="(item,index) in productInfo.goodsDetail" :key="index">
-            </div>
-          </el-tab-pane>
-          <el-tab-pane label="规格参数">
-            <div class="remarks-title">
-              <span>规格参数</span>
-            </div>
-            <div class="item-param-container">
-              <span class="item-param-box" v-for="(item,index) in productInfo.param" :key="index">
-                <span class="item-param-title">{{item.title}}: </span>
-                <span class="item-param-content">{{item.content}}</span>
-              </span>
-            </div>
-          </el-tab-pane>
-          <el-tab-pane label="售后保障">
-            <ShowProductWarranty></ShowProductWarranty>
-          </el-tab-pane>
-          <!-- <el-tab-pane label="商品评价">
-              <div class="remarks-container">
-                <div class="remarks-title">
-                  <span>商品评价</span>
-                </div>
-                <div class="remarks-analyse-box">
-                  <div class="remarks-analyse-goods">
-                    <i-circle :percent="productInfo.remarks.goodAnalyse" stroke-color="#e4393c">
-                      <span class="remarks-analyse-num">{{productInfo.remarks.goodAnalyse}}%</span>
-                      <p class="remarks-analyse-title">好评率</p>
-                    </i-circle>
-                  </div>
-                  <div class="remarks-analyse-tags">
-                    <Tag checkable :color="tagsColor[index % 4]" v-for="(item,index) in productInfo.remarks.remarksTags" :key="index">{{item}}</Tag>
-                  </div>
-                </div>
-                <div class="remarks-bar">
-                  <span>追评({{productInfo.remarks.remarksNumDetail[0]}})</span>
-                  <span>好评({{productInfo.remarks.remarksNumDetail[1]}})</span>
-                  <span>中评({{productInfo.remarks.remarksNumDetail[2]}})</span>
-                  <span>差评({{productInfo.remarks.remarksNumDetail[3]}})</span>
-                </div>
-                <div class="remarks-box" v-for="(item,index) in productInfo.remarks.detail" :key="index">
-                  <div class="remarks-user">
-                    <Avatar icon="person" />
-                    <span class="remarks-user-name">{{item.username}}</span>
-                  </div>
-                  <div class="remarks-content-box">
-                    <p>
-                      <Rate disabled :value="item.values" allow-half class="remarks-star"></Rate>
-                    </p>
-                    <p class="remarks-content">{{item.content}}</p>
-                    <p class="remarks-sub">
-                      <span class="remarks-item">{{item.goods}}</span>
-                      <span class="remarks-time">{{item.time}}</span>
-                    </p>
-                  </div>
-                </div>
-                <div class="remarks-page">
-                  <Page :total="40" size="small" show-elevator show-sizer></Page>
-                </div>
-              </div>
-            </el-tab-pane> -->
-        </el-tabs>
-      </div>
+  <div class="item-intro-detail" ref="itemIntroDetail">
+    <div class="item-intro-nav item-tabs">
+      <el-tabs>
+        <el-tab-pane label="eBay Description">
+          <div class="remarks-title">
+            <span>eBay Description</span>
+          </div>
+          <div class="item-intro-img" ref="itemIntroGoods" v-html="productInfo.ebayDescription">
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="Amazon Description">
+          <div class="remarks-title">
+            <span>Amazon Description</span>
+          </div>
+          <div class="item-intro-img" ref="itemIntroGoods" v-html="productInfo.amazonDescription">L
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="规格参数">
+          <div class="remarks-title">
+            <span>规格参数</span>
+          </div>
+          <div class="item-param-container">
+            <span class="item-param-box" v-for="(item,index) in productInfo.param" :key="index">
+              <span class="item-param-title">{{item.title}}: </span>
+              <span class="item-param-content">{{item.content}}</span>
+            </span>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="售后保障">
+          <ShowProductWarranty></ShowProductWarranty>
+        </el-tab-pane>
+      </el-tabs>
     </div>
-  </div>
   </div>
 </template>
 
@@ -226,7 +177,7 @@
     width: 100%;
     height: 38px;
     background-color: #F7F7F7;
-    border-bottom: 1px solid #E4393C;
+    border-bottom: 1px solid #5500ff;
   }
 
   .item-intro-nav ul {
@@ -241,11 +192,11 @@
     width: 120px;
     line-height: 38px;
     text-align: center;
-    color: #E4393C;
+    color: #5500ff;
   }
 
   .item-intro-nav li:first-child {
-    background-color: #E4393C;
+    background-color: #5500ff;
     color: #fff;
   }
 

@@ -6,7 +6,7 @@
         <el-row>
           <div class="seckill-content">
             <el-card class="seckill-item" v-for="product in productsFromWishlist" :key="product.proId" shadow="hover">
-              <el-button type="danger" class="delete" icon="el-icon-delete" circle @click="deleteProFromWit(product.proId)"></el-button>
+              <el-button type="info" size="mini" class="delete" icon="el-icon-delete" circle @click="deleteProFromWit(product.proId)"></el-button>
               <div class="seckill-item-img">
                 <router-link :to="'productDetail/'+ product.proId"><img :src="product.image"></router-link>
               </div>
@@ -27,7 +27,7 @@
         <el-row>
           <div class="seckill-content">
             <el-card class="seckill-item" v-for="product in productsFromWishlist" :key="product.proId" shadow="hover">
-              <el-button type="danger" class="delete" icon="el-icon-delete" circle></el-button>
+              <el-button type="info" size="mini" class="delete" icon="el-icon-delete" circle></el-button>
               <div class="seckill-item-img">
                 <router-link :to="'productDetail/'+ product.proId"><img :src="product.image"></router-link>
               </div>
@@ -45,7 +45,7 @@
         </el-row>
       </el-tab-pane>
     </el-tabs>
-    <el-button size="mini" style="position: absolute; right: 8px; top: 5px;">批量删除</el-button>
+    <!-- <el-button size="mini" style="position: absolute; right: 8px; top: 5px;">批量删除</el-button> -->
   </div>
 
 </template>
@@ -213,8 +213,8 @@
 
   .seckill-item .delete {
     position: absolute;
-    top: 0px;
-    right: 0px;
+    top: 1px;
+    right: 1px;
     display: none;
   }
 
@@ -248,5 +248,10 @@
 
   .seckill-retail-price {
     color: #ff0000;
+  }
+
+ .el-tabs--card>.el-tabs__header .el-tabs__nav{
+    border-left: none;
+    border-top: none;
   }
 </style>
