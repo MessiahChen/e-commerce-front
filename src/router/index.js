@@ -47,9 +47,9 @@ export const constantRoutes = [
     redirect: '/dashboard',
     children: [{
       path: 'dashboard',
-      name: 'Dashboard',
+      name: 'Home',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+      meta: { title: 'Home', icon: 'dashboard', affix: true }
     }]
   },
   {
@@ -61,31 +61,31 @@ export const constantRoutes = [
         path: 'myinfo',
         component: () => import('@/views/mvo/mvo-info/index'),
         name: 'myinfo',
-        meta: { title: 'My Info', icon: 'form', affix: true }
+        meta: { title: 'My Info', icon: 'form', normal: true }
       },
       {
         path: 'productAdd',
         component: () => import('@/views/mvo/mvo-product-entry/index'),
         name: 'productAdd',
-        meta: { title: 'Product Entry', icon: 'edit', affix: true},
+        meta: { title: 'Product Entry', icon: 'edit', normal: true},
       },
       {
         path: 'productImage',
         component: () => import('@/views/mvo/mvo-product-image/index'),
         name: 'productImage',
-        meta: { title: 'Product Images', icon: 'icon', affix: true }
+        meta: { title: 'Product Images', icon: 'icon', normal: true }
       },
       {
         path: 'orderManagement',
         component: () => import('@/views/mvo/mvo-order-management/index'),
         name: 'orderManagement',
-        meta: { title: 'Order Manage', icon: 'list', affix: true }
+        meta: { title: 'Order Manage', icon: 'list', normal: true }
       },
       {
         path: 'mvoWallet',
         component: () => import('@/views/mvo/mvo-wallet/mvo-wallet'),
         name: 'mvoWallet',
-        meta: { title: 'My Wallet', icon: 'money', affix: true }
+        meta: { title: 'My Wallet', icon: 'money', normal: true }
       },
       {
         path: 'mvoAvailableMoney',
@@ -116,19 +116,19 @@ export const constantRoutes = [
         path: 'myinfo',
         component: () => import('@/views/bvo/bvo-myinfo'),
         name: 'myinfo',
-        meta: { title: 'My Info', icon: 'form', affix: true }
+        meta: { title: 'My Info', icon: 'form', normal: true }
       },
       {
         path: 'storeManagement',
         component: () => import('@/views/bvo/bvo-store-management/bvo-store-management'),
         name: 'storeManagement',
-        meta: { title: 'Store Manage', icon: 'component', affix: true }
+        meta: { title: 'Store Manage', icon: 'component', normal: true }
       },
       {
         path: 'productBrowse',
         component: () => import('@/views/bvo/bvo-product-browse/index'),
         name: 'productBrowse',
-        meta: { title: 'Product Browse', icon: 'search', affix: true }
+        meta: { title: 'Product Browse', icon: 'search', normal: true }
       },
       {
         path: 'productDetail/:id',
@@ -140,19 +140,19 @@ export const constantRoutes = [
         path: 'wishList',
         component: () => import('@/views/bvo/bvo-product-wishlist/index'),
         name: 'wishList',
-        meta: { title: 'Wishlist', icon: 'star', affix: true }
+        meta: { title: 'Wishlist', icon: 'star', normal: true }
       },
       {
         path: 'orderManagement',
         component: () => import('@/views/bvo/bvo-order-management/index'),
         name: 'orderManagement',
-        meta: { title: 'Order Manage', icon: 'list', affix: true }
+        meta: { title: 'Order Manage', icon: 'list', normal: true }
       },
       {
         path: 'bvoWallet',
         component: () => import('@/views/bvo/bvo-wallet/bvo-wallet'),
         name: 'bvoWallet',
-        meta: { title: 'My Wallet', icon: 'money', affix: true },
+        meta: { title: 'My Wallet', icon: 'money', normal: true },
       },
       {
         path: 'bvoAvailableMoney',
@@ -195,19 +195,19 @@ export const constantRoutes = [
         path: 'code',
         component: () => import('@/views/admin/admin-code/index'),
         name: 'code',
-        meta: { title: 'Code Manage', icon: 'form', affix: true }
+        meta: { title: 'Code Manage', icon: 'form', normal: true }
       },
       {
         path: 'parameter',
         component: () => import('@/views/admin/admin-parameter/index'),
         name: 'storeManagement',
-        meta: { title: 'Parameter Manage', icon: 'component', affix: true }
+        meta: { title: 'Parameter Manage', icon: 'component', normal: true }
       },
       {
         path: 'withdraw',
         component: () => import('@/views/admin/admin-withdraw-aduit'),
         name: 'goodsHistory',
-        meta: { title: 'Withdraw Aduit', icon: 'money', affix: true }
+        meta: { title: 'Withdraw Aduit', icon: 'money', normal: true }
       }
     ]
   },
