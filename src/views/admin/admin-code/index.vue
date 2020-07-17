@@ -89,7 +89,7 @@
     getCdmWhenUpdate,
     updateCdm,
     batchDeleteCdm
-  } from '@/network/admin-code.js'
+  } from '@/network/admin/admin-code.js'
 
   export default {
     name: "admin-code",

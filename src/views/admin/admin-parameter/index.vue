@@ -79,7 +79,7 @@
     getParWhenUpdate,
     updatePar,
     batchDeletePar
-  } from '@/network/admin-parameter.js'
+  } from '@/network/admin/admin-parameter.js'
 
   export default {
     name: "admin-parameter",

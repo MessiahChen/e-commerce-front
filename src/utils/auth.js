@@ -1,6 +1,19 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'vue_admin_template_token'
+const TokenKey = 'e_commerce_token'
+const UserName = 'e_commerce_username'
+
+export function getUserName(){
+  return Cookies.get(UserName)
+}
+
+export function setUserName(name){
+  return Cookies.set(UserName, name)
+}
+
+export function removeUserName(){
+  return Cookies.remove(UserName)
+}
 
 export function getToken() {
   return Cookies.get(TokenKey)

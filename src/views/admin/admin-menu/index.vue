@@ -81,7 +81,7 @@
     searchMenu,
     addMenu,
     deleteMenu,
-  } from '@/network/admin-menu.js'
+  } from '@/network/admin/admin-menu.js'
 
   export default {
     name: "admin-menu",
@@ -138,23 +138,21 @@
           pageNum: this.pageNum,
           pageSize: this.pageSize
         }
-        // this.tableLoading = true
-        // return new Promise((resolve, reject) => {
-        //   getAllMenu(getAllmenuVO).then(response => {
-        //     this.menuInfos = response.data.list
-        //     this.totalPage = response.data.totalPage
-        //     this.pageNum = response.data.pageNum
-        //     resolve()
-        //     console.log(response.data)
-        //     console.log(this.pageSize)
-        //     console.log(this.totalPage)
-        //     console.log(this.pageNum)
-        //     this.tableLoading = false
-        //   }).catch(error => {
-        //     reject(error);
-        //     this.tableLoading = false
-        //   })
-        // })
+        this.tableLoading = true
+        return new Promise((resolve, reject) => {
+          getAllMenu().then(response => {
+            this.menuInfos = response.data.list
+            resolve()
+            console.log(response.data)
+            console.log(this.pageSize)
+            console.log(this.totalPage)
+            console.log(this.pageNum)
+            this.tableLoading = false
+          }).catch(error => {
+            reject(error);
+            this.tableLoading = false
+          })
+        })
       },
       searchmenuByType() {
         var searchmenuVO = {

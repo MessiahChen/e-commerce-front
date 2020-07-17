@@ -52,9 +52,14 @@ export const constantRoutes = [
       meta: { title: 'Welcome', icon: 'dashboard', affix: true }
     }]
   },
+  { path: '*', redirect: '/404', hidden: true }
+]
+
+export const asyncRoutes = [
   {
     path: '/mvo',
     component: Layout,
+    name:'mvo',
     meta: { title: 'MVO', icon: 'peoples'},
     children: [
       {
@@ -91,25 +96,29 @@ export const constantRoutes = [
         path: 'mvoAvailableMoney',
         component: () => import('@/views/mvo/mvo-wallet/mvo-available-money'),
         name: 'mvoAvailableMoney',
+        meta: { title: 'Available Money', icon: 'money', normal: true },
         hidden:true
       },
       {
         path: 'mvoTransactionRecord',
         component: () => import('@/views/mvo/mvo-wallet/mvo-transaction-record'),
         name: 'mvoTransactionRecord',
+        meta: { title: 'Transaction Record', icon: 'money', normal: true },
         hidden:true
       },
       {
         path: 'mvoCompanyInfo',
         component: () => import('@/views/mvo/mvo-info/mvo-company-info'),
         name: 'mvoCompanyInfo',
+        meta: { title: 'Company Info', icon: 'money', normal: true },
         hidden:true
       },
-    ]
+    ],
   },
   {
     path: '/bvo',
     component: Layout,
+    name:'bvo',
     meta: { title: 'BVO', icon: 'user'},
     children: [
       {
@@ -134,6 +143,7 @@ export const constantRoutes = [
         path: 'productDetail/:id',
         component: () => import('@/views/bvo/bvo-product-detail/index'),
         name: 'productDetail',
+        meta: { title: 'Product Deatial', icon: 'search', normal: true },
         hidden:true
       },
       {
@@ -158,30 +168,35 @@ export const constantRoutes = [
         path: 'bvoAvailableMoney',
         component: () => import('@/views/bvo/bvo-wallet/bvo-available-money'),
         name: 'bvoAvailableMoney',
+        meta: { title: 'Available Money', icon: 'money', normal: true },
         hidden:true
       },
       {
         path: 'bvoTransactionRecord',
         component: () => import('@/views/bvo/bvo-wallet/bvo-transaction-record'),
         name: 'bvoTransactionRecord',
+        meta: { title: 'Transaction Record', icon: 'money', normal: true },
         hidden:true
       },
       {
         path: 'bvoChoose',
         component: () => import('@/views/bvo/bvo-store-management/bvo-choose'),
         name: 'bvoChoose',
+        meta: { title: 'Choose', icon: 'money', normal: true },
         hidden:true
       },
       {
         path: 'bvoAddAmazon',
         component: () => import('@/views/bvo/bvo-store-management/bvo-add-amazon'),
         name: 'bvoAddAmazon',
+        meta: { title: 'Add Amazon', icon: 'money', normal: true },
         hidden:true
       },
       {
         path: 'bvoAddEbay',
         component: () => import('@/views/bvo/bvo-store-management/bvo-add-ebay'),
         name: 'bvoAddEbay',
+        meta: { title: 'Add eBay', icon: 'money', normal: true },
         hidden:true
       },
     ]
@@ -189,6 +204,7 @@ export const constantRoutes = [
   {
     path: '/admin',
     component: Layout,
+    name:'admin',
     meta: { title: 'Admin', icon: 'bug'},
     children: [
       {
@@ -200,13 +216,13 @@ export const constantRoutes = [
       {
         path: 'parameter',
         component: () => import('@/views/admin/admin-parameter/index'),
-        name: 'storeManagement',
+        name: 'parameterManage',
         meta: { title: 'Parameter Manage', icon: 'component', normal: true }
       },
       {
         path: 'withdraw',
         component: () => import('@/views/admin/admin-withdraw-aduit'),
-        name: 'goodsHistory',
+        name: 'withdraw',
         meta: { title: 'Withdraw Aduit', icon: 'money', normal: true }
       },
       {
@@ -226,6 +242,7 @@ export const constantRoutes = [
   {
     path: '/other',
     component: Layout,
+    name:'other',
     meta: { title: 'Other', icon: 'money' },
     hidden:true,
     children: [
@@ -233,127 +250,18 @@ export const constantRoutes = [
       path: 'pay',
       name: 'pay',
       component: () => import('@/views/pay/index'),
-      meta: { title: 'pay', icon: 'money' },
+      meta: { title: 'Pay', icon: 'money' },
       // hidden:true
       },
       {
         path: 'express',
         name: 'express',
         component: () => import('@/views/express/index'),
-        meta: { title: 'express', icon: 'shopping' },
+        meta: { title: 'Express', icon: 'shopping' },
         // hidden:true
       },
     ]
-  },
-  // {
-  //   path: '/example',
-  //   component: Layout,
-  //   redirect: '/example/table',
-  //   name: 'Example',
-  //   meta: { title: 'Example', icon: 'el-icon-s-help' },
-  //   children: [
-  //     {
-  //       path: 'table',
-  //       name: 'Table',
-  //       component: () => import('@/views/table/index'),
-  //       meta: { title: 'Table', icon: 'table' }
-  //     },
-  //     {
-  //       path: 'tree',
-  //       name: 'Tree',
-  //       component: () => import('@/views/tree/index'),
-  //       meta: { title: 'Tree', icon: 'tree' }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/form',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       name: 'Form',
-  //       component: () => import('@/views/form/index'),
-  //       meta: { title: 'Form', icon: 'form' }
-  //     }
-  //   ]
-  // },
-  //
-  // {
-  //   path: '/nested',
-  //   component: Layout,
-  //   redirect: '/nested/menu1',
-  //   name: 'Nested',
-  //   meta: {
-  //     title: 'Nested',
-  //     icon: 'nested'
-  //   },
-  //   children: [
-  //     {
-  //       path: 'menu1',
-  //       component: () => import('@/views/nested/menu1/index'), // Parent router-view
-  //       name: 'Menu1',
-  //       meta: { title: 'Menu1' },
-  //       children: [
-  //         {
-  //           path: 'menu1-1',
-  //           component: () => import('@/views/nested/menu1/menu1-1'),
-  //           name: 'Menu1-1',
-  //           meta: { title: 'Menu1-1' }
-  //         },
-  //         {
-  //           path: 'menu1-2',
-  //           component: () => import('@/views/nested/menu1/menu1-2'),
-  //           name: 'Menu1-2',
-  //           meta: { title: 'Menu1-2' },
-  //           children: [
-  //             {
-  //               path: 'menu1-2-1',
-  //               component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-  //               name: 'Menu1-2-1',
-  //               meta: { title: 'Menu1-2-1' },
-  //               // hidden:true
-  //             },
-  //             {
-  //               path: 'menu1-2-2',
-  //               component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-  //               name: 'Menu1-2-2',
-  //               meta: { title: 'Menu1-2-2' },
-  //               // hidden:true
-  //             }
-  //           ]
-  //         },
-  //         {
-  //           path: 'menu1-3',
-  //           component: () => import('@/views/nested/menu1/menu1-3'),
-  //           name: 'Menu1-3',
-  //           meta: { title: 'Menu1-3' }
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       path: 'menu2',
-  //       component: () => import('@/views/nested/menu2/index'),
-  //       name: 'Menu2',
-  //       meta: { title: 'menu2' }
-  //     }
-  //   ]
-  // },
-  //
-  // {
-  //   path: 'external-link',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-  //       meta: { title: 'External Link', icon: 'link' }
-  //     }
-  //   ]
-  // },
-  //
-
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  }
 ]
 
 const createRouter = () => new Router({

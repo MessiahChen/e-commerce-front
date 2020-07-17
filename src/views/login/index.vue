@@ -82,13 +82,12 @@
         imgSrc: require('@/assets/bg_images/bg1.jpg'),
         loginForm: {
           username: 'admin',
-          password: '111111'
+          password: 'string'
         },
         loginRules: {
           username: [{
             required: true,
             trigger: 'blur',
-            validator: validateUsername
           }],
           password: [{
             required: true,

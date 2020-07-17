@@ -69,7 +69,7 @@
     addRole,
     deleteRole,
     updateRole,
-  } from '@/network/admin-role.js'
+  } from '@/network/admin/admin-role.js'
 
   export default {
     name: "admin-code",

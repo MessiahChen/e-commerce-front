@@ -1,13 +1,9 @@
 import request from '@/utils/request'
 
-export function getAllMenu(getAllMenuVO) {
+export function getAllMenu() {
   return request({
-    url: 'http://localhost:9010/dataDictionary/getAllMenuInfo',
-    method: 'post',
-    header: {
-      'Content-Type': 'application/json' //如果写成contentType会报错
-    },
-    data: getAllMenuVO
+    url: 'http://localhost:9010/admin/menus',
+    method: 'get',
   })
 }
 
