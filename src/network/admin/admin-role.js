@@ -2,12 +2,8 @@ import request from '@/utils/request'
 
 export function getAllRole(getAllRoleVO) {
   return request({
-    url: 'http://localhost:9010/dataDictionary/getAllRoleInfo',
-    method: 'post',
-    header: {
-      'Content-Type': 'application/json' //如果写成contentType会报错
-    },
-    data: getAllRoleVO
+    url: 'http://localhost:9010/admin/roles',
+    method: 'get',
   })
 }
 

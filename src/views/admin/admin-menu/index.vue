@@ -9,29 +9,29 @@
       </div>
 
       <el-table ref="menuTable" v-loading="tableLoading" :data="menuInfos" border fit highlight-current-row style="width: 100%;"
-      :tree-props="{children: 'children', hasChildren: 'hasChildren'}" row-key="menuId">
-        <el-table-column label="图标" width="150px" align="center">
+      :tree-props="{children: 'children', hasChildren: 'hasChildren'}" row-key="id">
+        <el-table-column label="图标" width="150" align="center">
           <template slot-scope="{row}">
-            <span>{{ row.menuIcon }}</span>
+            <svg-icon :icon-class="row.icon" />
           </template>
         </el-table-column>
         <el-table-column label="名称" align="center">
           <template slot-scope="{row}">
-            <span>{{ row.menuTitle }}</span>
+            <span>{{ row.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="资源路径" align="center">
+        <el-table-column label="资源路径" width="200" align="center">
           <template slot-scope="{row}">
-            <span>{{ row.menuSource }}</span>
+            <span>{{ row.title }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="排序" width="150px" align="center">
+        <el-table-column label="排序" width="150" align="center">
           <template slot-scope="{row}">
-            <span>{{ row.menuSort }}</span>
+            <span>{{ row.sort }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
+        <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
           <template slot-scope="{row,$index}">
             <el-button size="mini" type="danger" @click="deleteMenuInfo(row,$index)">
               Delete
@@ -39,11 +39,6 @@
           </template>
         </el-table-column>
       </el-table>
-
-      <el-pagination background layout="prev, pager, next" :page-size="pageSize" :page-count="totalPage"
-        :current-page.sync="pageNum" :hide-on-single-page="ifOnlyOnePage" style="margin: 1vw auto;text-align: center;"
-        @current-change="getAllMenuInfo()">
-      </el-pagination>
     </el-card>
 
     <el-dialog :title="dialogFunction" :visible.sync="ifOpenDialog" width="50%" center top="5vh" destroy-on-close
@@ -111,11 +106,6 @@
           }]
         }],
         tableLoading: false,
-        // 分页控件变量
-        pageSize: 8,
-        totalPage: 1,
-        pageNum: 1,
-        ifOnlyOnePage: false,
         // 是否打开弹窗
         ifOpenDialog: false,
         dialogFunction: "Add Code",
@@ -134,14 +124,10 @@
     },
     methods: {
       getAllMenuInfo() {
-        var getAllMenuVO = {
-          pageNum: this.pageNum,
-          pageSize: this.pageSize
-        }
         this.tableLoading = true
         return new Promise((resolve, reject) => {
           getAllMenu().then(response => {
-            this.menuInfos = response.data.list
+            this.menuInfos = response.data
             resolve()
             console.log(response.data)
             console.log(this.pageSize)

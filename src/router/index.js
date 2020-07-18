@@ -51,8 +51,7 @@ export const constantRoutes = [
       component: () => import('@/views/welcome/index'),
       meta: { title: 'Welcome', icon: 'dashboard', affix: true }
     }]
-  },
-  { path: '*', redirect: '/404', hidden: true }
+  }
 ]
 
 export const asyncRoutes = [
@@ -261,7 +260,8 @@ export const asyncRoutes = [
         // hidden:true
       },
     ]
-  }
+  },
+  { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({

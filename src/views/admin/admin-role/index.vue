@@ -2,36 +2,35 @@
   <div>
     <el-card class="box-card" shadow="never">
       <div slot="header" class="clearfix">
-        <el-button class="pan-btn light-blue-btn" type="text" @click="ifOpenDialog = true">添加</el-button>
+        <el-table ref="roleTable" v-loading="tableLoading" :data="roleInfos" border fit highlight-current-row style="width: 100%;">
+          <el-table-column label="序号" align="center" type="index" width="200">
+          </el-table-column>
+          <el-table-column label="角色" width="400" align="center">
+            <template slot-scope="{row}">
+              <span>{{ row.name }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="描述" width="400" align="center">
+            <template slot-scope="{row}">
+              <span>{{ row.description }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+            <template slot-scope="{row,$index}">
+              <el-button type="primary" size="mini" @click="getMenuRight(row)">
+                菜单权限
+              </el-button>
+              <el-button type="primary" size="mini" @click="getRoleInfoWhenUpdate(row)">
+                Edit
+              </el-button>
+              <el-button size="mini" type="danger" @click="deleteRoleInfo(row,$index)">
+                Delete
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
       </div>
-
-      <el-table ref="roleTable" v-loading="tableLoading" :data="roleInfos" border fit highlight-current-row style="width: 100%;">
-        <el-table-column align="center" type="index" width="50px">
-        </el-table-column>
-        <el-table-column label="角色" align="center">
-          <template slot-scope="{row}">
-            <span>{{ row.roleName }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
-          <template slot-scope="{row,$index}">
-            <el-button type="primary" size="mini" @click="getRoleInfoWhenUpdate(row)">
-              菜单权限
-            </el-button>
-            <el-button type="primary" size="mini" @click="getRoleInfoWhenUpdate(row)">
-              Edit
-            </el-button>
-            <el-button size="mini" type="danger" @click="deleteRoleInfo(row,$index)">
-              Delete
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <el-pagination background layout="prev, pager, next" :page-size="pageSize" :page-count="totalPage"
-        :current-page.sync="pageNum" :hide-on-single-page="ifOnlyOnePage" style="margin: 1vw auto;text-align: center;"
-        @current-change="getAllRoleInfo()">
-      </el-pagination>
+      <el-button class="pan-btn light-blue-btn" type="text" @click="ifOpenDialog = true">添加</el-button>
     </el-card>
 
     <el-dialog :title="dialogFunction" :visible.sync="ifOpenDialog" width="50%" center top="5vh" destroy-on-close
@@ -103,21 +102,12 @@
     },
     methods: {
       getAllRoleInfo() {
-        var getAllRoleVO = {
-          pageNum: this.pageNum,
-          pageSize: this.pageSize
-        }
         this.tableLoading = true
         return new Promise((resolve, reject) => {
-          getAllRole(getAllRoleVO).then(response => {
-            this.roleInfos = response.data.list
-            this.totalPage = response.data.totalPage
-            this.pageNum = response.data.pageNum
+          getAllRole().then(response => {
+            this.roleInfos = response.data
             resolve()
             console.log(response.data)
-            console.log(this.pageSize)
-            console.log(this.totalPage)
-            console.log(this.pageNum)
             this.tableLoading = false
           }).catch(error => {
             reject(error);
