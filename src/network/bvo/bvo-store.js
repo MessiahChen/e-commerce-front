@@ -1,13 +1,13 @@
 import request from '@/utils/request'
 
-export function getStores(dsrId){
+export function getStores(getStoreVO){
   return request({
-    url: 'http://localhost:9020/store/getStrsByDsrId',
+    url: 'http://localhost:9020/store/getStores',
     method: 'post',
     header: {
       'Content-Type': 'application/json' //如果写成contentType会报错
     },
-    params: proId
+    data: getStoreVO
   })
 }
 
