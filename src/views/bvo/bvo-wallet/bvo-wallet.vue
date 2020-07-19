@@ -7,15 +7,7 @@
           <span class="svg-container">
             <svg-icon icon-class="user" />
           </span>
-          <el-input ref="accountName" v-model="loginForm.accountName" placeholder="Account" name="accountName" type="text"
-                    tabindex="1" auto-complete="on" />
-        </el-form-item>
-        <el-form-item prop="email">
-          <span class="svg-container">
-            <svg-icon icon-class="email" />
-          </span>
-          <el-input ref="email" v-model="loginForm.email" placeholder="E-mail" name="email" type="email"
-                    tabindex="1" auto-complete="on" />
+          <el-input :disabled="true" ref="accountName" v-model="loginForm.accountName" />
         </el-form-item>
         <el-form-item prop="password">
           <span class="svg-container">
@@ -43,28 +35,18 @@
       name: "bvo-wallet",
       data(){
         const validatePassword = (rule, value, callback) => {
-          if (value.length < 3) {
-            callback(new Error('The password can not be less than 3 digits'))
+          if (value.length < 6) {
+            callback(new Error('The password can not be less than 6 digits'))
           } else {
             callback()
           }
         }
         return {
           loginForm: {
-            accountName: '',
-            accountType: 2,
-            email:'',
+            accountName: this.$store.getters.userName,
             password:''
           },
           loginRules: {
-            accountName: [{
-              required: true,
-              trigger: 'blur',
-            }],
-            email: [{
-              required: true,
-              trigger: 'blur',
-            }],
             password: [{
               required: true,
               trigger: 'blur',
@@ -77,14 +59,27 @@
         }
       },
       created() {
-        console.log(this.$store.state.user.accountName);
-        if(this.$store.state.user.accountName != ''){
-          this.$router.push({
-            path: '/bvo/bvoAvailableMoney'
-          });
+        this.checkExist();
+      },
+      computed:{
+        getAccountName(){
+          return this.$store.getters.userName
         }
       },
       methods: {
+        checkExist(){
+          return new Promise((resolve, reject) => {
+            getAvailableMoney({
+              accountName: this.getAccountName
+            }).then(response => {
+              this.$router.push({
+                path: '/bvo/bvoAvailableMoney'
+              });
+            }).catch(error => {
+              reject(error);
+            })
+          })
+        },
         showPwd() {
           if (this.passwordType === 'password') {
             this.passwordType = ''
@@ -95,34 +90,6 @@
             this.$refs.password.focus()
           })
         },
-        // handleLogin() {
-        //   console.log('login')
-        //   this.$store.commit('user/SET_ACCOUNTNAME',this.loginForm.accountName.trim())
-        //   this.$refs.loginForm.validate(valid => {
-        //     if (valid) {
-        //       this.loading = true;
-        //       return new Promise((resolve, reject) => {
-        //         getAvailableMoney({
-        //           accountName: this.loginForm.accountName.trim(),
-        //         }).then(response => {
-        //           console.log('code');
-        //           console.log(response.code)
-        //           resolve()
-        //           this.$router.push({
-        //             path: '/bvo/bvoAvailableMoney'
-        //           });
-        //           this.loading = false
-        //         }).catch(error => {
-        //           reject(error);
-        //           this.loading = false
-        //         })
-        //       })
-        //     } else {
-        //       console.log('error submit!!')
-        //       return false
-        //     }
-        //   })
-        // },
         handleRegister(){
           console.log('register')
           this.$store.commit('user/SET_ACCOUNTNAME',this.loginForm.accountName.trim())
@@ -132,7 +99,6 @@
               return new Promise((resolve, reject) => {
                 walletRegister({
                   accountName: this.loginForm.accountName.trim(),
-                  email: this.loginForm.email.trim(),
                   password: this.loginForm.password
                 }).then(response => {
                   console.log('code');

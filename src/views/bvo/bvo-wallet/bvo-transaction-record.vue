@@ -63,7 +63,7 @@
     },
     computed:{
       getAccountName(){
-        return this.$store.state.user.accountName
+        return this.$store.getters.userName
       }
     },
     methods: {

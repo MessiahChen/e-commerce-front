@@ -23,7 +23,7 @@
             style="width: 100%">
             <el-table-column align="center" label="Title">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.productTitle)">{{ scope.row.productTitle }}</el-button>
+                <el-button type="text" @click="gotoTitle(scope.row.productNum)">{{ scope.row.productTitle }}</el-button>
               </template>
             </el-table-column>
 
@@ -65,7 +65,7 @@
             </el-table-column>
             <el-table-column align="center" label="Title">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.productTitle)">{{ scope.row.productTitle }}</el-button>
+                <el-button type="text" @click="gotoTitle(scope.row.productNum)">{{ scope.row.productTitle }}</el-button>
               </template>
             </el-table-column>
 
@@ -116,7 +116,7 @@
 
             <el-table-column align="center" label="Title">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.productTitle)">{{scope.row.productTitle}}</el-button>
+                <el-button type="text" @click="gotoTitle(scope.row.productNum)">{{scope.row.productTitle}}</el-button>
               </template>
             </el-table-column>
 
@@ -160,7 +160,7 @@
 
             <el-table-column align="center" label="Title">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.productTitle)">{{scope.row.productTitle}}</el-button>
+                <el-button type="text" @click="gotoTitle(scope.row.productNum)">{{scope.row.productTitle}}</el-button>
               </template>
             </el-table-column>
 
@@ -210,7 +210,7 @@
 
             <el-table-column align="center" label="Title">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.productTitle)">{{scope.row.productTitle}}</el-button>
+                <el-button type="text" @click="gotoTitle(scope.row.productNum)">{{scope.row.productTitle}}</el-button>
               </template>
             </el-table-column>
 
@@ -260,7 +260,7 @@
 
             <el-table-column align="center" label="Title">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.productTitle)">{{scope.row.productTitle}}</el-button>
+                <el-button type="text" @click="gotoTitle(scope.row.productNum)">{{scope.row.productTitle}}</el-button>
               </template>
             </el-table-column>
 
@@ -333,15 +333,23 @@
       created() {
         this.fetchData()
       },
+      computed:{
+        getDsrId(){
+          return this.$store.getters.dsrId
+        }
+      },
       methods: {
         fetchData(){
           this.listloading  = true;
+          var dsrid = this.$store.getters.dsrId
+          console.log('dsrid:'+dsrid);
 
           // 获取数据，通过 dsrid
           return new Promise((resolve, reject) => {
             getVosByDsrId({
               // i 为 dsrid
-              i: 1
+              i: this.getDsrId
+              // i: 1
             }).then(response => {
               console.log('code');
               console.log(response.code)
@@ -406,10 +414,10 @@
 
         //跳转到其他界面：title、pay、track
         //转到商品页
-        gotoTitle(title){
-          // console.log(title);
+        gotoTitle(proid){
+          console.log(proid);
           this.$router.push({
-            // path: '/title'
+            path: '/bvo/productDetail/'+proid
           });
         },
         //转到付款
