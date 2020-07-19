@@ -120,6 +120,7 @@
             this.ruleForm.type = response.data.gmcReportType;
             this.ruleForm.url = response.data.gmcReportUrl;
             resolve();
+            // location.reload();
           }).catch(error => {
             reject(error);
           })

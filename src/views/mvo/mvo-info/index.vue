@@ -41,7 +41,7 @@
         <el-form ref="form" :model="temp" label-width="120px">
           <el-form-item label="Brand Name">
             <el-col :span="12">
-              <el-input v-model="temp.bname" placeholder="Please enter the brand name" />
+              <el-input v-model="temp.nameEn" placeholder="Please enter the brand name" />
             </el-col>
           </el-form-item>
           <el-form-item label="Brand Logo">
@@ -84,9 +84,17 @@
       return {
         dialogFormVisible: false,
         temp: [{
-          bname: '',
-          logo: '',
-          boperation: ''
+          brdId:'',
+          manId:'',
+          nameEn: '',
+          nameCn:'',
+          remark: '',
+          createdBy:'',
+          creationDate:'',
+          lastUpdateBy:'',
+          lastUpdateDate:'',
+          callCnt:'',
+          stsCd:''
         }],
         companyData: [{
           cn: '',
@@ -171,9 +179,17 @@
       },
       resetTemp() {
         this.temp = {
-          bname: '',
-          logo: '',
-          boperation: ''
+          brdId:'',
+          manId:'',
+          nameEn: '',
+          nameCn:'',
+          remark: '',
+          createdBy:'',
+          creationDate:'',
+          lastUpdateBy:'',
+          lastUpdateDate:'',
+          callCnt:'',
+          stsCd:''
         }
       },
       addBrand(formName) {
