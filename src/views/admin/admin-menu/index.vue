@@ -2,63 +2,71 @@
   <div>
     <el-card class="box-card" shadow="never">
       <div slot="header" class="clearfix">
-        <span style="margin-right: 10px;">菜单名称</span>
-        <el-input v-model="menuType" placeholder="Please input menu Type" style="width: 40vw;"></el-input>
-        <el-button class="pan-btn tiffany-btn" type="text" @click="searchMenuByTitle()">查找</el-button>
-        <el-button class="pan-btn light-blue-btn" type="text" @click="ifOpenDialog = true">添加</el-button>
+        <el-table ref="menuTable" v-loading="tableLoading" :data="menuInfos" border fit highlight-current-row style="width: 100%;"
+          :tree-props="{children: 'children', hasChildren: 'hasChildren'}" row-key="id">
+          <el-table-column label="图标" align="center">
+            <template slot-scope="{row}">
+              <svg-icon :icon-class="row.icon" />
+            </template>
+          </el-table-column>
+          <el-table-column label="菜单名称" align="center">
+            <template slot-scope="{row}">
+              <span>{{ row.title }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="路由名称" align="center">
+            <template slot-scope="{row}">
+              <span>{{ row.name }}</span>
+            </template>
+          </el-table-column>
+
+          <el-table-column label="排序" align="center">
+            <template slot-scope="{row}">
+              <span>{{ row.sort }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+            <template slot-scope="{row,$index}">
+              <el-button size="mini" type="danger" @click="deleteMenuInfo(row,$index)">
+                Delete
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
       </div>
-
-      <el-table ref="menuTable" v-loading="tableLoading" :data="menuInfos" border fit highlight-current-row style="width: 100%;"
-      :tree-props="{children: 'children', hasChildren: 'hasChildren'}" row-key="id">
-        <el-table-column label="图标" width="150" align="center">
-          <template slot-scope="{row}">
-            <svg-icon :icon-class="row.icon" />
-          </template>
-        </el-table-column>
-        <el-table-column label="名称" align="center">
-          <template slot-scope="{row}">
-            <span>{{ row.name }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="资源路径" width="200" align="center">
-          <template slot-scope="{row}">
-            <span>{{ row.title }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="排序" width="150" align="center">
-          <template slot-scope="{row}">
-            <span>{{ row.sort }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
-          <template slot-scope="{row,$index}">
-            <el-button size="mini" type="danger" @click="deleteMenuInfo(row,$index)">
-              Delete
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <el-button class="pan-btn light-blue-btn" type="text" @click="ifOpenDialog = true">添加</el-button>
     </el-card>
 
     <el-dialog :title="dialogFunction" :visible.sync="ifOpenDialog" width="50%" center top="5vh" destroy-on-close
       @closed="closeDialog()">
-      <el-form ref="form" :model="menuInfo" label-width="160px">
-        <el-form-item label="名称">
-          <el-input v-model="menuInfo.menuTitle"></el-input>
+      <el-form ref="form" :model="menuInfo" label-width="100px">
+        <el-form-item label="菜单名称">
+          <el-input v-model="menuInfo.title"></el-input>
         </el-form-item>
 
         <el-form-item label="图标">
-          <el-input v-model="menuInfo.menuIcon"></el-input>
+          <el-input v-model="menuInfo.icon"></el-input>
         </el-form-item>
 
-        <el-form-item label="资源路径">
-          <el-input v-model="menuInfo.menuSource"></el-input>
+        <el-form-item label="路由名称">
+          <el-input v-model="menuInfo.name"></el-input>
         </el-form-item>
 
         <el-form-item label="排序">
-          <el-input v-model="menuInfo.menuSort"></el-input>
+          <el-input v-model="menuInfo.sort"></el-input>
         </el-form-item>
+
+        <el-form-item label="是否为父菜单">
+          <el-switch v-model="ifFatherMenu"></el-switch>
+        </el-form-item>
+
+        <el-form-item label="选择父菜单">
+          <el-select v-model="menuInfo.parentId" placeholder="请选择父菜单" :disabled="!ifFatherMenu">
+            <el-option label="区域一" value="shanghai"></el-option>
+            <el-option label="区域二" value="beijing"></el-option>
+          </el-select>
+        </el-form-item>
+
       </el-form>
 
       <span slot="footer" class="dialog-footer">
@@ -85,6 +93,7 @@
         menuType: "",
         // Table变量
         tableKey: 0,
+        ifFatherMenu:false,
         menuInfos: [{
           menuId: "1",
           menuTitle: "123",
@@ -111,11 +120,13 @@
         dialogFunction: "Add Code",
         // 添加新商品
         menuInfo: {
-          menuId: "",
-          menuTitle: "",
-          menuSource: "",
-          menuIcon: "",
-          menuSort: "",
+          id: "",
+          title: "",
+          name: "",
+          icon: "",
+          sort: "",
+          parentId:"",
+          children:[]
         }
       }
     },
@@ -130,9 +141,6 @@
             this.menuInfos = response.data
             resolve()
             console.log(response.data)
-            console.log(this.pageSize)
-            console.log(this.totalPage)
-            console.log(this.pageNum)
             this.tableLoading = false
           }).catch(error => {
             reject(error);
@@ -218,6 +226,6 @@
   }
 
   .el-form-item {
-    width: 60vw;
+    width: 40vw;
   }
 </style>
