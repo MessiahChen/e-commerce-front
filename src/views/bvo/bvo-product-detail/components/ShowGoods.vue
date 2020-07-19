@@ -76,7 +76,7 @@
   import {
     addWishlist,
     deleteWishlist
-  } from "@/network/bvo-product-browse.js"
+  } from "@/network/bvo/bvo-product-browse.js"
   export default {
     name: 'ShowGoods',
     data() {

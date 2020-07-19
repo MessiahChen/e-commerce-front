@@ -22,7 +22,7 @@ export function searchProduct(searchProductVO) {
   })
 }
 
-export function addProduct(addProductVO){
+export function addProduct(addProductVO) {
   return request({
     url: 'http://localhost:9040/productEntry/addProductInfo',
     method: 'put',
@@ -33,7 +33,7 @@ export function addProduct(addProductVO){
   })
 }
 
-export function deleteProduct(proId){
+export function deleteProduct(proId) {
   return request({
     url: 'http://localhost:9040/productEntry/deleteProductInfo',
     method: 'delete',
@@ -41,7 +41,7 @@ export function deleteProduct(proId){
   })
 }
 
-export function getProductWhenUpdate(proId){
+export function getProductWhenUpdate(proId) {
   return request({
     url: 'http://localhost:9040/productEntry/getProductInfoWhenUpdate',
     method: 'get',
@@ -49,7 +49,7 @@ export function getProductWhenUpdate(proId){
   })
 }
 
-export function updateProduct(productUpdateVO){
+export function updateProduct(productUpdateVO) {
   return request({
     url: 'http://localhost:9040/productEntry/updateProductInfo',
     method: 'patch',
@@ -57,10 +57,18 @@ export function updateProduct(productUpdateVO){
   })
 }
 
-export function batchDeletePro(proIds){
+export function batchDeletePro(proIds) {
   return request({
     url: 'http://localhost:9040/productEntry/batchDeleteProInfo',
     method: 'post',
     data: proIds
+  })
+}
+
+export function uploadImage(imageVO) {
+  return request({
+    url: imageVO.url,
+    method: 'post',
+    data: imageVO.image
   })
 }

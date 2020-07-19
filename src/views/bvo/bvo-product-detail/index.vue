@@ -17,7 +17,7 @@
   } from 'vuex';
   import {
     getProductDetail
-  } from "@/network/bvo-product-browse.js"
+  } from "@/network/bvo/bvo-product-browse.js"
   export default {
     name: "bvo-product-detail",
     components: {

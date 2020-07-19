@@ -56,7 +56,7 @@
     getWishlist,
     deletePro,
     batchDeletePro
-  } from "@/network/bvo-product-wishlist.js"
+  } from "@/network/bvo/bvo-product-wishlist.js"
   export default {
     name: "bvo-product-wishlist",
     data() {

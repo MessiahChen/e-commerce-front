@@ -66,9 +66,9 @@ export const asyncRoutes = [
     meta: { title: 'MVO', icon: 'peoples'},
     children: [
       {
-        path: 'myinfo',
+        path: 'mvoMyinfo',
         component: () => import('@/views/mvo/mvo-info/index'),
-        name: 'myinfo',
+        name: 'mvoMyinfo',
         meta: { title: 'My Info', icon: 'form', normal: true }
       },
       {
@@ -125,9 +125,9 @@ export const asyncRoutes = [
     meta: { title: 'BVO', icon: 'user'},
     children: [
       {
-        path: 'myinfo',
+        path: 'bvoMyinfo',
         component: () => import('@/views/bvo/bvo-myinfo'),
-        name: 'myinfo',
+        name: 'bvoMyinfo',
         meta: { title: 'My Info', icon: 'form', normal: true }
       },
       {
