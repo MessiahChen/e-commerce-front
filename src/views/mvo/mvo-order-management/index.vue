@@ -23,7 +23,7 @@
             style="width: 100%">
             <el-table-column align="center" label="Title">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.productNum)">{{ scope.row.productTitle }}</el-button>
+                <el-button type="text" @click="gotoTitle(scope.row.proId)">{{ scope.row.productTitle }}</el-button>
               </template>
             </el-table-column>
 
@@ -63,7 +63,7 @@
 
             <el-table-column align="center" label="Title">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.productNum)">{{ scope.row.productTitle }}</el-button>
+                <el-button type="text" @click="gotoTitle(scope.row.proId)">{{ scope.row.productTitle }}</el-button>
               </template>
             </el-table-column>
 
@@ -110,7 +110,7 @@
 
             <el-table-column align="center" label="Title">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.productNum)">{{scope.row.productTitle}}</el-button>
+                <el-button type="text" @click="gotoTitle(scope.row.proId)">{{scope.row.productTitle}}</el-button>
               </template>
             </el-table-column>
 
@@ -163,7 +163,7 @@
 
             <el-table-column align="center" label="Title">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.productNum)">{{scope.row.productTitle}}</el-button>
+                <el-button type="text" @click="gotoTitle(scope.row.proId)">{{scope.row.productTitle}}</el-button>
               </template>
             </el-table-column>
 
@@ -228,7 +228,7 @@
 
             <el-table-column align="center" label="Title">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.productNum)">{{scope.row.productTitle}}</el-button>
+                <el-button type="text" @click="gotoTitle(scope.row.proId)">{{scope.row.productTitle}}</el-button>
               </template>
             </el-table-column>
 
@@ -281,7 +281,7 @@
 
             <el-table-column align="center" label="Title">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.productNum)">{{scope.row.productTitle}}</el-button>
+                <el-button type="text" @click="gotoTitle(scope.row.proId)">{{scope.row.productTitle}}</el-button>
               </template>
             </el-table-column>
 
