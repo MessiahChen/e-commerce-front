@@ -84,6 +84,13 @@ export const asyncRoutes = [
         meta: { title: 'Product Images', icon: 'icon', normal: true }
       },
       {
+        path: 'productDetail/:id',
+        component: () => import('@/views/mvo/mvo-product-detail/index'),
+        name: 'mvoProductDetail',
+        meta: { title: 'Product Detail', icon: 'search', normal: true },
+        hidden:true
+      },
+      {
         path: 'mvoOrderManagement',
         component: () => import('@/views/mvo/mvo-order-management/index'),
         name: 'mvoOrderManagement',
@@ -93,7 +100,7 @@ export const asyncRoutes = [
         path: 'mvoWallet',
         component: () => import('@/views/mvo/mvo-wallet/mvo-wallet'),
         name: 'mvoWallet',
-        meta: { title: 'My Wallet', icon: 'money', normal: true }
+        meta: { title: 'My Wallet', icon: 'money'}
       },
       {
         path: 'mvoAvailableMoney',
@@ -145,8 +152,8 @@ export const asyncRoutes = [
       {
         path: 'productDetail/:id',
         component: () => import('@/views/bvo/bvo-product-detail/index'),
-        name: 'productDetail',
-        meta: { title: 'Product Deatial', icon: 'search', normal: true },
+        name: 'bvoProductDetail',
+        meta: { title: 'Product Detail', icon: 'search', normal: true },
         hidden:true
       },
       {
@@ -165,7 +172,7 @@ export const asyncRoutes = [
         path: 'bvoWallet',
         component: () => import('@/views/bvo/bvo-wallet/bvo-wallet'),
         name: 'bvoWallet',
-        meta: { title: 'My Wallet', icon: 'money', normal: true },
+        meta: { title: 'My Wallet', icon: 'money' },
       },
       {
         path: 'bvoAvailableMoney',

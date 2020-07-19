@@ -143,8 +143,8 @@
 
         return new Promise((resolve, reject) => {
           pay({
-            // accountName: this.$store.state.user.accountName,
-            accountName: '20200707',
+            accountName: this.$store.state.user.accountName,
+            // accountName: this.$store.getters.accountName,
             flow: this.payForm.flow,
             password: this.payForm.password,
             orderNums: this.saoIdList

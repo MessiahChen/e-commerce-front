@@ -23,7 +23,7 @@
             style="width: 100%">
             <el-table-column align="center" label="Title">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.productTitle)">{{ scope.row.productTitle }}</el-button>
+                <el-button type="text" @click="gotoTitle(scope.row.proId)">{{ scope.row.productTitle }}</el-button>
               </template>
             </el-table-column>
 
@@ -63,7 +63,7 @@
 
             <el-table-column align="center" label="Title">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.productTitle)">{{ scope.row.productTitle }}</el-button>
+                <el-button type="text" @click="gotoTitle(scope.row.proId)">{{ scope.row.productTitle }}</el-button>
               </template>
             </el-table-column>
 
@@ -110,7 +110,7 @@
 
             <el-table-column align="center" label="Title">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.productTitle)">{{scope.row.productTitle}}</el-button>
+                <el-button type="text" @click="gotoTitle(scope.row.proId)">{{scope.row.productTitle}}</el-button>
               </template>
             </el-table-column>
 
@@ -163,7 +163,7 @@
 
             <el-table-column align="center" label="Title">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.productTitle)">{{scope.row.productTitle}}</el-button>
+                <el-button type="text" @click="gotoTitle(scope.row.proId)">{{scope.row.productTitle}}</el-button>
               </template>
             </el-table-column>
 
@@ -228,7 +228,7 @@
 
             <el-table-column align="center" label="Title">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.productTitle)">{{scope.row.productTitle}}</el-button>
+                <el-button type="text" @click="gotoTitle(scope.row.proId)">{{scope.row.productTitle}}</el-button>
               </template>
             </el-table-column>
 
@@ -281,7 +281,7 @@
 
             <el-table-column align="center" label="Title">
               <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.productTitle)">{{scope.row.productTitle}}</el-button>
+                <el-button type="text" @click="gotoTitle(scope.row.proId)">{{scope.row.productTitle}}</el-button>
               </template>
             </el-table-column>
 
@@ -378,20 +378,8 @@
       this.fetchData()
     },
     computed:{
-      newAPList(){
-        return this.APlist;
-      },
-      newASList(){
-        return this.ASlist;
-      },
-      newSHList(){
-        return this.SHlist;
-      },
-      newCOList(){
-        return this.COlist;
-      },
-      newCAList(){
-        return this.CAlist;
+      getManId(){
+        return this.$store.getters.manId
       },
     },
     methods: {
@@ -406,7 +394,8 @@
 
         return new Promise((resolve, reject) => {
           mvoGetSalList({
-            i: 11
+            // i 为 manid
+            i: this.getManId
           }).then(response => {
             console.log('code');
             console.log(response.code)
@@ -472,10 +461,10 @@
 
       //跳转到其他界面：title、track
       //转到商品页
-      gotoTitle(title){
-        // console.log(title);
+      gotoTitle(proid){
+        console.log(proid);
         this.$router.push({
-          // path: '/title'
+          path: '/mvo/productDetail/'+proid
         });
       },
       //转到快递
@@ -522,7 +511,7 @@
         return new Promise((resolve, reject) => {
           sendExpress({
             //应该发送订单编号，快递单号
-            saoId: 1,
+            saoId: this.express.saoid,
             trackNo: this.express.track
           }).then(response => {
             console.log('code');
