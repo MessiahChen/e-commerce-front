@@ -84,10 +84,11 @@ export const asyncRoutes = [
         meta: { title: 'Product Images', icon: 'icon', normal: true }
       },
       {
-        path: 'mvoProductBrowse',
-        component: () => import('@/views/mvo/mvo-product-browse/index'),
-        name: 'mvoProductBrowse',
-        meta: { title: 'Product Browse', icon: 'search', normal: true }
+        path: 'productDetail/:id',
+        component: () => import('@/views/bvo/bvo-product-detail/index'),
+        name: 'mvoProductDetail',
+        meta: { title: 'Product Detail', icon: 'search', normal: true },
+        hidden:true
       },
       {
         path: 'mvoOrderManagement',
@@ -151,8 +152,8 @@ export const asyncRoutes = [
       {
         path: 'productDetail/:id',
         component: () => import('@/views/bvo/bvo-product-detail/index'),
-        name: 'productDetail',
-        meta: { title: 'Product Deatial', icon: 'search', normal: true },
+        name: 'bvoProductDetail',
+        meta: { title: 'Product Detail', icon: 'search', normal: true },
         hidden:true
       },
       {
