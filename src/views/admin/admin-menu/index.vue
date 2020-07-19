@@ -120,8 +120,6 @@
     },
     created() {
       this.getAllMenuInfo();
-      console.log(this.$store.getters.manId)
-      console.log(this.$store.getters.dsrId)
     },
     methods: {
       getAllMenuInfo() {

@@ -7,17 +7,6 @@ export function getAllMenu() {
   })
 }
 
-export function searchMenu(searchMenuVO) {
-  return request({
-    url: 'http://localhost:9010/dataDictionary/searchMenu',
-    method: 'post',
-    header: {
-      'Content-Type': 'application/json' //如果写成contentType会报错
-    },
-    data: searchMenuVO
-  })
-}
-
 export function addMenu(addMenuVO) {
   return request({
     url: 'http://localhost:9010/admin/addMenu',

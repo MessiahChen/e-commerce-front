@@ -5,12 +5,12 @@
         <el-table ref="roleTable" v-loading="tableLoading" :data="roleInfos" border fit highlight-current-row style="width: 100%;">
           <el-table-column label="序号" align="center" type="index" width="200">
           </el-table-column>
-          <el-table-column label="角色" width="400" align="center">
+          <el-table-column label="角色" width="300" align="center">
             <template slot-scope="{row}">
               <span>{{ row.name }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="描述" width="400" align="center">
+          <el-table-column label="描述" width="300" align="center">
             <template slot-scope="{row}">
               <span>{{ row.description }}</span>
             </template>
@@ -35,27 +35,33 @@
 
     <el-dialog :title="dialogFunction" :visible.sync="ifOpenDialog" width="50%" center top="5vh" destroy-on-close
       @closed="closeDialog()">
-      <el-form ref="form" :model="roleInfo" label-width="160px">
-        <el-form-item label="字典类型">
-          <el-input v-model="roleInfo.roleType"></el-input>
+      <el-form ref="form" :model="roleInfo" label-width="50px">
+        <el-form-item label="角色">
+          <el-input v-model="roleInfo.name"></el-input>
         </el-form-item>
 
-        <el-form-item label="用途描述">
+        <el-form-item label="描述">
           <el-input v-model="roleInfo.description"></el-input>
         </el-form-item>
 
-        <el-form-item label="编码">
-          <el-input v-model="roleInfo.roleCd"></el-input>
-        </el-form-item>
-
-        <el-form-item label="编码值">
-          <el-input v-model="roleInfo.roleValue"></el-input>
-        </el-form-item>
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <template slot-scope="{row,$index}">
+            <el-button type="primary" size="mini" @click="getMenuRight(row)">
+              菜单权限
+            </el-button>
+            <el-button type="primary" size="mini" @click="getRoleInfoWhenUpdate(row)">
+              Edit
+            </el-button>
+            <el-button size="mini" type="danger" @click="deleteRoleInfo(row,$index)">
+              Delete
+            </el-button>
+          </template>
+        </el-table-column>
       </el-form>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="ifOpenDialog = false">Cancel</el-button>
-        <el-button type="primary" @click="dialogFunction == 'Add Code' ? addRoleInfo() : updateRoleInfo()">Save</el-button>
+        <el-button type="primary" @click="addRoleInfo()">Save</el-button>
       </span>
     </el-dialog>
 
@@ -89,11 +95,12 @@
         ifOnlyOnePage: false,
         // 是否打开弹窗
         ifOpenDialog: false,
-        dialogFunction: "Add Code",
+        dialogFunction: "Add Role",
         // 添加新商品
         roleInfo: {
-          roleId: "",
-          roleName: "",
+          name:"",
+          description:"",
+          menus:[]
         }
       }
     },
@@ -242,6 +249,6 @@
   }
 
   .el-form-item {
-    width: 60vw;
+    width: 40vw;
   }
 </style>

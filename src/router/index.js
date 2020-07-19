@@ -84,6 +84,12 @@ export const asyncRoutes = [
         meta: { title: 'Product Images', icon: 'icon', normal: true }
       },
       {
+        path: 'mvoProductBrowse',
+        component: () => import('@/views/mvo/mvo-product-browse/index'),
+        name: 'mvoProductBrowse',
+        meta: { title: 'Product Browse', icon: 'search', normal: true }
+      },
+      {
         path: 'mvoOrderManagement',
         component: () => import('@/views/mvo/mvo-order-management/index'),
         name: 'mvoOrderManagement',
