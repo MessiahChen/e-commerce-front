@@ -7,9 +7,17 @@ export function getAllRole(getAllRoleVO) {
   })
 }
 
-export function addRole(addRoleVO){
+export function getPermissionMenuList(roleId) {
   return request({
-    url: 'http://localhost:9010/dataDictionary/addRoleInfo',
+    url: 'http://localhost:9010/admin/getRoleMenu',
+    method: 'get',
+    params: roleId
+  })
+}
+
+export function addRole(addRoleVO) {
+  return request({
+    url: 'http://localhost:9010/admin/addNewRole',
     method: 'put',
     header: {
       'Content-Type': 'application/json' //如果写成contentType会报错
@@ -18,18 +26,26 @@ export function addRole(addRoleVO){
   })
 }
 
-export function deleteRole(roleId){
+export function deleteRole(roleId) {
   return request({
-    url: 'http://localhost:9010/dataDictionary/deleteRole',
+    url: 'http://localhost:9010/admin/deleteRole',
     method: 'delete',
     params: roleId
   })
 }
 
-export function updateRole(roleUpdateVO){
+export function getMenuWhenUpdateRole(roleId) {
   return request({
-    url: 'http://localhost:9010/dataDictionary/updateRole',
-    method: 'post',
-    data: roleUpdateVO
+    url: 'http://localhost:9010/admin/getMenuWhenUpdateRole',
+    method: 'get',
+    params:roleId
+  })
+}
+
+export function updateRole(updateRoleVO) {
+  return request({
+    url: 'http://localhost:9010/admin/updateRole',
+    method: 'patch',
+    data: updateRoleVO
   })
 }
