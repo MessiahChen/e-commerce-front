@@ -18,20 +18,17 @@ export function searchMenu(searchMenuVO) {
   })
 }
 
-export function addMenu(addMenuVO){
+export function addMenu(addMenuVO) {
   return request({
-    url: 'http://localhost:9010/dataDictionary/addMenuInfo',
+    url: 'http://localhost:9010/admin/addMenu',
     method: 'put',
-    header: {
-      'Content-Type': 'application/json' //如果写成contentType会报错
-    },
     data: addMenuVO
   })
 }
 
-export function deleteMenu(menuId){
+export function deleteMenu(menuId) {
   return request({
-    url: 'http://localhost:9010/dataDictionary/deleteMenu',
+    url: 'http://localhost:9010/admin/deleteMenu',
     method: 'delete',
     params: menuId
   })
