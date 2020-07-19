@@ -42,6 +42,7 @@
             </el-button>
           </template>
         </el-table-column>
+
       </el-table>
 
       <el-pagination background layout="prev, pager, next" :page-size="pageSize" :page-count="totalPage"
@@ -129,7 +130,7 @@
     getProductWhenUpdate,
     updateProduct,
     batchDeletePro
-  } from '@/network/mvo-product-entry.js'
+  } from '@/network/mvo/mvo-product-entry.js'
 
   export default {
     name: "mvo-product-entry",

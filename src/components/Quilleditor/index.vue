@@ -150,6 +150,9 @@
   } from 'vue-quill-editor'
   import CropUpload from './components/CropUpload.vue'
   import axios from 'axios'
+  import {
+    uploadImage
+  } from '@/network/mvo/mvo-product-entry'
   export default {
     props: {
       id: {
@@ -224,15 +227,37 @@
         data.append(this.fileName, fileInput.files[0], name);
         this.editor.focus();
 
-        axios.post(this.uploadUrl, data).then(response => {
-          console.log(response)
-          if (response.data.code == 20000) {
+        var imageVO = {
+          image: data,
+          url: this.uploadUrl
+        }
+        return new Promise((resolve, reject) => {
+          uploadImage(imageVO).then(response => {
             console.log(response)
-            self.editor.insertEmbed(self.editor.getSelection().index, 'image', response.data.data);
-          }
-        }).catch(function(error) {
-          console.log(err)
+            if (response.code == 20000) {
+              console.log(response)
+              self.editor.insertEmbed(self.editor.getSelection().index, 'image', response.data);
+            }
+          }).catch(error => {
+            reject(error);
+          })
         })
+
+
+        // axios.post(this.uploadUrl, {
+        //   data: data,
+        //   headers: {
+        //     Authorization: this.$store.getters.token
+        //   }
+        // }).then(response => {
+        //   console.log(response)
+        //   if (response.data.code == 20000) {
+        //     console.log(response)
+        //     self.editor.insertEmbed(self.editor.getSelection().index, 'image', response.data.data);
+        //   }
+        // }).catch(function(error) {
+        //   console.log(err)
+        // })
       },
       /*裁切上传成功 res根据上传接口值获取*/
       onUploadSuccess: function(response) {

@@ -54,6 +54,10 @@ export const constantRoutes = [
   }
 ]
 
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+ */
 export const asyncRoutes = [
   {
     path: '/mvo',
@@ -80,9 +84,9 @@ export const asyncRoutes = [
         meta: { title: 'Product Images', icon: 'icon', normal: true }
       },
       {
-        path: 'orderManagement',
+        path: 'mvoOrderManagement',
         component: () => import('@/views/mvo/mvo-order-management/index'),
-        name: 'orderManagement',
+        name: 'mvoOrderManagement',
         meta: { title: 'Order Manage', icon: 'list', normal: true }
       },
       {
@@ -152,9 +156,9 @@ export const asyncRoutes = [
         meta: { title: 'Wishlist', icon: 'star', normal: true }
       },
       {
-        path: 'orderManagement',
+        path: 'bvoOrderManagement',
         component: () => import('@/views/bvo/bvo-order-management/index'),
-        name: 'orderManagement',
+        name: 'bvoOrderManagement',
         meta: { title: 'Order Manage', icon: 'list', normal: true }
       },
       {

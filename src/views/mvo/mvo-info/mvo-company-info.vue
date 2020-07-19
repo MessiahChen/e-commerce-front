@@ -43,7 +43,7 @@
     getCompany,
     initCompany,
     updateCompany
-  } from '@/network/mvo-man-info.js'
+  } from '@/network/mvo/mvo-man-info.js'
 
   export default {
     components: {

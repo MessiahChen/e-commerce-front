@@ -130,7 +130,7 @@
     changeStatus,
     getOSSPolicy,
     uploadToOSS
-  } from '@/network/mvo-product-image.js'
+  } from '@/network/mvo/mvo-product-image.js'
   // import UploadImage from "@/views/mvo/mvo-product-image/components/UploadImage.vue"
   import axios from 'axios'
   export default {
@@ -166,7 +166,7 @@
           proId: "",
           userId: "",
           category: [],
-          images:[]
+          images: []
         },
         productUpdateImage: {
           proId: "",
@@ -350,7 +350,7 @@
           proId: "",
           userId: "",
           category: [],
-          images:[]
+          images: []
         }
       },
       handleStatus(row) {
@@ -370,22 +370,16 @@
       },
       getOSSPolicyBeforeUpload() {
         return new Promise((resolve, reject) => {
-          axios.get('http://localhost:9040/aliyun/oss/policy').then((res) => {
+          axios.get('http://localhost:9040/aliyun/oss/policy', {
+            headers: {
+              'Authorization': this.$store.getters.token,
+            }
+          }).then((res) => {
             resolve(res)
           }).catch((err) => {
             reject(err)
           })
         })
-
-        // return new Promise((resolve, reject) => {
-        //   axios.get("http://localhost:9040/aliyun/oss/policy").then()
-        //   getOSSPolicy().then(response => {
-        //     console.log(response)
-        //     resolve()
-        //   }).catch(error => {
-        //     reject(error)
-        //   })
-        // })
       },
       async uploadSectionFile(params) {
         console.log(params)
@@ -393,6 +387,7 @@
 
         let policy = await this.getOSSPolicyBeforeUpload()
         let res = policy.data
+        console.log("result")
         console.log(res)
         let uploadFileVO = new FormData();
         //多个文件上传

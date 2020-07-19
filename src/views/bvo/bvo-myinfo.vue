@@ -33,7 +33,7 @@
     getBVOInfo,
     initBVOInfo,
     updateBVOInfo
-  } from '@/network/bvo-info.js'
+  } from '@/network/bvo/bvo-info.js'
 
   export default {
     data() {

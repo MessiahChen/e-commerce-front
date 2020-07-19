@@ -33,7 +33,7 @@
     deleteProduct,
     getProductWhenUpdate,
     updateProduct
-  } from "@/network/bvo-product-browse.js"
+  } from "@/network/bvo/bvo-product-browse.js"
   export default {
     name: "bvo-goods-view",
     data() {

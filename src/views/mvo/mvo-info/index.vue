@@ -71,13 +71,13 @@
     getCompany,
     initCompany,
     updateCompany
-  } from '@/network/mvo-man-info.js'
+  } from '@/network/mvo/mvo-man-info.js'
   import {
     getBrands,
     addBrand,
     deleteBrand,
     updateBrand
-  } from '@/network/mvo-brand-info.js'
+  } from '@/network/mvo/mvo-brand-info.js'
 
   export default {
     data() {
