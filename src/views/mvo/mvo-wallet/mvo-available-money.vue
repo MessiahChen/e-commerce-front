@@ -29,11 +29,11 @@
         </el-table>
         <div class="dialog-container">
           <el-dialog :visible.sync="dialogFormVisible" title="Withdraw">
-            <el-form ref="form" :model="form" label-width="150px">
-              <el-form-item label="Money Amout : $">
-                <el-input v-model="form.flow" />
+            <el-form ref="form" :model="form" :rules="formRules" label-width="150px">
+              <el-form-item prop="flow" label="Money Amout : $">
+                <el-input v-model.number="form.flow" />
               </el-form-item>
-              <el-form-item label="Password">
+              <el-form-item prop="password" label="Password">
                 <el-input type="password" v-model="form.password" />
               </el-form-item>
               <el-form-item>
@@ -52,7 +52,7 @@
 
   import
   {
-    getAvailableMoney,
+    getAvailableMoney, walletRegister,
     withDrawMoney,
   }
     from '@/network/wallet'
@@ -70,6 +70,23 @@
       }
     },
     data() {
+      const validatePassword = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('The password can not be empty'))
+        } else {
+          callback()
+        }
+      }
+      const validateFlow = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('The value you want to withdraw can not be empty'))
+        }
+        setTimeout(() => {
+          if (!Number.isInteger(value)) {
+            callback(new Error('please input number'));
+          }
+        }, 1000);
+      }
       return {
         list: null,
         listLoading: true,
@@ -78,7 +95,19 @@
           accountName:'',
           flow:'',
           password:''
-        }
+        },
+        formRules: {
+          password: [{
+            required: true,
+            trigger: 'blur',
+            validator: validatePassword
+          }],
+          flow:[{
+            required: true,
+            trigger: 'blur',
+            validator: validateFlow
+          }]
+        },
       }
     },
     created() {
@@ -115,19 +144,26 @@
         this.dialogFormVisible = true;
       },
       onWithdraw(){
-        return new Promise((resolve, reject) => {
-          withDrawMoney({
-            accountName: this.form.accountName,
-            flow: this.form.flow,
-            password: this.form.password
-          }).then(response => {
-            console.log('mvo-available-money onWithdraw() withDrawMoney code is ');
-            console.log(response.code);
-            this.closeDialog();
-          }).catch(error => {
-            console.log(error);
-            reject(error);
-          })
+        this.$refs.form.validate(valid => {
+          if (valid) {
+            return new Promise((resolve, reject) => {
+              withDrawMoney({
+                accountName: this.form.accountName,
+                flow: this.form.flow,
+                password: this.form.password
+              }).then(response => {
+                console.log('mvo-available-money onWithdraw() withDrawMoney code is ');
+                console.log(response.code);
+                this.closeDialog();
+              }).catch(error => {
+                console.log(error);
+                reject(error);
+              })
+            })
+          } else {
+            console.log('error submit!!')
+            return false
+          }
         })
       },
       goToRecord(){

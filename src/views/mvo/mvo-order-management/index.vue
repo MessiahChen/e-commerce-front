@@ -319,8 +319,8 @@
     <div class="send-express-container">
       <div class="dialog-container">
         <el-dialog :visible.sync="sendExpressVisiable" title="Send Express">
-          <el-form ref="express" :model="express" label-width="120px">
-            <el-form-item label="Tracking No：">
+          <el-form ref="express" :model="express" :rules="formRules" label-width="120px">
+            <el-form-item prop="expressTrackNo" label="Tracking No：">
               <el-input v-model="express.track" />
             </el-form-item>
             <el-form-item>
@@ -343,12 +343,19 @@
 
   }
     from '@/network/order-management'
-  import {changePassword, getAvailableMoney} from "@/network/wallet";
+  import {changePassword, getAvailableMoney, withDrawMoney} from "@/network/wallet";
 
   export default {
     name: "mvo-order-management",
     inject: ["reload"],
     data() {
+      const validateexpressTrackNo = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('The Tracking No can not be empty'))
+        } else {
+          callback()
+        }
+      }
       return {
         express:{
           track: 0,
@@ -369,6 +376,13 @@
         CAlist: [],
         list: [],
         searchList: [],
+        formRules: {
+          expressTrackNo: [{
+            required: true,
+            trigger: 'blur',
+            validator: validateexpressTrackNo
+          }]
+        },
       }
     },
     created() {
@@ -500,25 +514,29 @@
 
       // 处理 onConfirm 相关事件点击
       onConfirm(){
-        this.closeDialog();
-
-        console.log(this.express.saoid);
-        console.log(this.express.track)
-
-        return new Promise((resolve, reject) => {
-          sendExpress({
-            //应该发送订单编号，快递单号
-            saoId: this.express.saoid,
-            trackNo: this.express.track
-          }).then(response => {
-            console.log('code');
-            console.log(response.code)
-            resolve()
-            this.reload();
-          }).catch(error => {
-            reject(error);
-          })
+        this.$refs.express.validate(valid => {
+          if (valid) {
+            this.closeDialog();
+            return new Promise((resolve, reject) => {
+              sendExpress({
+                //应该发送订单编号，快递单号
+                saoId: this.express.saoid,
+                trackNo: this.express.track
+              }).then(response => {
+                console.log('code');
+                console.log(response.code)
+                resolve()
+                this.reload();
+              }).catch(error => {
+                reject(error);
+              })
+            })
+          } else {
+            console.log('error submit!!')
+            return false
+          }
         })
+
 
       },
 

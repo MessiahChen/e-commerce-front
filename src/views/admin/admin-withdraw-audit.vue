@@ -58,38 +58,38 @@
           >
           </el-pagination>
         </div>
-        <div class="dialog-container">
-          <el-dialog :visible.sync="dialogFormVisible" title="审核">
-            <el-form ref="form" :model="form" label-width="170px">
-              <el-form-item label="审核结果：">
-                <el-radio-group v-model="form.resource">
-                  <el-radio label="通过"></el-radio>
-                  <el-radio label="不通过"></el-radio>
-                </el-radio-group>
-              </el-form-item>
-              <el-form-item label="如不通过，请填写原因：">
-                <el-input type="textarea" v-model="form.note"></el-input>
-              </el-form-item>
-              <el-form-item label="上传水单：">
-                <el-upload
-                  action="https://jsonplaceholder.typicode.com/posts/"
-                  list-type="picture-card"
-                  :on-preview="handlePictureCardPreview"
-                  :on-remove="handleRemove">
-                  <i class="el-icon-plus"></i>
-                </el-upload>
-                <el-dialog :visible.sync="dialogVisible">
-                  <img width="100%" :src="dialogImageUrl" alt="">
-                </el-dialog>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" @click="onSave">保存</el-button>
-                <el-button @click="closeDialog">Cancel</el-button>
-              </el-form-item>
-            </el-form>
-          </el-dialog>
-        </div>
       </div>
+      <div class="dialog-container">
+      <el-dialog :visible.sync="dialogFormVisible" title="审核">
+        <el-form ref="form" :model="form" label-width="180px" >
+          <el-form-item label="审核结果：" >
+            <el-radio-group v-model="form.resource">
+              <el-radio label="通过"></el-radio>
+              <el-radio label="不通过"></el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="如不通过，请填写原因：" >
+            <el-input type="textarea" v-model="form.note"></el-input>
+          </el-form-item>
+          <el-form-item label="上传水单：">
+            <el-upload
+              action="https://jsonplaceholder.typicode.com/posts/"
+              list-type="picture-card"
+              :on-preview="handlePictureCardPreview"
+              :on-remove="handleRemove">
+              <i class="el-icon-plus"></i>
+            </el-upload>
+            <el-dialog :visible.sync="dialogVisible">
+              <img width="100%" :src="dialogImageUrl" alt="">
+            </el-dialog>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSave">保存</el-button>
+            <el-button @click="closeDialog">Cancel</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+    </div>
     </div>
   </div>
 </template>
@@ -99,12 +99,13 @@
   import
   {
     audit,
-    getAdminFlow
+    getAdminFlow, withDrawMoney
   }
     from '@/network/wallet'
 
   export default {
     name: "admin-code",
+    inject: ["reload"],
     filters: {
       statusFilter(status) {
         const statusMap = {
@@ -174,16 +175,14 @@
             status: this.form.resource=="通过",
             transactionNumber: this.form.transactionNumber
           }).then(response => {
-            console.log('admin-withdraw-audit onSave() withDrawMoney code is ');
-            console.log(response.code);
             this.closeDialog();
+            this.reload();
           }).catch(error => {
             console.log(error);
             this.closeDialog();
             reject(error);
           })
         })
-        this.getPageData();
       },
       handleRemove(file, fileList) {
         console.log(file, fileList);
