@@ -54,11 +54,6 @@
 
         <el-button :loading="loading" type="primary" style="width:40%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
 
-        <!--      <div class="tips">
-                <span style="margin-right:20px;">username: admin</span>
-                <span> password: any</span>
-              </div> -->
-
         <div class="tips">
           <span style="margin-right:20px;">BVO</span>
           <span style="margin-right:20px;"> MVO</span>

@@ -29,7 +29,6 @@
             <span v-if="scope.row.status == 1">失败</span>
             <span v-if="scope.row.status == 2">处理中</span>
             <span v-if="scope.row.status == 4">已完成</span>
-<!--            {{ scope.row.status }}-->
           </template>
         </el-table-column>
       </el-table>

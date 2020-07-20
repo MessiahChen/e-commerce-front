@@ -73,7 +73,7 @@
             accountName: this.getAccountName
           }).then(response => {
             this.$router.push({
-              path: '/bvo/bvoAvailableMoney'
+              path: '/mvo/mvoAvailableMoney'
             });
           }).catch(error => {
             reject(error);

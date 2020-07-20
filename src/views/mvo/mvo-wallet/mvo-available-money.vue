@@ -22,12 +22,8 @@
           </el-table-column>
           <el-table-column label="Operation" align="center">
             <template slot-scope="scope">
-              <el-button class="pan-btn light-blue-btn" @click="withdrawClick(scope.$index)" >withdraw</el-button>
-            </template>
-          </el-table-column>
-          <el-table-column label="Record" align="center">
-            <template slot-scope="scope">
-              <el-button  class="pan-btn light-blue-btn" @click="goToRecord" >record</el-button>
+              <el-button type="primary" size="mini" @click="withdrawClick(scope.$index)" >withdraw</el-button>
+              <el-button type="success" size="mini" @click="goToRecord" >record</el-button>
             </template>
           </el-table-column>
         </el-table>
