@@ -2,11 +2,11 @@
   <div class="sidebar-logo-container" :class="{'collapse':collapse}">
     <transition name="sidebarLogoFade">
       <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo">
+        <img v-if="logoSmall" :src="logoSmall" class="sidebar-logo">
         <h1 v-else class="sidebar-title">{{ title }} </h1>
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img :src="logo" class="sidebar-logo">
+        <img :src="logoBig" class="sidebar-logo">
         <h1 class="sidebar-title">{{ title }} </h1>
       </router-link>
     </transition>
@@ -25,7 +25,8 @@ export default {
   data() {
     return {
       title: '',
-      logo: require('@/assets/images/orange-brand-new.png'),
+      logoBig: require('@/assets/images/orange-brand-new.png'),
+      logoSmall: require('@/assets/images/001.png'),
     }
   }
 }
@@ -55,7 +56,7 @@ export default {
     width: 100%;
 
     & .sidebar-logo {
-      height: 100%;
+      height: 90%;
       width: 60%;
       vertical-align: middle;
       margin-right: 12px;

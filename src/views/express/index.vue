@@ -7,7 +7,6 @@
           </el-card>
         </el-timeline-item>
     </el-timeline>
-    <el-button @click="nnn" >new</el-button>
   </div>
 </template>
 
@@ -70,21 +69,6 @@
             this.newlist.push(this.list.pop());
           }
           this.newlist.push(this.list[0]);
-        },
-        nnn(){
-          return new Promise((resolve, reject) => {
-            baidu({
-              wd: 123
-            }).then(response => {
-              console.log('code');
-              console.log(response.code)
-              console.log(response)
-              this.loading = false
-            }).catch(error => {
-              reject(error);
-              this.loading = false
-            })
-          })
         }
       }
     }
