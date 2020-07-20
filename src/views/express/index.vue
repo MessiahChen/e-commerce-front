@@ -1,12 +1,19 @@
 <template>
   <div class="express-container">
-    <el-timeline>
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>Tracking No：{{number}}</span>
+        <span></span>
+      </div>
+      <el-timeline>
         <el-timeline-item v-for="i in newlist" :timestamp="i.time" placement="top">
           <el-card style="width: 100%">
             {{i.status}}
           </el-card>
         </el-timeline-item>
-    </el-timeline>
+      </el-timeline>
+    </el-card>
+
   </div>
 </template>
 
@@ -37,7 +44,7 @@
             }
           ],
           newlist: [],
-          number: 0
+          number: 931658943036
         }
       },
       created() {
@@ -45,8 +52,7 @@
       },
       methods:{
         fetchData(){
-          this.number = this.$store.state.order.trackingNo
-          console.log(this.number);
+          // this.number = this.$store.state.order.trackingNo
 
           // return new Promise((resolve, reject) => {
           //   getExpressTrack({
@@ -75,9 +81,5 @@
 </script>
 
 <style scoped>
-  .express-container{
-    padding-top: 5vh;
-    padding-right: 5vh;
-  }
 
 </style>
