@@ -148,7 +148,7 @@ export function deliver(data) {
 // 快递,跨域问题？？？
 export function getExpressTrack(params) {
   return request({
-    url: 'https://way.jd.com/jisuapi/query',
+    url: 'https://api.jisuapi.com/express/query',
     method: 'get',
     params
   })
