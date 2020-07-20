@@ -27,3 +27,10 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function generateValidateCode() {
+  return request({
+    url: 'http://localhost:9010/log/generateValidateCode',
+    method: 'get'
+  })
+}

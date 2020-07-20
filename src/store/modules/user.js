@@ -65,12 +65,16 @@ const actions = {
   }, userInfo) {
     const {
       username,
-      password
+      password,
+      tokenId,
+      code
     } = userInfo
     return new Promise((resolve, reject) => {
       login({
         username: username.trim(),
-        password: password
+        password: password,
+        tokenId: tokenId,
+        code: code
       }).then(response => {
         const {
           data
