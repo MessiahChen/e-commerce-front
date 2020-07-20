@@ -40,7 +40,7 @@
     </el-form>
 
     <div class="dialog-container">
-      <el-dialog :visible.sync="dialogFormVisible" title="Brand Information">
+      <el-dialog :visible.sync="editDialogVisible" title="Brand Information">
         <el-form ref="form" :model="temp" label-width="120px">
           <el-form-item label="Brand Name">
             <el-col :span="12">
@@ -49,7 +49,7 @@
           </el-form-item>
           <el-form-item label="Brand Logo">
             <el-upload ref="upload" :action="uploadUrl" accept="image/png, image/jpeg" list-type="picture-card"
-              :auto-upload="false" :file-list="urlList" :http-request="uploadSectionFile(params)" :on-preview="handlePictureCardPreview"
+              :auto-upload="false" :file-list="urlList" :http-request="uploadSectionFile" :on-preview="handlePictureCardPreview"
               :on-remove="handleRemove">
               <i class="el-icon-plus"></i>
             </el-upload>
@@ -58,14 +58,43 @@
             </el-dialog>
           </el-form-item>
           <el-form-item>
-            <el-button type="success" icon="el-icon-upload" @click="uploadLogo()">Upload Logo</el-button>
+            <el-button type="success" icon="el-icon-upload" @click="uploadImages()">Upload Logo</el-button>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="saveBrand">Save</el-button>
+            <el-button type="primary" @click="saveEditedBrand">Save</el-button>
             <el-button type="info" @click="closeDialog">Cancel</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
+
+      <div class="dialog-container">
+        <el-dialog :visible.sync="addDialogVisible" title="Brand Information">
+          <el-form ref="form" :model="temp" label-width="120px">
+            <el-form-item label="Brand Name">
+              <el-col :span="12">
+                <el-input v-model="temp.nameEn" placeholder="Please enter the brand name" />
+              </el-col>
+            </el-form-item>
+            <el-form-item label="Brand Logo">
+              <el-upload ref="upload" :action="uploadUrl" accept="image/png, image/jpeg" list-type="picture-card"
+                :auto-upload="false" :file-list="urlList" :http-request="uploadSectionFile" :on-preview="handlePictureCardPreview"
+                :on-remove="handleRemove">
+                <i class="el-icon-plus"></i>
+              </el-upload>
+              <el-dialog :visible.sync="dialogVisible" append-to-body>
+                <img width="100%" :src="dialogImageUrl" alt="">
+              </el-dialog>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="success" icon="el-icon-upload" @click="uploadImages()">Upload Logo</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="saveAddedBrand">Save</el-button>
+              <el-button type="info" @click="closeDialog">Cancel</el-button>
+            </el-form-item>
+          </el-form>
+        </el-dialog>
+
     </div>
   </div>
 </template>
@@ -87,7 +116,7 @@
   export default {
     data() {
       return {
-        dialogFormVisible: false,
+        editDialogVisible: false,
         temp: [{
           brdId: '',
           manId: '',
@@ -111,7 +140,11 @@
         brandData: [],
         pageSize: 10,
         pageNum: 1,
-        dialogImageUrl: ''
+        dialogVisible: false,
+        uploadUrl: '',
+        urlList: [],
+        dialogImageUrl: '',
+        rowTemp: ''
       }
     },
     methods: {
@@ -207,48 +240,97 @@
         }
       },
       editBrand(row) {
-        console.log();
+        console.log(row);
+        this.rowTemp = row;
+        console.log(this.rowTemp);
         this.resetTemp();
-        this.dialogFormVisible = true;
+        this.temp.nameEn = row.nameEn;
+        this.editDialogVisible = true;
         this.$nextTick(() => {
           this.$refs['form'].clearValidate()
         })
       },
-      addBrand(formName) {
+      addBrand() {
         this.resetTemp();
-        this.dialogFormVisible = true;
+        this.addDialogVisible = true;
         this.$nextTick(() => {
           this.$refs['form'].clearValidate()
         })
       },
       closeDialog() {
-        this.dialogFormVisible = false;
+        this.rowTemp = '';
+        this.resetTemp();
+        this.editDialogVisible = false;
+        this.addDialogVisible  = false;
       },
-      saveEditedBrand(formName) {
+      saveEditedBrand() {
+        console.log(this.rowTemp)
         var brandUpdateVO = {
-          brdId: row.proId,
-          manId: row.manId,
+          brdId: this.rowTemp.brdId,
+          manId: this.rowTemp.manId,
           nameEn: this.temp.nameEn,
-          nameCn: row.nameCn,
+          nameCn: this.rowTemp.nameCn,
           remark: this.temp.remark,
-          createdBy: row.createdBy,
-          creationDate: row.creationDate,
+          createdBy: this.rowTemp.createdBy,
+          creationDate: this.rowTemp.creationDate,
           // TODO
-          lastUpdateBy: row.lastUpdateBy,
-          lastUpdateDate: row.lastUpdateDate,
-          callCnt: row.callCnt,
-          stsCd: row.stsCd
+          lastUpdateBy: this.rowTemp.lastUpdateBy,
+          lastUpdateDate: this.rowTemp.lastUpdateDate,
+          callCnt: this.rowTemp.callCnt,
+          stsCd: this.rowTemp.stsCd
         }
         return new Promise((resolve, reject) => {
           updateBrand(brandUpdateVO).then(response => {
             console.log(response)
-            this.dialogFormVisible = false;
-            this.getBrands();
+            this.editDialogVisible = false;
             resolve();
             this.$refs['form'].validate((valid) => {
               if (valid) {
                 this.brandData.unshift(this.temp);
-                this.dialogFormVisible = false;
+                this.editDialogVisible = false;
+                window.location.reload();
+                this.rowTemp = '';
+                this.$notify({
+                  title: 'Success',
+                  message: 'Updated Successfully',
+                  type: 'success',
+                  duration: 2000
+                });
+              }
+            });
+          }).catch(error => {
+            reject(error)
+          })
+        })
+      },
+      saveAddedBrand() {
+        console.log(this.brandData.length);
+        var brandAddVO = {
+          brdId: this.brandData.length+1,
+          manId: this.brandData[0].manId,
+          nameEn: this.temp.nameEn,
+          nameCn: '',
+          remark: this.temp.remark,
+          // TODO
+          createdBy: '',
+          creationDate: '',
+          lastUpdateBy: '',
+          lastUpdateDate: '',
+          callCnt: '',
+          stsCd: ''
+        }
+        console.log(brandAddVO);
+        return new Promise((resolve, reject) => {
+          addBrand(brandAddVO).then(response => {
+            console.log(response)
+            this.addDialogVisible = false;
+            resolve();
+            this.$refs['form'].validate((valid) => {
+              if (valid) {
+                this.brandData.unshift(this.temp);
+                this.addDialogVisible = false;
+                window.location.reload();
+                this.rowTemp = '';
                 this.$notify({
                   title: 'Success',
                   message: 'Created Successfully',
@@ -262,39 +344,39 @@
           })
         })
       },
-      saveAddededBrand(formName) {
-        this.$refs['form'].validate((valid) => {
-          if (valid) {
-            this.brandData.unshift(this.temp);
-            this.dialogFormVisible = false;
-            this.$notify({
-              title: 'Success',
-              message: 'Created Successfully',
-              type: 'success',
-              duration: 2000
-            });
-          }
-        });
-      },
       uploadSectionFile(params) {
         console.log(params)
-        console.log(this.$refs.upload.uploadFiles)
-        console.log("result")
 
         var uploadFileVO = new FormData();
         uploadFileVO.append("file", params.file);
 
         return new Promise((resolve, reject) => {
-          uploadImage(imageVO).then(response => {
-            console.log(response)
+          uploadLogo(uploadFileVO).then(response => {
             if (response.code == 20000) {
-              console.log(response)
+              console.log(response.data);
+              this.temp.remark = response.data;
             }
           }).catch(error => {
             reject(error);
           })
         })
       },
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePictureCardPreview(file) {
+        this.dialogImageUrl = file.url;
+        this.dialogVisible = true;
+      },
+      uploadImages() {
+        this.$refs.upload.submit();
+        this.$notify({
+          title: 'Success',
+          message: 'Uploaded Successfully',
+          type: 'success',
+          duration: 2000
+        });
+      }
       // handleDelete(row, index) {
       //   this.$notify({
       //     title: 'Success',
