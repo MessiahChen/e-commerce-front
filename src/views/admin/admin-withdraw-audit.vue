@@ -42,7 +42,7 @@
           </el-table-column>
           <el-table-column label="Operation" align="center">
             <template slot-scope="scope">
-              <el-button type="primary" @click="withdrawClick(scope.row.transactionNumber)" >审核</el-button>
+              <el-button type="primary" size="mini" @click="withdrawClick(scope.row.transactionNumber)" >audit</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -98,7 +98,7 @@
 
   import
   {
-    aduit,
+    audit,
     getAdminFlow
   }
     from '@/network/wallet'
@@ -169,12 +169,12 @@
       },
       onSave(){
         return new Promise((resolve, reject) => {
-          aduit({
+          audit({
             note: this.form.note,
             status: this.form.resource=="通过",
             transactionNumber: this.form.transactionNumber
           }).then(response => {
-            console.log('admin-withdraw-aduit onSave() withDrawMoney code is ');
+            console.log('admin-withdraw-audit onSave() withDrawMoney code is ');
             console.log(response.code);
             this.closeDialog();
           }).catch(error => {
@@ -207,5 +207,3 @@
     padding:3vh
   }
 </style>
-
-admin-withdraw-aduit

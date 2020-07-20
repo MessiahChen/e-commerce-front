@@ -83,7 +83,7 @@ export function pay(data) {
 export function getAdminFlow(data) {
   console.log(data)
   return request({
-    url: 'http://localhost:9050/walletAdmin/getAllFlow',
+    url: 'http://localhost:9010/walletAdmin/getAllFlow',
     method: 'post',
     header: {
       'Content-Type': 'application/json' //如果写成contentType会报错
@@ -92,10 +92,10 @@ export function getAdminFlow(data) {
   })
 }
 
-export function aduit(data) {
+export function audit(data) {
   console.log(data)
   return request({
-    url: 'http://localhost:9050/walletAdmin/audit',
+    url: 'http://localhost:9010/walletAdmin/audit',
     method: 'patch',
     header: {
       'Content-Type': 'application/json' //如果写成contentType会报错

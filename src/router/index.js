@@ -231,9 +231,9 @@ export const asyncRoutes = [
       },
       {
         path: 'withdraw',
-        component: () => import('@/views/admin/admin-withdraw-aduit'),
+        component: () => import('@/views/admin/admin-withdraw-audit'),
         name: 'withdraw',
-        meta: { title: 'Withdraw Aduit', icon: 'money', normal: true }
+        meta: { title: 'Withdraw Audit', icon: 'money', normal: true }
       },
       {
         path: 'menu',

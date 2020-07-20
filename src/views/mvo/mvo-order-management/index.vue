@@ -1,324 +1,321 @@
 <template>
   <div>
-    <div class="search-form">
-      <el-form :inline="true" :model="searchForm" class="demo-form-inline">
-        <el-form-item label="Title:">
-          <el-input style="width: 50vh" v-model="searchForm.searchWord" placeholder="Enter title to search"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button class="pan-btn tiffany-btn" @click="onSearch">Search</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
-    <div class="tab-container">
-      <el-tabs v-model="activeName" style="margin-top:2vh;" type="border-card" @tab-click="handleClick">
-        <el-tab-pane v-if="getSearch" label="Search Result" name="GR">
-          <el-table
-            v-loading="listLoading"
-            ref="apTable"
-            :data="searchList"
-            border
-            fit
-            highlight-current-row
-            style="width: 100%">
-            <el-table-column align="center" label="Title">
-              <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.proId)">{{ scope.row.productTitle }}</el-button>
-              </template>
-            </el-table-column>
+    <el-card class="box-card" shadow="never">
+      <div slot="header" class="search-form">
+        <span>Product Title：</span>
+        <el-input v-model="searchForm.searchWord" placeholder="Please input product title to search" style="width: 40vw;"></el-input>
+        <el-button class="pan-btn tiffany-btn" type="text" @click="onSearch">Search</el-button>
+      </div>
+      <div class="tab-container">
+        <el-tabs v-model="activeName" style="margin-top:2vh;" type="border-card" @tab-click="handleClick">
+          <el-tab-pane v-if="getSearch" label="Search Result" name="GR">
+            <el-table
+              v-loading="listLoading"
+              ref="apTable"
+              :data="searchList"
+              border
+              fit
+              highlight-current-row
+              style="width: 100%">
+              <el-table-column align="center" label="Title">
+                <template slot-scope="scope">
+                  <el-button type="text" @click="gotoTitle(scope.row.proId)">{{ scope.row.productTitle }}</el-button>
+                </template>
+              </el-table-column>
 
-            <el-table-column  align="center" label="Order No" >
-              <template slot-scope="scope">
-                <span>{{ scope.row.productOrderNum }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column  align="center" label="Order No" >
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productOrderNum }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column  align="center" label="Total" >
-              <template slot-scope="scope">
-                <span>{{ scope.row.productPrice *scope.row.productNum }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column  align="center" label="Total" >
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productPrice *scope.row.productNum }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column  align="center" label="Status" >
-              <template slot-scope="scope">
-                <span v-if="scope.row.type == 1">Awaiting Payment</span>
-                <span v-if="scope.row.type == 2">Awaiting Shipment</span>
-                <span v-if="scope.row.type == 3">Shipped</span>
-                <span v-if="scope.row.type == 4">Completed</span>
-                <span v-if="scope.row.type == 5">Cancelled</span>
-              </template>
-            </el-table-column>
+              <el-table-column  align="center" label="Status" >
+                <template slot-scope="scope">
+                  <span v-if="scope.row.type == 1">Awaiting Payment</span>
+                  <span v-if="scope.row.type == 2">Awaiting Shipment</span>
+                  <span v-if="scope.row.type == 3">Shipped</span>
+                  <span v-if="scope.row.type == 4">Completed</span>
+                  <span v-if="scope.row.type == 5">Cancelled</span>
+                </template>
+              </el-table-column>
 
-          </el-table>
-        </el-tab-pane>
-        <el-tab-pane label="Awaiting Payment" name="AP">
-          <el-table
-            v-loading="listLoading"
-            ref="apTable"
-            :data="APlist"
-            border
-            fit
-            highlight-current-row
-            style="width: 100%">
+            </el-table>
+          </el-tab-pane>
+          <el-tab-pane label="Awaiting Payment" name="AP">
+            <el-table
+              v-loading="listLoading"
+              ref="apTable"
+              :data="APlist"
+              border
+              fit
+              highlight-current-row
+              style="width: 100%">
 
-            <el-table-column align="center" label="Title">
-              <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.proId)">{{ scope.row.productTitle }}</el-button>
-              </template>
-            </el-table-column>
+              <el-table-column align="center" label="Title">
+                <template slot-scope="scope">
+                  <el-button type="text" @click="gotoTitle(scope.row.proId)">{{ scope.row.productTitle }}</el-button>
+                </template>
+              </el-table-column>
 
-            <el-table-column align="center" label="Price">
-              <template slot-scope="scope">
-                <span>{{ scope.row.productPrice }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column align="center" label="Price">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productPrice }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column align="center" label="QTY">
-              <template slot-scope="scope">
-                <span>{{ scope.row.productNum }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column align="center" label="QTY">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productNum }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column align="center" label="Sku" >
-              <template slot-scope="scope">
-                <span>{{ scope.row.productSku }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column align="center" label="Sku" >
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productSku }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column  align="center" label="Order No" >
-              <template slot-scope="scope">
-                <span>{{ scope.row.productOrderNum }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column  align="center" label="Order No" >
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productOrderNum }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column  align="center" label="Created Time" >
-              <template slot-scope="scope">
-                <span>{{ scope.row.productCreateTime }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column  align="center" label="Created Time" >
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productCreateTime }}</span>
+                </template>
+              </el-table-column>
 
-          </el-table>
-        </el-tab-pane>
-        <el-tab-pane label="Awaiting Shipment" name="AS">
-          <el-table
-            v-loading="listLoading"
-            :data="ASlist"
-            border
-            fit
-            highlight-current-row
-            style="width: 100%">
+            </el-table>
+          </el-tab-pane>
+          <el-tab-pane label="Awaiting Shipment" name="AS">
+            <el-table
+              v-loading="listLoading"
+              :data="ASlist"
+              border
+              fit
+              highlight-current-row
+              style="width: 100%">
 
-            <el-table-column align="center" label="Title">
-              <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.proId)">{{scope.row.productTitle}}</el-button>
-              </template>
-            </el-table-column>
+              <el-table-column align="center" label="Title">
+                <template slot-scope="scope">
+                  <el-button type="text" @click="gotoTitle(scope.row.proId)">{{scope.row.productTitle}}</el-button>
+                </template>
+              </el-table-column>
 
-            <el-table-column align="center" label="Price">
-              <template slot-scope="scope">
-                <span>{{ scope.row.productPrice }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column align="center" label="Price">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productPrice }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column align="center" label="QTY">
-              <template slot-scope="scope">
-                <span>{{ scope.row.productNum }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column align="center" label="QTY">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productNum }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column align="center" label="Sku" >
-              <template slot-scope="scope">
-                <span>{{ scope.row.productSku }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column align="center" label="Sku" >
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productSku }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column  align="center" label="Order No" >
-              <template slot-scope="scope">
-                <span>{{ scope.row.productOrderNum }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column  align="center" label="Order No" >
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productOrderNum }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column  align="center" label="Created Time" >
-              <template slot-scope="scope">
-                <span>{{ scope.row.productCreateTime }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column  align="center" label="Created Time" >
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productCreateTime }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column  align="center" label="Operation" >
-              <template slot-scope="scope">
-                <el-button class="pan-btn light-blue-btn" @click="onExpress(scope.row)"> Deliver</el-button>
-              </template>
-            </el-table-column>
+              <el-table-column  align="center" label="Operation" >
+                <template slot-scope="scope">
+                  <el-button size="mini" type="success" @click="onExpress(scope.row)"> Deliver</el-button>
+                </template>
+              </el-table-column>
 
-          </el-table>
-        </el-tab-pane>
-        <el-tab-pane label="Shiped" name="SH">
-          <el-table
-            v-loading="listLoading"
-            :data="SHlist"
-            border
-            fit
-            highlight-current-row
-            style="width: 100%">
+            </el-table>
+          </el-tab-pane>
+          <el-tab-pane label="Shiped" name="SH">
+            <el-table
+              v-loading="listLoading"
+              :data="SHlist"
+              border
+              fit
+              highlight-current-row
+              style="width: 100%">
 
-            <el-table-column align="center" label="Title">
-              <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.proId)">{{scope.row.productTitle}}</el-button>
-              </template>
-            </el-table-column>
+              <el-table-column align="center" label="Title">
+                <template slot-scope="scope">
+                  <el-button type="text" @click="gotoTitle(scope.row.proId)">{{scope.row.productTitle}}</el-button>
+                </template>
+              </el-table-column>
 
-            <el-table-column align="center" label="Price">
-              <template slot-scope="scope">
-                <span>{{ scope.row.productPrice }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column align="center" label="Price">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productPrice }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column align="center" label="QTY">
-              <template slot-scope="scope">
-                <span>{{ scope.row.productNum }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column align="center" label="QTY">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productNum }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column align="center" label="Sku" >
-              <template slot-scope="scope">
-                <span>{{ scope.row.productSku }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column align="center" label="Sku" >
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productSku }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column  align="center" label="Order No" >
-              <template slot-scope="scope">
-                <span>{{ scope.row.productOrderNum }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column  align="center" label="Order No" >
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productOrderNum }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column  align="center" label="Total" >
-              <template slot-scope="scope">
-                <span>{{ scope.row.productNum * scope.row.productPrice }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column  align="center" label="Total" >
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productNum * scope.row.productPrice }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column  align="center" label="Created Time" >
-              <template slot-scope="scope">
-                <span>{{ scope.row.productCreateTime }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column  align="center" label="Created Time" >
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productCreateTime }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column  align="center" label="Tracking No" >
-              <template slot-scope="scope">
-                <el-button type="text" @click="gotoTrack(scope.row.trackingNo)">{{scope.row.trackingNo}}</el-button>
-              </template>
-            </el-table-column>
+              <el-table-column  align="center" label="Tracking No" >
+                <template slot-scope="scope">
+                  <el-button type="text" @click="gotoTrack(scope.row.trackingNo)">{{scope.row.trackingNo}}</el-button>
+                </template>
+              </el-table-column>
 
-            <el-table-column  align="center" label="Operation" >
-              <template slot-scope="scope">
-                <el-button style="width: auto" class="pan-btn light-blue-btn" @click="onCancel(scope.row)"> Cancel</el-button>
-              </template>
-            </el-table-column>
+              <el-table-column  align="center" label="Operation" >
+                <template slot-scope="scope">
+                  <el-button size="mini" type="danger" @click="onCancel(scope.row)"> Cancel</el-button>
+                </template>
+              </el-table-column>
 
-          </el-table>
-        </el-tab-pane>
-        <el-tab-pane label="Completed Orders" name="CO">
-          <el-table
-            v-loading="listLoading"
-            :data="COlist"
-            border
-            fit
-            highlight-current-row
-            style="width: 100%">
+            </el-table>
+          </el-tab-pane>
+          <el-tab-pane label="Completed Orders" name="CO">
+            <el-table
+              v-loading="listLoading"
+              :data="COlist"
+              border
+              fit
+              highlight-current-row
+              style="width: 100%">
 
-            <el-table-column align="center" label="Title">
-              <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.proId)">{{scope.row.productTitle}}</el-button>
-              </template>
-            </el-table-column>
+              <el-table-column align="center" label="Title">
+                <template slot-scope="scope">
+                  <el-button type="text" @click="gotoTitle(scope.row.proId)">{{scope.row.productTitle}}</el-button>
+                </template>
+              </el-table-column>
 
-            <el-table-column align="center" label="Price">
-              <template slot-scope="scope">
-                <span>{{ scope.row.productPrice }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column align="center" label="Price">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productPrice }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column align="center" label="QTY">
-              <template slot-scope="scope">
-                <span>{{ scope.row.productNum }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column align="center" label="QTY">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productNum }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column align="center" label="Sku" >
-              <template slot-scope="scope">
-                <span>{{ scope.row.productSku }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column align="center" label="Sku" >
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productSku }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column  align="center" label="Order No" >
-              <template slot-scope="scope">
-                <span>{{ scope.row.productOrderNum }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column  align="center" label="Order No" >
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productOrderNum }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column  align="center" label="Created Time" >
-              <template slot-scope="scope">
-                <span>{{ scope.row.productCreateTime }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column  align="center" label="Created Time" >
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productCreateTime }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column  align="center" label="Tracking No" >
-              <template slot-scope="scope">
-                <el-button type="text" @click="gotoTrack(scope.row.trackingNo)">{{scope.row.trackingNo}}</el-button>
-              </template>
-            </el-table-column>
+              <el-table-column  align="center" label="Tracking No" >
+                <template slot-scope="scope">
+                  <el-button type="text" @click="gotoTrack(scope.row.trackingNo)">{{scope.row.trackingNo}}</el-button>
+                </template>
+              </el-table-column>
 
-          </el-table>
-        </el-tab-pane>
-        <el-tab-pane label="Cancelled Orders" name="CA">
-          <el-table
-            v-loading="listLoading"
-            :data="CAlist"
-            border
-            fit
-            highlight-current-row
-            style="width: 100%">
+            </el-table>
+          </el-tab-pane>
+          <el-tab-pane label="Cancelled Orders" name="CA">
+            <el-table
+              v-loading="listLoading"
+              :data="CAlist"
+              border
+              fit
+              highlight-current-row
+              style="width: 100%">
 
-            <el-table-column align="center" label="Title">
-              <template slot-scope="scope">
-                <el-button type="text" @click="gotoTitle(scope.row.proId)">{{scope.row.productTitle}}</el-button>
-              </template>
-            </el-table-column>
+              <el-table-column align="center" label="Title">
+                <template slot-scope="scope">
+                  <el-button type="text" @click="gotoTitle(scope.row.proId)">{{scope.row.productTitle}}</el-button>
+                </template>
+              </el-table-column>
 
-            <el-table-column align="center" label="Price">
-              <template slot-scope="scope">
-                <span>{{ scope.row.productPrice }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column align="center" label="Price">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productPrice }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column align="center" label="QTY">
-              <template slot-scope="scope">
-                <span>{{ scope.row.productNum }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column align="center" label="QTY">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productNum }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column align="center" label="Sku" >
-              <template slot-scope="scope">
-                <span>{{ scope.row.productSku }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column align="center" label="Sku" >
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productSku }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column  align="center" label="Order No" >
-              <template slot-scope="scope">
-                <span>{{ scope.row.productOrderNum }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column  align="center" label="Order No" >
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productOrderNum }}</span>
+                </template>
+              </el-table-column>
 
-            <el-table-column  align="center" label="Created Time" >
-              <template slot-scope="scope">
-                <span>{{ scope.row.productCreateTime }}</span>
-              </template>
-            </el-table-column>
+              <el-table-column  align="center" label="Created Time" >
+                <template slot-scope="scope">
+                  <span>{{ scope.row.productCreateTime }}</span>
+                </template>
+              </el-table-column>
 
-          </el-table>
-        </el-tab-pane>
-      </el-tabs>
-    </div>
+            </el-table>
+          </el-tab-pane>
+        </el-tabs>
+      </div>
+    </el-card>
     <div class="send-express-container">
       <div class="dialog-container">
         <el-dialog :visible.sync="sendExpressVisiable" title="Send Express">
@@ -547,10 +544,8 @@
   }
 
   .search-form{
-    margin: 3vh;
   }
   .tab-container{
-    margin: 3vh;
   }
 
 </style>

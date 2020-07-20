@@ -10,7 +10,7 @@
         style="width: 100%">
         <el-table-column align="center" label="Title">
           <template slot-scope="scope">
-            <el-button type="text" @click="gotoTitle(scope.row.productTitle)">{{ scope.row.productTitle }}</el-button>
+            <el-button type="text" @click="gotoTitle(scope.row.proId)">{{ scope.row.productTitle }}</el-button>
           </template>
         </el-table-column>
 
@@ -131,6 +131,14 @@
       this.fetchData()
     },
     methods: {
+      //跳转到其他界面：title、pay、track
+      //转到商品页
+      gotoTitle(proid){
+        console.log(proid);
+        this.$router.push({
+          path: '/bvo/productDetail/'+proid
+        });
+      },
       onSubmit() {
         console.log('submit!');
         this.saoIdList.splice(0, this.saoIdList.length);
