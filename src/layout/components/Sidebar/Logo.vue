@@ -25,8 +25,8 @@ export default {
   data() {
     return {
       title: '',
-      logoBig: require('@/assets/images/orange-brand-new.png'),
-      logoSmall: require('@/assets/images/001.png'),
+      logoBig: require('@/assets/images/orange-brand-big.png'),
+      logoSmall: require('@/assets/images/orange-brand-small.png'),
     }
   }
 }

@@ -37,3 +37,11 @@ export function updateBrand(brandUpdateVO){
     data: brandUpdateVO
   })
 }
+
+export function uploadLogo(file) {
+  return request({
+    url: 'http://localhost:9040/upload/uploadImage',
+    method: 'post',
+    data: file
+  })
+}

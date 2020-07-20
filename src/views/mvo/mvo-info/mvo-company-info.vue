@@ -162,7 +162,7 @@
       },
       cancel(formName) {
         this.$router.push({
-          path: '/mvo/myInfo'
+          path: '/mvo/mvoMyInfo'
         });
       }
     },
