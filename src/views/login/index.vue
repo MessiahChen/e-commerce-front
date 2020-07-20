@@ -8,8 +8,8 @@
         label-position="left">
 
         <div class="title-container">
-          <h1 class="title" >Cross-border E-commerce </h1>
-          <h1 class="title" >Borrow-sell Platform</h1>
+          <h1 class="title">Cross-border E-commerce </h1>
+          <h1 class="title">Borrow-sell Platform</h1>
         </div>
         <br>
 
@@ -36,8 +36,23 @@
           </span>
         </el-form-item>
 
+        <el-row>
+          <el-col :span="18">
+            <el-form-item prop="validateCode">
+              <span class="svg-container" style="margin-left: 15px;">
+                <svg-icon icon-class="validatecode" />
+              </span>
+              <el-input key="text" ref="validateCode" v-model="loginForm.code" type="text" placeholder="Please Input Code"
+                name="validateCode" tabindex="2" auto-complete="on" @keyup.enter.native="handleLogin" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <img :src="codeImage" @click="generateValidateCode()" style="margin-left: 5px;" />
+          </el-col>
+        </el-row>
+
+
         <el-button :loading="loading" type="primary" style="width:40%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
-<!--        <el-button type="primary" style="width:40%;margin-bottom:30px;" @click="hhahah">Login</el-button>-->
 
         <!--      <div class="tips">
                 <span style="margin-right:20px;">username: admin</span>
@@ -60,6 +75,10 @@
     validUsername
   } from '@/utils/validate'
 
+  import {
+    generateValidateCode
+  } from '@/api/user'
+
   import axios from 'axios'
   export default {
     name: 'Login',
@@ -80,9 +99,13 @@
       }
       return {
         imgSrc: require('@/assets/bg_images/bg1.jpg'),
+        tokenId: '',
+        codeImage: '',
         loginForm: {
           username: 'admin',
-          password: 'string'
+          password: 'string',
+          tokenId:'',
+          code: '',
         },
         loginRules: {
           username: [{
@@ -108,10 +131,19 @@
         immediate: true
       }
     },
+    created() {
+      this.generateValidateCode()
+    },
     methods: {
+      generateValidateCode() {
+        axios.get("http://localhost:9010/log/generateValidateCode").then(response => {
+          this.loginForm.tokenId = response.data.tokenId
+          this.codeImage = response.data.img
+        })
+      },
       hhahah() {
         axios.get("http://localhost:9010/user/refreshToken", {
-          headers : {
+          headers: {
             Authorization: "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdHJpbmciLCJjcmVhdGVkIjoxNTk0ODE3NzM0MTUzLCJleHAiOjE1OTU0MjI1MzR9._A401STtXdNqyfOum7yp1fI4G5FNIDJztMCTM5U6qtNJPjWMiC2QOixN6kT6-lQk8ywsqyDinAOipLmWtQxUKQ"
           }
         }).then(response => {
@@ -138,6 +170,7 @@
               })
               this.loading = false
             }).catch(() => {
+              this.generateValidateCode()
               this.loading = false
             })
           } else {
@@ -219,7 +252,7 @@
       position: relative;
       width: 520px;
       max-width: 100%;
-      padding: 160px 35px 0;
+      padding: 18vh 35px 0;
       margin: 0 auto;
       overflow: hidden;
       text-align: center;
