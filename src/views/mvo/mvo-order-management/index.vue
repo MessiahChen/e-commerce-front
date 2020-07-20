@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="pageLoading" element-loading-text="拼命加载中">
     <el-card class="box-card" shadow="never">
       <div slot="header" class="search-form">
         <span>Product Title：</span>
@@ -367,6 +367,7 @@
         cancelSaoid: '',
         activeName: 'AP',
         listLoading: true,
+        pageLoading: true,
         getSearch: false,
         sendExpressVisiable: false,
         APlist: [],
@@ -395,6 +396,7 @@
     },
     methods: {
       fetchData(){
+        this.pageLoading = false;
         this.listloading  = true;
 
         this.APlist.splice(0,this.APlist.length)

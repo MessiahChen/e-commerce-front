@@ -59,7 +59,7 @@
               ],
               remarks: [],
               ifInWishlist: data.ifInWishlist,
-              
+
               amazonDescription :data.amazonDescription,
               ebayDescription:data.ebayDescription,
             }

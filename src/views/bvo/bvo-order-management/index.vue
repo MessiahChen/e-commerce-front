@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="pageLoading" element-loading-text="拼命加载中">
     <el-card class="box-card" shadow="never">
       <div slot="header" class="search-form">
         <span>Product Title：</span>
@@ -316,6 +316,7 @@
           },
           activeName: 'AP',
           listLoading: true,
+          pageLoading: true,
           getSearch: false,
           apSelection:[],
           APlist: [],
@@ -338,7 +339,8 @@
       },
       methods: {
         fetchData(){
-          this.listloading  = true;
+          this.pageLoading = false;
+          this.listloading = true;
           var dsrid = this.$store.getters.dsrId
           console.log('dsrid:'+dsrid);
 
