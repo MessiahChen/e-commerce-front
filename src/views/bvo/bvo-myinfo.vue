@@ -79,8 +79,7 @@
     methods: {
       getBVOInfo(){
         var getBVOInfoVO = {
-          // TODO
-          dsrId: '4'
+          dsrId: this.$store.getters.dsrId
         }
         return new Promise((resolve, reject) => {
           getBVOInfo(getBVOInfoVO).then(response => {
@@ -94,10 +93,13 @@
       },
       initBVOInfo(){
         this.readInfo();
+        this.bvoInfo.createdBy = this.$store.getters.userName;
+        this.bvoInfo.lastUpdateBy = this.$store.getters.userName;
         return new Promise((resolve, reject) => {
           initBVOInfo(this.bvoInfo).then(response => {
             this.$message.info("Init Successfully");
             this.getBVOInfo();
+            this.clearInfo();
             resolve();
           }).catch(error => {
             reject(error);
@@ -106,22 +108,39 @@
       },
       updateBVOInfo(){
         this.readInfo();
+        this.bvoInfo.lastUpdateBy = this.$store.getters.userName;
         return new Promise((resolve, reject) => {
           updateBVOInfo(this.bvoInfo).then(response => {
             this.$message.info("Update Successfully");
             resolve();
             this.getBVOInfo();
+            this.clearInfo();
           }).catch(error => {
             reject(error);
           })
         })
       },
+      clearInfo(){
+        bvoInfo = {
+          dsrId:'',
+          name:'',
+          createdBy:'',
+          creationDate:'',
+          lastUpdateBy:'',
+          lastUpdateDate:'',
+          callCnt:'',
+          remark:'',
+          stsCd:'',
+          registerDate:'',
+          email:'',
+          phoneNumber:''
+        }
+      },
       readInfo(){
         this.bvoInfo.name = this.ruleForm.name;
         this.bvoInfo.email = this.ruleForm.email;
         this.bvoInfo.phoneNumber = this.ruleForm.phone;
-        // TODO
-        this.bvoInfo.dsrId = '4';
+        this.bvoInfo.dsrId = this.$store.getters.dsrId;
       },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {

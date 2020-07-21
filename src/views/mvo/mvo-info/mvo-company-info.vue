@@ -105,18 +105,16 @@
     methods: {
       getCompany() {
         var getCompanyVO = {
-          // TODO
-          manId: '1'
+          manId: this.$store.getters.manId
         }
         return new Promise((resolve, reject) => {
           getCompany(getCompanyVO).then(response => {
             this.ruleForm.companyNameCN = response.data.nameCn;
             this.ruleForm.companyNameEN = response.data.nameEn;
-            // TODO: 后端与数据库交互的bug
             var intro = response.data.description;
-            console.log(intro);
             console.log(response.data.description);
-            this.$refs.editor.setContent("// TODO");
+            this.$refs.editor.setContent(intro);
+            console.log(this.$refs.editor.getContent());
             this.ruleForm.type = response.data.gmcReportType;
             this.ruleForm.url = response.data.gmcReportUrl;
             resolve();
@@ -126,30 +124,55 @@
           })
         })
       },
-      readComanyInfo(){
+      readComanyInfo() {
         this.companyInfo.nameCn = this.ruleForm.companyNameCN;
         this.companyInfo.nameEn = this.ruleForm.companyNameEN;
-        this.companyInfo.description = this.ruleForm.intro;
+        this.companyInfo.description = this.$refs.editor.getContent();
+        console.log(this.companyInfo.description);
         this.companyInfo.gmcReportType = this.ruleForm.type;
         this.companyInfo.gmcReportUrl = this.ruleForm.url;
-        // TODO
-        this.companyInfo.manId = '1';
+        this.companyInfo.manId = this.$store.getters.manId;
+        this.companyInfo.createdBy = this.$store.getters.userName;
+        this.companyInfo.lastUpdateBy = this.$store.getters.userName;
       },
       updateCompany() {
         this.readComanyInfo();
         return new Promise((resolve, reject) => {
           updateCompany(this.companyInfo).then(response => {
-            this.$message.info("Modify companyInfo Successfully!")
+            console.log(response);
+            this.$message.info("Operate Successfully!")
             resolve()
-            this.getAllProductInfo()
+            this.getAllProductInfo();
+            this.clearInfo();
+            this.$router.push({
+              path: '/mvo/mvoMyInfo'
+            });
           }).catch(error => {
             reject(error);
           })
         })
       },
+      clearInfo(){
+        this.companyInfo = {
+          manId: '',
+          nameEn: '',
+          nameCn: '',
+          gmcReportType: '',
+          gmcReportUrl: '',
+          createdBy: '',
+          creationDate: '',
+          lastUpdateBy: '',
+          lastUpdateDate: '',
+          callCnt: '',
+          remark: '',
+          stsCd: '',
+          description: ''
+        }
+      },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
+            this.updateCompany();
             alert('submit!');
           } else {
             console.log('error submit!!');
@@ -161,6 +184,7 @@
         this.$refs[formName].resetFields();
       },
       cancel(formName) {
+        this.clearInfo();
         this.$router.push({
           path: '/mvo/mvoMyInfo'
         });
