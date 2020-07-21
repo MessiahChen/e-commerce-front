@@ -73,7 +73,7 @@
         </el-form>
     </div>
     <div class="pay-dialog-container">
-      <el-dialog :visible.sync="dialogFormVisible" title="Input Password">
+      <el-dialog :visible.sync="dialogFormVisible" title="Input Password" @submit.native.prevent>
         <el-form ref="payForm" :model="payForm" label-width="150px" :rules="payFormRules">
           <el-form-item label="Password" prop="password">
             <el-input type="password" v-model="payForm.password" />
