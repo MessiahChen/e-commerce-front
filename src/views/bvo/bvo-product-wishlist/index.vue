@@ -45,7 +45,7 @@
         </el-row>
       </el-tab-pane>
     </el-tabs>
-    <!-- <el-button size="mini" style="position: absolute; right: 8px; top: 5px;">批量删除</el-button> -->
+    <el-button size="mini" style="position: absolute; right: 8px; top: 5px;">批量删除</el-button>
   </div>
 
 </template>

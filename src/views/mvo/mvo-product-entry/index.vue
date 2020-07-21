@@ -54,49 +54,49 @@
     <el-dialog :title="dialogFunction" :visible.sync="ifOpenDialog" width="75%" center top="5vh" destroy-on-close
       @closed="closeDialog()">
       <el-form ref="form" :model="productInfo" label-width="160px" :rules="addRules">
-        <el-form-item label="商品标题" prop="title">
+        <el-form-item label="Product Title" prop="title">
           <el-input v-model="productInfo.title"></el-input>
         </el-form-item>
-        <div style="display: flex; flex-direction: row;margin-left: 75px;">
-          <el-form-item label="长" label-width="70px" style="width: 13vw;" prop="length">
-            <el-input v-model="productInfo.length"></el-input>
+        <div style="display: flex; flex-direction: row;margin-left: 61px;">
+          <el-form-item label="Length(cm)" label-width="98px" style="width: 14vw;" prop="length">
+            <el-input v-model.number="productInfo.length" maxlength="7"></el-input>
           </el-form-item>
-          <el-form-item label="宽" label-width="70px" style="width: 13vw;" prop="width">
-            <el-input v-model="productInfo.width"></el-input>
+          <el-form-item label="Width(cm)" label-width="96px" style="width: 14vw;" prop="width">
+            <el-input v-model.number="productInfo.width" maxlength="7"></el-input>
           </el-form-item>
-          <el-form-item label="高" label-width="70px" style="width: 13vw;" prop="height">
-            <el-input v-model="productInfo.height"></el-input>
+          <el-form-item label="Height(cm)" label-width="96px" style="width: 14vw;" prop="height">
+            <el-input v-model.number="productInfo.height" maxlength="7"></el-input>
           </el-form-item>
-          <el-form-item label="重量" label-width="70px" style="width: 13vw;" prop="weight">
-            <el-input v-model="productInfo.weight"></el-input>
+          <el-form-item label="Weight(kg)" label-width="96px" style="width: 14vw;" prop="weight">
+            <el-input v-model.number="productInfo.weight" maxlength="5"></el-input>
           </el-form-item>
         </div>
-        <el-form-item label="商品sku编码" prop="skuCd">
+        <el-form-item label="sku" prop="skuCd">
           <el-input v-model="productInfo.skuCd"></el-input>
         </el-form-item>
 
-        <el-form-item label="商品ean编码" prop="ean">
+        <el-form-item label="ean" prop="ean">
           <el-input v-model="productInfo.ean"></el-input>
         </el-form-item>
 
-        <el-form-item label="商品型号" prop="model">
+        <el-form-item label="Model" prop="model">
           <el-input v-model="productInfo.model"></el-input>
         </el-form-item>
 
-        <el-form-item label="借卖价格" prop="retailPrice">
+        <el-form-item label="Retail Price" prop="retailPrice">
           <el-input v-model="productInfo.retailPrice"></el-input>
         </el-form-item>
 
-        <el-form-item label="保修期" prop="warrantyDay">
+        <el-form-item label="Warranty Day" prop="warrantyDay">
           <el-input v-model="productInfo.warrantyDay"></el-input>
         </el-form-item>
 
-        <el-form-item label="eBay Description" style="margin-bottom: 12vh;">
+        <el-form-item label="eBay Description" style="margin-bottom: 1vh;">
           <ebayEditor id="ebayTextEditor" ref="ebayTextEditor" :fileName="'file'" :canCrop="canCrop" :uploadUrl="uploadUrl"
             v-model="productInfo.ebayDescription"></ebayEditor>
         </el-form-item>
 
-        <el-form-item label="Amazon Description" style="margin-top: 12vh; margin-bottom: 120px;">
+        <el-form-item label="Amazon Description" style="margin-top: 1vh; margin-bottom: 1vh;">
           <amazonEditor id="amazonTextEditor" ref="amazonTextEditor" :fileName="'file'" :canCrop="canCrop" :uploadUrl="uploadUrl"
             v-model="productInfo.amazonDescription"></amazonEditor>
         </el-form-item>
@@ -112,10 +112,6 @@
 </template>
 
 <script>
-  // import {
-  //   quillEditor
-  // } from 'vue-quill-editor'
-
   import ebayEditor from '@/components/Quilleditor/index.vue'
   import amazonEditor from '@/components/Quilleditor/index.vue'
 
@@ -163,7 +159,7 @@
           warrantyDay: "",
           weight: "",
           width: "",
-          manId: 1,
+          manId: "",
           ebayDescription: "",
           amazonDescription: ""
         },
@@ -176,68 +172,107 @@
         addRules: {
           title: [{
               required: true,
-              message: '请输入活动名称',
+              message: 'Please input product title',
               trigger: 'blur'
             },
             {
               min: 5,
               max: 100,
-              message: '商品标题中包含搜索关键字，品牌名，颜色，大小，型号。',
+              message: 'The product title contains search keywords, brand name, color, size, and model.',
               trigger: 'blur'
             }
           ],
           width: [{
-            required: true,
-            message: '请填写宽度',
-            trigger: 'blur'
-          }],
+              required: true,
+              message: 'Input width',
+              trigger: 'blur'
+            },
+            {
+              type: 'number',
+              message: 'Must be number'
+            }
+          ],
           height: [{
             required: true,
-            message: '请填写高度',
+            message: 'Input height',
             trigger: 'blur'
+          }, {
+            type: 'number',
+            message: 'Must be number'
           }],
           length: [{
             required: true,
-            message: '请填写长度',
+            message: 'Input length',
             trigger: 'blur'
+          }, {
+            type: 'number',
+            message: 'Must be number'
           }],
           weight: [{
             required: true,
-            message: '请填写重量',
+            message: 'Input weight',
             trigger: 'blur'
+          }, {
+            type: 'number',
+            message: 'Must be number'
           }],
           skuCd: [{
             required: true,
-            message: '请填写sku',
+            message: 'Please input sku',
+            trigger: 'blur'
+          }, {
+            max: 8,
+            message: 'Sku must be less than 8',
             trigger: 'blur'
           }],
           ean: [{
             required: true,
-            message: '请填写ean',
-            trigger: 'change'
+            message: 'Please input ean',
+            trigger: 'blur'
           }],
           model: [{
             required: true,
-            message: '请填写型号',
-            trigger: 'change'
+            message: 'Please input model',
+            trigger: 'blur'
           }],
           retailPrice: [{
             required: true,
-            message: '请填写价格',
-            trigger: 'change'
+            message: 'Please input price',
+            trigger: 'blur'
           }],
           warrantyDay: [{
             required: true,
-            message: '请填写保修期',
+            message: 'Please input warranty Day',
             trigger: 'blur'
           }]
         }
       }
     },
     components: {
-      // quillEditor,
       ebayEditor,
       amazonEditor
+    },
+    watch: {
+      "productInfo.width"() {
+        if (this.productInfo.width < 0) {
+          this.productInfo.width = Number(this.productInfo.width.toString().replace(/\-/g, ''));
+        }
+      },
+      "productInfo.length"() {
+        if (this.productInfo.length < 0) {
+          this.productInfo.length = Number(this.productInfo.length.toString().replace(/\-/g, ''));
+        }
+      },
+      "productInfo.height"() {
+        if (this.productInfo.height < 0) {
+          this.productInfo.height = Number(this.productInfo.height.toString().replace(/\-/g, ''));
+        }
+      },
+      "productInfo.weight"() {
+        if (this.productInfo.weight < 0) {
+          this.productInfo.weight = Number(this.productInfo.weight.toString().replace(/\-/g, ''));
+        }
+      }
     },
     created() {
       this.getAllProductInfo();
@@ -245,7 +280,7 @@
     methods: {
       getAllProductInfo() {
         var getAllProductVO = {
-          manId: 1,
+          manId: this.$store.getters.manId,
           pageNum: this.pageNum,
           pageSize: this.pageSize
         }
@@ -256,10 +291,6 @@
             this.totalPage = response.data.totalPage
             this.pageNum = response.data.pageNum
             resolve()
-            console.log(response.data)
-            console.log(this.pageSize)
-            console.log(this.totalPage)
-            console.log(this.pageNum)
             this.tableLoading = false
           }).catch(error => {
             reject(error);
@@ -269,7 +300,7 @@
       },
       searchProductByTitle() {
         var searchProductVO = {
-          manId: 1,
+          manId: this.$store.getters.manId,
           pageNum: this.pageNum,
           pageSize: this.pageSize,
           title: this.productTitle
@@ -283,23 +314,27 @@
             resolve()
             this.tableLoading = false
           }).catch(error => {
-            reject(error);
             this.tableLoading = false
+            reject(error);
           })
         })
       },
       addProductInfo() {
-        console.log(this.productInfo.ebayDescription)
-        console.log(this.productInfo.amazonDescription)
-        return new Promise((resolve, reject) => {
-          addProduct(this.productInfo).then(response => {
-            this.$message.info("Add Product Successfully!")
-            this.ifOpenDialog = false;
-            this.getAllProductInfo()
-            resolve()
-          }).catch(error => {
-            reject(error);
-          })
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            this.productInfo.userId = this.$store.getters.userName
+            this.productInfo.manId = this.$store.getters.manId
+            return new Promise((resolve, reject) => {
+              addProduct(this.productInfo).then(response => {
+                this.$message.success("Add Product Successfully!")
+                this.ifOpenDialog = false;
+                this.getAllProductInfo()
+                resolve()
+              }).catch(error => {
+                reject(error);
+              })
+            })
+          }
         })
       },
       getProductInfoWhenUpdate(row) {
@@ -313,8 +348,8 @@
               proId: row.proId,
 
               ean: response.data.ean,
-              height: response.data.height,
-              length: response.data.length,
+              height: parseFloat(response.data.height),
+              length: parseFloat(response.data.length),
               model: response.data.model,
               retailPrice: response.data.retailPrice,
               skuCd: response.data.skuCd,
@@ -322,8 +357,8 @@
               upc: response.data.upc,
               userId: "",
               warrantyDay: response.data.warrantyDay,
-              weight: response.data.weight,
-              width: response.data.width,
+              weight: parseFloat(response.data.weight),
+              width: parseFloat(response.data.width),
               ebayDescription: response.data.ebayDescription,
               amazonDescription: response.data.amazonDescription
             }
@@ -364,17 +399,22 @@
         })
       },
       updateProductInfo() {
-        return new Promise((resolve, reject) => {
-          updateProduct(this.productInfo).then(response => {
-            this.$message.info("Modify Product Successfully!")
-            this.ifOpenDialog = false;
-            resolve()
-            this.getAllProductInfo()
-          }).catch(error => {
-            reject(error);
-          })
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            this.productInfo.userId = this.$store.getters.userName
+            this.productInfo.manId = this.$store.getters.manId
+            return new Promise((resolve, reject) => {
+              updateProduct(this.productInfo).then(response => {
+                this.$message.success("Modify Product Successfully!")
+                this.ifOpenDialog = false;
+                resolve()
+                this.getAllProductInfo()
+              }).catch(error => {
+                reject(error);
+              })
+            })
+          }
         })
-
       },
       closeDialog() {
         this.productInfo = {
@@ -390,7 +430,7 @@
           warrantyDay: "",
           weight: "",
           width: "",
-          manId: 1,
+          manId: "",
           ebayDescription: "",
           amazonDescription: ""
         }
@@ -402,7 +442,7 @@
         console.log(this.ebayContent)
         console.log(this.amazonContent)
       },
-      openAddDialog(){
+      openAddDialog() {
         this.ifOpenDialog = true
         this.dialogFunction = "Add Product"
       }

@@ -53,7 +53,7 @@
 
     <el-dialog title="Product Infomation" :visible.sync="ifOpenAddDialog" width="70%" center top="5vh" @closed="closeAddDialog()">
 
-      <el-form ref="form" :model="productImage" label-width="150px">
+      <el-form ref="addForm" :model="productImage" label-width="150px">
         <el-form-item label="Product Title">
           <el-select v-model="productImage.proId" clearable placeholder="请选择">
             <el-option v-for="item in productWithNoImage" :key="item.proId" :label="item.title" :value="item.proId">
@@ -65,10 +65,8 @@
           <el-cascader v-model="productImage.category" :options="productCats" :props="{ value: 'catId', label: 'catName', children :'viceCats'}"></el-cascader>
         </el-form-item>
 
+
         <el-form-item label="Upload Images">
-
-
-
           <el-upload ref="upload" :action="uploadUrl" multiple accept="image/png, image/jpeg" list-type="picture-card"
             :auto-upload="false" :file-list="urlList" :http-request="uploadSectionFile" :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove">
@@ -77,14 +75,11 @@
           <el-dialog :visible.sync="dialogVisible" append-to-body>
             <img width="100%" :src="dialogImageUrl" alt="">
           </el-dialog>
-
         </el-form-item>
-
-
-
         <el-form-item>
           <el-button @click="uploadImages()">上传图片</el-button>
         </el-form-item>
+
 
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -95,19 +90,29 @@
 
     <el-dialog title="Product Infomation" :visible.sync="ifOpenUpdateDialog" width="70%" center top="5vh" @closed="closeUpdateDialog()">
 
-      <el-form ref="form" :model="productUpdateImage" label-width="150px">
+      <el-form ref="modifyForm" :model="productImage" label-width="150px">
         <el-form-item label="Product Title">
-          <el-input disabled v-model="productUpdateImage.title"></el-input>
+          <el-input disabled v-model="productImage.title"></el-input>
         </el-form-item>
 
         <el-form-item label="Product Category">
-          <el-cascader v-model="productUpdateImage.category" :options="productCats" :props="{ value: 'catId', label: 'catName', children :'viceCats'}"></el-cascader>
+          <el-cascader v-model="productImage.category" :options="productCats" :props="{ value: 'catId', label: 'catName', children :'viceCats'}"></el-cascader>
         </el-form-item>
 
         <el-form-item label="Upload Images">
-          <el-button class="pan-btn light-blue-btn" type="text">选择图片</el-button>
-          <el-button class="pan-btn light-blue-btn" style="margin-left: 1vw;" type="text">上传图片</el-button>
+          <el-upload ref="upload" :action="uploadUrl" multiple accept="image/png, image/jpeg" list-type="picture-card"
+            :auto-upload="false" :file-list="urlList" :http-request="uploadSectionFile" :on-preview="handlePictureCardPreview"
+            :on-remove="handleRemove">
+            <i class="el-icon-plus"></i>
+          </el-upload>
+          <el-dialog :visible.sync="dialogVisible" append-to-body>
+            <img width="100%" :src="dialogImageUrl" alt="">
+          </el-dialog>
         </el-form-item>
+        <el-form-item>
+          <el-button @click="uploadImages()">上传图片</el-button>
+        </el-form-item>
+
 
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -131,7 +136,7 @@
     getOSSPolicy,
     uploadToOSS
   } from '@/network/mvo/mvo-product-image.js'
-  // import UploadImage from "@/views/mvo/mvo-product-image/components/UploadImage.vue"
+
   import axios from 'axios'
   export default {
     name: "mvo-product-image",
@@ -168,12 +173,6 @@
           category: [],
           images: []
         },
-        productUpdateImage: {
-          proId: "",
-          title: "",
-          userId: "",
-          category: []
-        },
         imageList: [],
         dialogImageUrl: '',
         dialogVisible: false,
@@ -204,7 +203,7 @@
     methods: {
       getAllproductImage() {
         var getAllProductImageVO = {
-          manId: 1,
+          manId: this.$store.getters.manId,
           pageNum: this.pageNum,
           pageSize: this.pageSize
         }
@@ -221,7 +220,6 @@
                 this.productWithNoImage.push(this.productImages[i])
               }
             }
-            console.log(this.productWithNoImage)
             resolve()
             this.tableLoading = false
           }).catch(error => {
@@ -232,7 +230,7 @@
       },
       searchProductImageByTitle() {
         var searchProductImageVO = {
-          manId: 1,
+          manId: this.$store.getters.manId,
           pageNum: this.pageNum,
           pageSize: this.pageSize,
           title: this.productTitle
@@ -266,16 +264,25 @@
         })
       },
       addProductCategory() {
-        console.log(this.productImage)
-        return new Promise((resolve, reject) => {
-          addProduct(this.productImage).then(response => {
-            this.ifOpenAddDialog = false
-            this.getAllproductImage()
-            console.log(response)
-            resolve()
-          }).catch(error => {
-            reject(error)
-          })
+        this.$refs['addForm'].validate((valid) => {
+          if (valid) {
+            if (this.productImage.category.length == 0) {
+              this.$message.error("Please select category!")
+            } else {
+              console.log(this.productImage)
+              this.productImage.userId = this.$store.getters.userName
+              return new Promise((resolve, reject) => {
+                addProduct(this.productImage).then(response => {
+                  this.ifOpenAddDialog = false
+                  this.getAllproductImage()
+                  console.log(response)
+                  resolve()
+                }).catch(error => {
+                  reject(error)
+                })
+              })
+            }
+          }
         })
       },
       uploadImages() {
@@ -283,53 +290,61 @@
       },
       getProductCatWhenUpdate(row) {
         this.ifOpenUpdateDialog = true
-        this.productUpdateImage.proId = row.proId
-        this.productUpdateImage.title = row.title
+        this.productImage.proId = row.proId
+        this.productImage.title = row.title
         this.getAllImageCategory();
       },
       updateProductCategory() {
-        var productCatUpdateVO = {
-          proId: this.productUpdateImage.proId,
-          userId: this.productUpdateImage.userId,
-          category: this.productUpdateImage.category
-        }
-        return new Promise((resolve, reject) => {
-          updateProduct(productCatUpdateVO).then(response => {
-            console.log(response)
-            this.ifOpenUpdateDialog = false
-            this.getAllproductImage()
-            resolve()
-          }).catch(error => {
-            reject(error)
-          })
+        this.$refs['modifyForm'].validate((valid) => {
+          if (valid) {
+            if (this.productImage.category.length == 0) {
+              this.$message.error("Please select category!")
+            } else {
+              this.productImage.userId = this.$store.getters.userName
+              return new Promise((resolve, reject) => {
+                updateProduct(this.productImage).then(response => {
+                  console.log(response)
+                  this.ifOpenUpdateDialog = false
+                  this.getAllproductImage()
+                  resolve()
+                }).catch(error => {
+                  reject(error)
+                })
+              })
+            }
+          }
         })
       },
       closeUpdateDialog() {
-        this.productUpdateImage = {
+        this.productImage = {
           proId: "",
-          title: "",
           userId: "",
-          category: []
+          category: [],
+          images: []
         }
+        this.urlList = []
       },
       batchDeleteproductCat() {
         var data = this.$refs.productTable.selection;
         console.log(data)
-        var proIds = []
-        for (var i = 0; i < data.length; i++) {
-          proIds[i] = data[i].proId
-        }
+        if (data.length == 0) {
+          this.$message.warning("Please choose products and then delete them")
+        } else {
+          var proIds = []
+          for (var i = 0; i < data.length; i++) {
+            proIds[i] = data[i].proId
+          }
 
-        return new Promise((resolve, reject) => {
-          deleteProduct(proIds).then(response => {
-            console.log(response)
-            this.getAllproductImage()
-            resolve()
-          }).catch(error => {
-            reject(error)
+          return new Promise((resolve, reject) => {
+            deleteProduct(proIds).then(response => {
+              console.log(response)
+              this.getAllproductImage()
+              resolve()
+            }).catch(error => {
+              reject(error)
+            })
           })
-        })
-        this.getAllproductImage()
+        }
       },
       deleteProductCat(row, index) {
         var proIds = []
@@ -337,7 +352,6 @@
 
         return new Promise((resolve, reject) => {
           deleteProduct(proIds).then(response => {
-            console.log(response)
             this.getAllproductImage()
             resolve()
           }).catch(error => {
@@ -352,6 +366,7 @@
           category: [],
           images: []
         }
+        this.urlList = []
       },
       handleStatus(row) {
         var productStatusVO = {
@@ -387,8 +402,6 @@
 
         let policy = await this.getOSSPolicyBeforeUpload()
         let res = policy.data
-        console.log("result")
-        console.log(res)
         let uploadFileVO = new FormData();
         //多个文件上传
         uploadFileVO.append("Key", res.data.dir + params.file.name);

@@ -16,17 +16,6 @@
           <div class="item-intro-img" ref="itemIntroGoods" v-html="productInfo.amazonDescription">L
           </div>
         </el-tab-pane>
-        <el-tab-pane label="规格参数">
-          <div class="remarks-title">
-            <span>规格参数</span>
-          </div>
-          <div class="item-param-container">
-            <span class="item-param-box" v-for="(item,index) in productInfo.param" :key="index">
-              <span class="item-param-title">{{item.title}}: </span>
-              <span class="item-param-content">{{item.content}}</span>
-            </span>
-          </div>
-        </el-tab-pane>
         <el-tab-pane label="售后保障">
           <ShowProductWarranty></ShowProductWarranty>
         </el-tab-pane>
@@ -201,6 +190,10 @@
   }
 
   .item-intro-img {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
   }
 

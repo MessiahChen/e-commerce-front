@@ -95,6 +95,7 @@
           </el-form>
         </el-dialog>
 
+      </div>
     </div>
   </div>
 </template>
@@ -261,7 +262,7 @@
         this.rowTemp = '';
         this.resetTemp();
         this.editDialogVisible = false;
-        this.addDialogVisible  = false;
+        this.addDialogVisible = false;
       },
       saveEditedBrand() {
         console.log(this.rowTemp)
@@ -306,7 +307,7 @@
       saveAddedBrand() {
         console.log(this.brandData.length);
         var brandAddVO = {
-          brdId: this.brandData.length+1,
+          brdId: this.brandData.length + 1,
           manId: this.brandData[0].manId,
           nameEn: this.temp.nameEn,
           nameCn: '',
