@@ -25,7 +25,7 @@
           <div class="item-price-left">
             <div class="item-price-row">
               <p>
-                <span class="item-price-title">价 格</span>
+                <span class="item-price-title">Price</span>
                 <span class="item-price">￥{{productInfo.retailPrice}}</span>
               </p>
             </div>
@@ -55,9 +55,9 @@
         <div class="add-buy-car-box">
           <div class="add-buy-car">
             <el-button type="danger" size="medium" @click="dropShipNow()" style="margin-left: 5px;">Dropship Now</el-button>
-            <el-button type="danger" size="medium" v-if="!productInfo.ifInWishlist" @click="addToWishlist()" style="margin-left: 5px;">Add
+            <el-button type="danger" size="medium" v-if="!productInfo.ifInWishlist" @click="addToWishlist()" style="margin-left: 10px;">Add
               to Wish List</el-button>
-            <el-button type="danger" size="medium" v-if="productInfo.ifInWishlist" @click="deleteFromWishlist()" style="margin-left: 5px;">Delete
+            <el-button type="danger" size="medium" v-if="productInfo.ifInWishlist" @click="deleteFromWishlist()" style="margin-left: 10px;">Delete
               from
               Wish List</el-button>
           </div>
@@ -104,8 +104,8 @@
       },
       addToWishlist() {
         var operateWishlistVO = {
-          userId: 1,
-          dsrId: 1,
+          userId: this.$store.getters.userName,
+          dsrId: this.$store.getters.dsrId,
           proId: this.productInfo.proId,
         }
         return new Promise((resolve, reject) => {
@@ -213,7 +213,7 @@
 
   /*价格详情等*/
   .item-detail-price-row {
-    width: 47vw;
+    width: 30vw;
     padding: 5px;
     display: flex;
     flex-direction: row;

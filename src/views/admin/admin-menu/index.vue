@@ -38,12 +38,12 @@
     </el-card>
 
     <el-dialog title="Add Menu" :visible.sync="ifOpenDialog" width="50%" center top="5vh" destroy-on-close @closed="closeDialog()">
-      <el-form ref="form" :model="menuInfo" label-width="100px">
-        <el-form-item label="菜单名称">
+      <el-form ref="form" :model="menuInfo" label-width="100px" :rules="menuRole">
+        <el-form-item label="菜单名称" prop="title">
           <el-input v-model="menuInfo.title"></el-input>
         </el-form-item>
 
-        <el-form-item label="图标">
+        <el-form-item label="图标" prop="icon">
           <el-select v-model="menuInfo.icon" placeholder="请选择图标" style="width: 100%;">
             <svg-icon slot="prefix" :icon-class="menuInfo.icon" />
             <el-option v-for="icon in icons" :key="this" :label="icon" :value="icon">
@@ -51,11 +51,11 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="路由名称">
+        <el-form-item label="路由名称" prop="name">
           <el-input v-model="menuInfo.name"></el-input>
         </el-form-item>
 
-        <el-form-item label="排序">
+        <el-form-item label="排序" prop="sort">
           <el-input v-model="menuInfo.sort"></el-input>
         </el-form-item>
 
@@ -113,9 +113,35 @@
           hidden: "",
         },
         icons: [
+          "excel",
           "peoples",
-          "people"
-        ]
+          "people",
+          "documentation",
+          "drag",
+          "edit"
+        ],
+        menuRole: {
+          title: [{
+            required: true,
+            message: 'Please input title',
+            trigger: 'blur'
+          }],
+          icon: [{
+            required: true,
+            message: 'Please select icon',
+            trigger: 'blur'
+          }],
+          name: [{
+            required: true,
+            message: 'Please input name',
+            trigger: 'blur'
+          }],
+          sort: [{
+            required: true,
+            message: 'Please input sort number',
+            trigger: 'blur'
+          }],
+        }
       }
     },
     created() {
@@ -137,17 +163,22 @@
         })
       },
       addMenuInfo() {
-        console.log(this.menuInfo)
-        return new Promise((resolve, reject) => {
-          addMenu(this.menuInfo).then(response => {
-            this.$message.info("Add menu Successfully!")
-            this.ifOpenDialog = false;
-            this.getAllMenuInfo()
-            resolve()
-          }).catch(error => {
-            reject(error);
-          })
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            console.log(this.menuInfo)
+            return new Promise((resolve, reject) => {
+              addMenu(this.menuInfo).then(response => {
+                this.$message.success("Add menu Successfully!")
+                this.ifOpenDialog = false;
+                this.getAllMenuInfo()
+                resolve()
+              }).catch(error => {
+                reject(error);
+              })
+            })
+          }
         })
+
       },
       deleteMenuInfo(row, index) {
         return new Promise((resolve, reject) => {

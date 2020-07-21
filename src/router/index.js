@@ -239,13 +239,13 @@ export const asyncRoutes = [
         path: 'menu',
         component: () => import('@/views/admin/admin-menu/index'),
         name: 'menu',
-        meta: { title: 'Menu Manage', icon: 'money', normal: true }
+        meta: { title: 'Menu Manage', icon: 'tab', normal: true }
       },
       {
         path: 'role',
         component: () => import('@/views/admin/admin-role/index'),
         name: 'role',
-        meta: { title: 'Role Manage', icon: 'money', normal: true }
+        meta: { title: 'Role Manage', icon: 'user', normal: true }
       }
     ]
   },

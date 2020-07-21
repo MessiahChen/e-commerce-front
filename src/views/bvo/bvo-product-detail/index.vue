@@ -32,7 +32,7 @@
         return new Promise((resolve, reject) => {
           getProductDetail({
             proId: this.$route.params.id,
-            dsrId: 1
+            dsrId: this.$store.getters.dsrId
           }).then(response => {
 
             var data = response.data

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <quill-editor style="height: 25vh;" v-model="content" ref="myTextEditor" :options="editorOption" @change="onChange">
+    <quill-editor v-model="content" ref="myTextEditor" :options="editorOption" @change="onChange">
       <div :id="id" slot="toolbar">
         <span class="ql-formats"><button type="button" class="ql-bold"></button></span>
         <span class="ql-formats"><button type="button" class="ql-italic"></button></span>

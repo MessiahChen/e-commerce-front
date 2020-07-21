@@ -5,7 +5,7 @@
         <span style="margin-right: 10px;">字典类型</span>
         <el-input v-model="cdmType" placeholder="Please input Cdm Type" style="width: 40vw;"></el-input>
         <el-button class="pan-btn tiffany-btn" type="text" @click="searchCdmByType()">查找</el-button>
-        <el-button class="pan-btn light-blue-btn" type="text" @click="ifOpenDialog = true">添加</el-button>
+        <el-button class="pan-btn light-blue-btn" type="text" @click="openAddDialog()">添加</el-button>
         <el-button class="pan-btn pink-btn" type="text" @click="batchDeleteCdm()">删除</el-button>
       </div>
 
@@ -53,20 +53,20 @@
 
     <el-dialog :title="dialogFunction" :visible.sync="ifOpenDialog" width="50%" center top="5vh" destroy-on-close
       @closed="closeDialog()">
-      <el-form ref="form" :model="cdmInfo" label-width="160px">
-        <el-form-item label="字典类型">
+      <el-form ref="form" :model="cdmInfo" label-width="100px" :rules="codeRule">
+        <el-form-item label="字典类型" prop="cdmType">
           <el-input v-model="cdmInfo.cdmType"></el-input>
         </el-form-item>
 
-        <el-form-item label="用途描述">
+        <el-form-item label="用途描述" prop="description">
           <el-input v-model="cdmInfo.description"></el-input>
         </el-form-item>
 
-        <el-form-item label="编码">
+        <el-form-item label="编码" prop="cdmCd">
           <el-input v-model="cdmInfo.cdmCd"></el-input>
         </el-form-item>
 
-        <el-form-item label="编码值">
+        <el-form-item label="编码值" prop="cdmValue">
           <el-input v-model="cdmInfo.cdmValue"></el-input>
         </el-form-item>
       </el-form>
@@ -116,6 +116,23 @@
           description: "",
           cdmValue: "",
           userId: ""
+        },
+        codeRule: {
+          cdmType: [{
+            required: true,
+            message: 'Please input type',
+            trigger: 'blur'
+          }],
+          cdmCd: [{
+            required: true,
+            message: 'Please input code',
+            trigger: 'blur'
+          }],
+          cdmValue: [{
+            required: true,
+            message: 'Please input value',
+            trigger: 'blur'
+          }],
         }
       }
     },
@@ -135,10 +152,6 @@
             this.totalPage = response.data.totalPage
             this.pageNum = response.data.pageNum
             resolve()
-            console.log(response.data)
-            console.log(this.pageSize)
-            console.log(this.totalPage)
-            console.log(this.pageNum)
             this.tableLoading = false
           }).catch(error => {
             reject(error);
@@ -168,16 +181,20 @@
         })
       },
       addCdmInfo() {
-        this.cdmInfo.userId = 1
-        return new Promise((resolve, reject) => {
-          addCdm(this.cdmInfo).then(response => {
-            this.$message.info("Add Cdm Successfully!")
-            this.ifOpenDialog = false;
-            this.getAllCdmInfo()
-            resolve()
-          }).catch(error => {
-            reject(error);
-          })
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            this.cdmInfo.userId = this.$store.getters.userName
+            return new Promise((resolve, reject) => {
+              addCdm(this.cdmInfo).then(response => {
+                this.$message.success("Add Cdm Successfully!")
+                this.ifOpenDialog = false;
+                this.getAllCdmInfo()
+                resolve()
+              }).catch(error => {
+                reject(error);
+              })
+            })
+          }
         })
       },
       getCdmInfoWhenUpdate(row) {
@@ -199,18 +216,21 @@
         })
       },
       updateCdmInfo() {
-        this.cdmInfo.userId = 1
-        return new Promise((resolve, reject) => {
-          updateCdm(this.cdmInfo).then(response => {
-            this.$message.info("Modify Cdm Successfully!")
-            this.ifOpenDialog = false;
-            resolve()
-            this.getAllCdmInfo()
-          }).catch(error => {
-            reject(error);
-          })
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            this.cdmInfo.userId = this.$store.getters.userName
+            return new Promise((resolve, reject) => {
+              updateCdm(this.cdmInfo).then(response => {
+                this.$message.success("Modify Cdm Successfully!")
+                this.ifOpenDialog = false;
+                resolve()
+                this.getAllCdmInfo()
+              }).catch(error => {
+                reject(error);
+              })
+            })
+          }
         })
-
       },
       deleteCdmInfo(row, index) {
         return new Promise((resolve, reject) => {
@@ -227,18 +247,26 @@
       batchDeleteCdm() {
         var data = this.$refs.cdmTable.selection;
         console.log(data)
-        var cdmIds = []
-        for (var i = 0; i < data.length; i++) {
-          cdmIds[i] = data[i].cdmId
-        }
-        return new Promise((resolve, reject) => {
-          batchDeleteCdm(cdmIds).then(response => {
-            resolve()
-            this.getAllCdmInfo()
-          }).catch(error => {
-            reject(error);
+        if (data.length == 0) {
+          this.$message.warning("Please choose codes")
+        } else {
+          var cdmIds = []
+          for (var i = 0; i < data.length; i++) {
+            cdmIds[i] = data[i].cdmId
+          }
+          return new Promise((resolve, reject) => {
+            batchDeleteCdm(cdmIds).then(response => {
+              resolve()
+              this.getAllCdmInfo()
+            }).catch(error => {
+              reject(error);
+            })
           })
-        })
+        }
+      },
+      openAddDialog() {
+        this.dialogFunction = "Add Code"
+        this.ifOpenDialog = true
       },
       closeDialog() {
         this.cdmInfo = {
@@ -273,6 +301,6 @@
   }
 
   .el-form-item {
-    width: 60vw;
+    width: 40vw;
   }
 </style>

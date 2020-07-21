@@ -5,7 +5,7 @@
         <span style="margin-right: 10px;">参数类型</span>
         <el-input v-model="parCd" placeholder="Please input Par title" style="width: 40vw;"></el-input>
         <el-button class="pan-btn tiffany-btn" type="text" @click="searchParByCd()">查找</el-button>
-        <el-button class="pan-btn light-blue-btn" type="text" @click="ifOpenDialog = true">添加</el-button>
+        <el-button class="pan-btn light-blue-btn" type="text" @click="openAddDialog()">添加</el-button>
         <el-button class="pan-btn pink-btn" type="text" @click="batchDeletePar()">删除</el-button>
       </div>
 
@@ -47,16 +47,16 @@
 
     <el-dialog :title="dialogFunction" :visible.sync="ifOpenDialog" width="50%" center top="5vh" destroy-on-close
       @closed="closeDialog()">
-      <el-form ref="form" :model="parInfo" label-width="140px">
-        <el-form-item label="参数主键">
+      <el-form ref="form" :model="parInfo" label-width="140px" :rules="parRule">
+        <el-form-item label="参数主键" prop="parCd">
           <el-input v-model="parInfo.parCd"></el-input>
         </el-form-item>
 
-        <el-form-item label="参数值">
+        <el-form-item label="参数值" prop="parValue">
           <el-input v-model="parInfo.parValue"></el-input>
         </el-form-item>
 
-        <el-form-item label="参数说明">
+        <el-form-item label="参数说明" prop="description">
           <el-input v-model="parInfo.description"></el-input>
         </el-form-item>
       </el-form>
@@ -105,6 +105,18 @@
           parValue: "",
           description: "",
           userId: ""
+        },
+        parRule: {
+          parCd: [{
+            required: true,
+            message: 'Please input parameter',
+            trigger: 'blur'
+          }],
+          parValue: [{
+            required: true,
+            message: 'Please input value',
+            trigger: 'blur'
+          }]
         }
       }
     },
@@ -124,10 +136,6 @@
             this.totalPage = response.data.totalPage
             this.pageNum = response.data.pageNum
             resolve()
-            console.log(response.data)
-            console.log(this.pageSize)
-            console.log(this.totalPage)
-            console.log(this.pageNum)
             this.tableLoading = false
           }).catch(error => {
             reject(error);
@@ -157,17 +165,22 @@
         })
       },
       addParInfo() {
-        this.parInfo.userId = 1
-        return new Promise((resolve, reject) => {
-          addPar(this.parInfo).then(response => {
-            this.$message.info("Add Par Successfully!")
-            this.ifOpenDialog = false;
-            this.getAllParInfo()
-            resolve()
-          }).catch(error => {
-            reject(error);
-          })
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            this.parInfo.userId = this.$store.getters.userName
+            return new Promise((resolve, reject) => {
+              addPar(this.parInfo).then(response => {
+                this.$message.success("Add Par Successfully!")
+                this.ifOpenDialog = false;
+                this.getAllParInfo()
+                resolve()
+              }).catch(error => {
+                reject(error);
+              })
+            })
+          }
         })
+
       },
       getParInfoWhenUpdate(row) {
         this.dialogFunction = "Modify Parameter"
@@ -187,18 +200,21 @@
         })
       },
       updateParInfo() {
-        this.parInfo.userId = 1
-        return new Promise((resolve, reject) => {
-          updatePar(this.parInfo).then(response => {
-            this.$message.info("Modify Par Successfully!")
-            this.ifOpenDialog = false;
-            resolve()
-            this.getAllParInfo()
-          }).catch(error => {
-            reject(error);
-          })
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            this.parInfo.userId = this.$store.getters.userName
+            return new Promise((resolve, reject) => {
+              updatePar(this.parInfo).then(response => {
+                this.$message.success("Modify Par Successfully!")
+                this.ifOpenDialog = false;
+                resolve()
+                this.getAllParInfo()
+              }).catch(error => {
+                reject(error);
+              })
+            })
+          }
         })
-
       },
       deleteParInfo(row, index) {
         return new Promise((resolve, reject) => {
@@ -215,19 +231,26 @@
       batchDeletePar() {
         var data = this.$refs.parTable.selection;
         console.log(data)
-        var parIds = []
-        for (var i = 0; i < data.length; i++) {
-          parIds[i] = data[i].parId
-        }
-
-        return new Promise((resolve, reject) => {
-          batchDeletePar(parIds).then(response => {
-            resolve()
-            this.getAllParInfo()
-          }).catch(error => {
-            reject(error);
+        if (data.length == 0) {
+          this.$message.warning("Please choose parameters")
+        } else {
+          var parIds = []
+          for (var i = 0; i < data.length; i++) {
+            parIds[i] = data[i].parId
+          }
+          return new Promise((resolve, reject) => {
+            batchDeletePar(parIds).then(response => {
+              resolve()
+              this.getAllParInfo()
+            }).catch(error => {
+              reject(error);
+            })
           })
-        })
+        }
+      },
+      openAddDialog() {
+        this.dialogFunction = "Add Parameter"
+        this.ifOpenDialog = true
       },
       closeDialog() {
         this.parInfo = {

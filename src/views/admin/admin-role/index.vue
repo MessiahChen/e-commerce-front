@@ -64,8 +64,8 @@
     </el-dialog>
 
     <el-dialog title="Add Role" :visible.sync="ifAddOpenDialog" width="50%" center top="5vh" destroy-on-close @closed="closeDialog()">
-      <el-form ref="form" :model="roleInfo" label-width="50px">
-        <el-form-item label="角色">
+      <el-form ref="addForm" :model="roleInfo" label-width="50px" :rules="roleRule">
+        <el-form-item label="角色" prop="name">
           <el-input v-model="roleInfo.name"></el-input>
         </el-form-item>
 
@@ -92,8 +92,8 @@
 
     <el-dialog title="Modify Role" :visible.sync="ifModifyOpenDialog" width="50%" center top="5vh" destroy-on-close
       @closed="closeDialog()">
-      <el-form ref="form" :model="roleInfo" label-width="50px">
-        <el-form-item label="角色">
+      <el-form ref="modifyForm" :model="roleInfo" label-width="50px" :rules="roleRule">
+        <el-form-item label="角色" prop="name">
           <el-input v-model="roleInfo.name"></el-input>
         </el-form-item>
 
@@ -101,8 +101,8 @@
           <el-input v-model="roleInfo.description"></el-input>
         </el-form-item>
 
-        <el-transfer v-loading="updateMenuLoading" style="text-align: left; display: inline-block" v-model="choosedMenu" :right-default-checked="[10,11]"
-          filterable :titles="['所有菜单', '已有菜单']" :button-texts="['', '']" :format="{
+        <el-transfer v-loading="updateMenuLoading" style="text-align: left; display: inline-block" v-model="choosedMenu"
+          :right-default-checked="[10,11]" filterable :titles="['所有菜单', '已有菜单']" :button-texts="['', '']" :format="{
                 noChecked: '${total}',
                 hasChecked: '${checked}/${total}'
               }"
@@ -168,16 +168,23 @@
         ifShowOpenDialog: false,
         ifAddOpenDialog: false,
         ifModifyOpenDialog: false,
-        updateMenuLoading:false,
+        updateMenuLoading: false,
 
         allMenus: [],
         choosedMenu: [],
         choosedMenuUpdate: [],
         // 添加新商品
         roleInfo: {
-          id:"",
+          id: "",
           name: "",
           description: ""
+        },
+        roleRule: {
+          name: [{
+            required: true,
+            message: 'Please input name',
+            trigger: 'blur'
+          }]
         }
       }
     },
@@ -199,21 +206,25 @@
         })
       },
       addRoleInfo() {
-        var addRoleVO = {
-          roleName: this.roleInfo.name,
-          description: this.roleInfo.description,
-          menus: this.choosedMenu
-        }
+        this.$refs['addForm'].validate((valid) => {
+          if (valid) {
+            var addRoleVO = {
+              roleName: this.roleInfo.name,
+              description: this.roleInfo.description,
+              menus: this.choosedMenu
+            }
 
-        return new Promise((resolve, reject) => {
-          addRole(addRoleVO).then(response => {
-            this.$message.info("Add Role Successfully!")
-            this.ifAddOpenDialog = false
-            this.getAllRoleInfo()
-            resolve()
-          }).catch(error => {
-            reject(error);
-          })
+            return new Promise((resolve, reject) => {
+              addRole(addRoleVO).then(response => {
+                this.$message.info("Add Role Successfully!")
+                this.ifAddOpenDialog = false
+                this.getAllRoleInfo()
+                resolve()
+              }).catch(error => {
+                reject(error);
+              })
+            })
+          }
         })
       },
       getMenus(row) {
@@ -310,22 +321,26 @@
         })
       },
       updateRoleInfo() {
-        var updateRoleVO = {
-          roleId: this.roleInfo.id,
-          roleName: this.roleInfo.name,
-          description: this.roleInfo.description,
-          menus: this.choosedMenu
-        }
-        console.log(this.choosedMenu)
-        return new Promise((resolve, reject) => {
-          updateRole(updateRoleVO).then(response => {
-            this.$message.info("Modify Role Successfully!")
-            this.ifModifyOpenDialog = false;
-            resolve()
-            this.getAllRoleInfo()
-          }).catch(error => {
-            reject(error);
-          })
+        this.$refs['modifyForm'].validate((valid) => {
+          if (valid) {
+            var updateRoleVO = {
+              roleId: this.roleInfo.id,
+              roleName: this.roleInfo.name,
+              description: this.roleInfo.description,
+              menus: this.choosedMenu
+            }
+            console.log(this.choosedMenu)
+            return new Promise((resolve, reject) => {
+              updateRole(updateRoleVO).then(response => {
+                this.$message.info("Modify Role Successfully!")
+                this.ifModifyOpenDialog = false;
+                resolve()
+                this.getAllRoleInfo()
+              }).catch(error => {
+                reject(error);
+              })
+            })
+          }
         })
       },
       deleteRoleInfo(row, index) {
@@ -342,7 +357,7 @@
       },
       closeDialog() {
         this.roleInfo = {
-          id:"",
+          id: "",
           name: "",
           description: ""
         }
