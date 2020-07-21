@@ -130,6 +130,11 @@
     created() {
       this.fetchData()
     },
+    computed:{
+      getAccountName(){
+        return this.$store.getters.userName
+      }
+    },
     methods: {
       //跳转到其他界面：title、pay、track
       //转到商品页
@@ -148,10 +153,10 @@
         }
         this.payForm.flow += this.form.expressfee
         // console.log(this.saoIdList);
-
+        console.log('userName:'+this.getAccountName);
         return new Promise((resolve, reject) => {
           pay({
-            accountName: this.$store.state.user.accountName,
+            accountName: this.getAccountName,
             // accountName: this.$store.getters.accountName,
             flow: this.payForm.flow,
             password: this.payForm.password,
@@ -167,6 +172,7 @@
           }).catch(error => {
             reject(error);
             this.loading = false
+            this.closeDialog()
           })
         })
       },
