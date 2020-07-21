@@ -74,8 +74,8 @@
     </div>
     <div class="pay-dialog-container">
       <el-dialog :visible.sync="dialogFormVisible" title="Input Password">
-        <el-form ref="payForm" :model="payForm" label-width="150px">
-          <el-form-item label="Password">
+        <el-form ref="payForm" :model="payForm" label-width="150px" :rules="payFormRules">
+          <el-form-item label="Password" prop="password">
             <el-input type="password" v-model="payForm.password" />
           </el-form-item>
           <el-form-item>
@@ -98,13 +98,20 @@
   }
   from '@/network/order-management'
 
-  import { pay,getAdminFlow } from '@/network/wallet'
+  import {pay, getAdminFlow, walletRegister} from '@/network/wallet'
 
   import area from '@/views/pay/select_area/select_area';
 
   export default {
     name: 'pay',
     data() {
+      const validatePassword = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('The password can not be empty'))
+        } else {
+          callback()
+        }
+      }
       return {
         options: areajson,  //areajson为引入外部js文件的json数组名称
         workarea: ['110000', '110100', '110101'],
@@ -126,6 +133,13 @@
           district: 0
         },
         dialogFormVisible: false,
+        payFormRules: {
+          password: [{
+            required: true,
+            trigger: 'blur',
+            validator: validatePassword
+          }]
+        }
       }
     },
     created() {
@@ -154,7 +168,14 @@
         }
         this.payForm.flow += this.form.expressfee
 
-        this.payMethod()
+        this.$refs.payForm.validate(valid => {
+          if (valid) {
+            this.payMethod()
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
       },
       payMethod(){
         return new Promise((resolve, reject) => {
