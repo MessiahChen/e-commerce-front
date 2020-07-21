@@ -150,7 +150,7 @@
     methods: {
       getCompany() {
         var getCompanyVO = {
-          manId: this.$store.getters.manId;
+          manId: this.$store.getters.manId
         }
         return new Promise((resolve, reject) => {
           getCompany(getCompanyVO).then(response => {
