@@ -544,6 +544,7 @@
 
       closeDialog(){
         this.sendExpressVisiable = false;
+        this.$refs.express.resetFields();
       },
 
       depositClick(){

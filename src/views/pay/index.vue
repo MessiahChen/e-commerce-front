@@ -218,6 +218,7 @@
       closeDialog(){
         this.dialogFormVisible = false;
         this.payForm.password = '';
+        this.$refs.payForm.resetFields();
       },
       handleChange(value) {
         // console.log(value);
@@ -234,7 +235,6 @@
         this.getExpressFee()
       },
       getExpressFee(){
-
         return new Promise((resolve, reject) => {
           getExpressFee({
             string: this.address.province,

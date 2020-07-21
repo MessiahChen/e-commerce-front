@@ -192,6 +192,8 @@
         this.form.password = '';
         this.passwordForm.oldPassword = '';
         this.passwordForm.newPassword = ''
+        this.$refs.form.resetFields();
+        this.$refs.passwordForm.resetFields();
       },
 
       onConfirm(){

@@ -138,6 +138,7 @@
         this.dialogFormVisible = false;
         this.form.flow = '';
         this.form.password = '';
+        this.$refs.form.resetFields();
       },
       withdrawClick(){
         console.log(this.form.accountName)
