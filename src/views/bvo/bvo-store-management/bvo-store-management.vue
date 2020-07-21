@@ -38,8 +38,7 @@
     methods: {
       getStores(){
         var getStoreVO = {
-          // TODO
-          dsrId: 1,
+          dsrId: this.$store.getters.dsrId,
           pageNum: this.pageNum,
           pageSize: this.pageSize
         }

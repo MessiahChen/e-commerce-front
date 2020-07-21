@@ -67,7 +67,7 @@
         </el-form>
       </el-dialog>
     </div>
-    
+
     <div class="dialog-container">
       <el-dialog :visible.sync="addDialogVisible" title="Brand Information">
         <el-form ref="form" :model="temp" label-width="120px">
@@ -150,8 +150,7 @@
     methods: {
       getCompany() {
         var getCompanyVO = {
-          // TODO
-          manId: '1'
+          manId: this.$store.getters.manId;
         }
         return new Promise((resolve, reject) => {
           getCompany(getCompanyVO).then(response => {
@@ -170,8 +169,7 @@
       },
       getBrands() {
         var getAllBrandVO = {
-          // TODO
-          manId: 1,
+          manId: this.$store.getters.manId,
           pageNum: this.pageNum,
           pageSize: this.pageSize
         }
@@ -273,8 +271,7 @@
           remark: this.temp.remark,
           createdBy: this.rowTemp.createdBy,
           creationDate: this.rowTemp.creationDate,
-          // TODO
-          lastUpdateBy: this.rowTemp.lastUpdateBy,
+          lastUpdateBy: this.$store.getters.userName,
           lastUpdateDate: this.rowTemp.lastUpdateDate,
           callCnt: this.rowTemp.callCnt,
           stsCd: this.rowTemp.stsCd
@@ -311,10 +308,9 @@
           nameEn: this.temp.nameEn,
           nameCn: '',
           remark: this.temp.remark,
-          // TODO
-          createdBy: '',
+          createdBy: this.$store.getters.userName,
           creationDate: '',
-          lastUpdateBy: '',
+          lastUpdateBy: this.$store.getters.userName,
           lastUpdateDate: '',
           callCnt: '',
           stsCd: ''

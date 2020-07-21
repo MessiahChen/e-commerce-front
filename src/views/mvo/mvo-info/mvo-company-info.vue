@@ -105,8 +105,7 @@
     methods: {
       getCompany() {
         var getCompanyVO = {
-          // TODO
-          manId: '1'
+          manId: this.$store.getters.manId
         }
         return new Promise((resolve, reject) => {
           getCompany(getCompanyVO).then(response => {
@@ -132,32 +131,19 @@
         console.log(this.companyInfo.description);
         this.companyInfo.gmcReportType = this.ruleForm.type;
         this.companyInfo.gmcReportUrl = this.ruleForm.url;
-        // TODO
-        this.companyInfo.manId = '1';
+        this.companyInfo.manId = this.$store.getters.manId;
+        this.companyInfo.createdBy = this.$store.getters.userName;
+        this.companyInfo.lastUpdateBy = this.$store.getters.userName;
       },
       updateCompany() {
         this.readComanyInfo();
         return new Promise((resolve, reject) => {
           updateCompany(this.companyInfo).then(response => {
             console.log(response);
-            this.$message.info("Modify Successfully!")
+            this.$message.info("Operate Successfully!")
             resolve()
             this.getAllProductInfo();
-            this.companyInfo = {
-              manId: '',
-              nameEn: '',
-              nameCn: '',
-              gmcReportType: '',
-              gmcReportUrl: '',
-              createdBy: '',
-              creationDate: '',
-              lastUpdateBy: '',
-              lastUpdateDate: '',
-              callCnt: '',
-              remark: '',
-              stsCd: '',
-              description: ''
-            }
+            this.clearInfo();
             this.$router.push({
               path: '/mvo/mvoMyInfo'
             });
@@ -166,21 +152,7 @@
           })
         })
       },
-      submitForm(formName) {
-        this.updateCompany();
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      },
-      cancel(formName) {
+      clearInfo(){
         this.companyInfo = {
           manId: '',
           nameEn: '',
@@ -196,6 +168,23 @@
           stsCd: '',
           description: ''
         }
+      },
+      submitForm(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.updateCompany();
+            alert('submit!');
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
+      },
+      cancel(formName) {
+        this.clearInfo();
         this.$router.push({
           path: '/mvo/mvoMyInfo'
         });

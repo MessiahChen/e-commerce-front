@@ -102,11 +102,13 @@
         this.addStore.dsrId = this.ruleForm.sid;
         this.addStore.strId = this.ruleForm.mid;
         this.addStore.storeStsCd = this.ruleForm.token;
+        this.addStore.createdBy = this.$store.getters.userName;
+        this.addStore.lastUpdateBy = this.$store.getters.userName;
       },
       submitForm(formName) {
-        this.addEbay();
         this.$refs[formName].validate((valid) => {
           if (valid) {
+            this.addEbay();
             alert('submit!');
             this.$router.push({
               path: '/bvo/storeManagement'
