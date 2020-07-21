@@ -152,12 +152,10 @@
           this.payForm.flow += this.payList[i].productPrice * this.payList[i].productNum
         }
         this.payForm.flow += this.form.expressfee
-        // console.log(this.saoIdList);
         console.log('userName:'+this.getAccountName);
         return new Promise((resolve, reject) => {
           pay({
             accountName: this.getAccountName,
-            // accountName: this.$store.getters.accountName,
             flow: this.payForm.flow,
             password: this.payForm.password,
             orderNums: this.saoIdList

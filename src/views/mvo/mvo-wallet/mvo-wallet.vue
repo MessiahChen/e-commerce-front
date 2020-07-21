@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="login-container">
+    <div class="login-container" v-if="showWallet">
       <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on"
                label-position="left">
         <el-form-item prop="accountName">
@@ -56,6 +56,7 @@
         loading: false,
         passwordType: 'password',
         redirect: undefined,
+        showWallet: false
       }
     },
     created() {
@@ -72,11 +73,13 @@
           getAvailableMoney({
             accountName: this.getAccountName
           }).then(response => {
+            this.showWallet = false;
             this.$router.push({
               path: '/mvo/mvoAvailableMoney'
             });
           }).catch(error => {
             reject(error);
+            this.showWallet = true;
           })
         })
       },
