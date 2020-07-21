@@ -66,35 +66,35 @@
           </el-form-item>
         </el-form>
       </el-dialog>
-
-      <div class="dialog-container">
-        <el-dialog :visible.sync="addDialogVisible" title="Brand Information">
-          <el-form ref="form" :model="temp" label-width="120px">
-            <el-form-item label="Brand Name">
-              <el-col :span="12">
-                <el-input v-model="temp.nameEn" placeholder="Please enter the brand name" />
-              </el-col>
-            </el-form-item>
-            <el-form-item label="Brand Logo">
-              <el-upload ref="upload" :action="uploadUrl" accept="image/png, image/jpeg" list-type="picture-card"
-                :auto-upload="false" :file-list="urlList" :http-request="uploadSectionFile" :on-preview="handlePictureCardPreview"
-                :on-remove="handleRemove">
-                <i class="el-icon-plus"></i>
-              </el-upload>
-              <el-dialog :visible.sync="dialogVisible" append-to-body>
-                <img width="100%" :src="dialogImageUrl" alt="">
-              </el-dialog>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="success" icon="el-icon-upload" @click="uploadImages()">Upload Logo</el-button>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="saveAddedBrand">Save</el-button>
-              <el-button type="info" @click="closeDialog">Cancel</el-button>
-            </el-form-item>
-          </el-form>
-        </el-dialog>
-
+    </div>
+    
+    <div class="dialog-container">
+      <el-dialog :visible.sync="addDialogVisible" title="Brand Information">
+        <el-form ref="form" :model="temp" label-width="120px">
+          <el-form-item label="Brand Name">
+            <el-col :span="12">
+              <el-input v-model="temp.nameEn" placeholder="Please enter the brand name" />
+            </el-col>
+          </el-form-item>
+          <el-form-item label="Brand Logo">
+            <el-upload ref="upload" :action="uploadUrl" accept="image/png, image/jpeg" list-type="picture-card"
+              :auto-upload="false" :file-list="urlList" :http-request="uploadSectionFile" :on-preview="handlePictureCardPreview"
+              :on-remove="handleRemove">
+              <i class="el-icon-plus"></i>
+            </el-upload>
+            <el-dialog :visible.sync="dialogVisible" append-to-body>
+              <img width="100%" :src="dialogImageUrl" alt="">
+            </el-dialog>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="success" icon="el-icon-upload" @click="uploadImages()">Upload Logo</el-button>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="saveAddedBrand">Save</el-button>
+            <el-button type="info" @click="closeDialog">Cancel</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -261,7 +261,7 @@
         this.rowTemp = '';
         this.resetTemp();
         this.editDialogVisible = false;
-        this.addDialogVisible  = false;
+        this.addDialogVisible = false;
       },
       saveEditedBrand() {
         console.log(this.rowTemp)
@@ -306,7 +306,7 @@
       saveAddedBrand() {
         console.log(this.brandData.length);
         var brandAddVO = {
-          brdId: this.brandData.length+1,
+          brdId: this.brandData.length + 1,
           manId: this.brandData[0].manId,
           nameEn: this.temp.nameEn,
           nameCn: '',
