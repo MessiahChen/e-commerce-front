@@ -4,12 +4,12 @@
       <div class="password-change-container">
         <div class="dialog-container">
           <el-dialog :visible.sync="changePasswordVisible" title="Change password" >
-            <el-form ref="passwordForm" :model="passwordForm" label-width="125px" :rules="changePasswordFormRules">
+            <el-form ref="form" :model="form" label-width="125px" :rules="formRules">
               <el-form-item label="Old Password" prop="oldPassword" >
-                <el-input v-model="passwordForm.oldPassword" />
+                <el-input v-model="form.oldPassword" />
               </el-form-item>
               <el-form-item label="New Password" prop="newPassword">
-                <el-input type="password" v-model="passwordForm.newPassword" />
+                <el-input type="password" v-model="form.newPassword" />
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="onConfirm">Confirm</el-button>
@@ -48,7 +48,7 @@
         </el-table>
         <div class="dialog-container">
           <el-dialog :visible.sync="dialogFormVisible" title="Deposit" >
-            <el-form ref="form" :model="form" label-width="155px" :rules="dialogFormRules">
+            <el-form ref="form" :model="form" label-width="155px" :rules="formRules">
               <el-form-item label="Deposit Amount：$" prop="flow">
                 <el-input v-model.number="form.flow" />
               </el-form-item>
@@ -115,39 +115,25 @@
         if (!value) {
           callback(new Error('The value you want to deposit can not be empty'))
         }
-        setTimeout(() => {
-          if (!Number.isInteger(value)) {
-            callback(new Error('please input number'));
-          }
-        }, 1000);
+        if (!Number.isInteger(value)) {
+          callback(new Error('please input number'));
+        } else {
+          callback()
+        }
       }
       return {
         list: null,
         listLoading: true,
         dialogFormVisible: false,
         changePasswordVisible: false,
-        passwordForm:{
-          oldPassword: '',
-          newPassword: ''
-        },
         form: {
           accountName:'',
           flow: '',
-          password:''
+          password:'',
+          oldPassword: '',
+          newPassword: ''
         },
-        changePasswordFormRules: {
-          oldPassword: [{
-            required: true,
-            trigger: 'blur',
-            validator: validateOldPassword
-          }],
-          newPassword: [{
-            required: true,
-            trigger: 'blur',
-            validator: validateNewPassword
-          }],
-        },
-        dialogFormRules: {
+        formRules: {
           flow: [{
             required: true,
             trigger: 'blur',
@@ -157,6 +143,16 @@
             required: true,
             trigger: 'blur',
             validator: validatePassword
+          }],
+          oldPassword: [{
+            required: true,
+            trigger: 'blur',
+            validator: validateOldPassword
+          }],
+          newPassword: [{
+            required: true,
+            trigger: 'blur',
+            validator: validateNewPassword
           }],
         }
       }
@@ -190,10 +186,9 @@
         this.changePasswordVisible = false;
         this.form.flow = '';
         this.form.password = '';
-        this.passwordForm.oldPassword = '';
-        this.passwordForm.newPassword = ''
+        this.form.oldPassword = '';
+        this.form.newPassword = ''
         this.$refs.form.resetFields();
-        this.$refs.passwordForm.resetFields();
       },
 
       onConfirm(){
@@ -223,8 +218,8 @@
         this.dialogFormVisible = true;
       },
       onDeposit(){
-
         this.$refs.form.validate(valid => {
+          console.log('valid:'+valid);
           if (valid) {
             return new Promise((resolve, reject) => {
               depositMoney({

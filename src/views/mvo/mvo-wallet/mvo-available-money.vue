@@ -81,11 +81,11 @@
         if (!value) {
           callback(new Error('The value you want to withdraw can not be empty'))
         }
-        setTimeout(() => {
-          if (!Number.isInteger(value)) {
-            callback(new Error('please input number'));
-          }
-        }, 1000);
+        if (!Number.isInteger(value)) {
+          callback(new Error('please input number'));
+        } else {
+          callback()
+        }
       }
       return {
         list: null,
@@ -146,6 +146,7 @@
       },
       onWithdraw(){
         this.$refs.form.validate(valid => {
+          console.log('valid:'+valid);
           if (valid) {
             return new Promise((resolve, reject) => {
               withDrawMoney({

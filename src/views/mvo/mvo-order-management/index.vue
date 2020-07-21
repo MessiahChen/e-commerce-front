@@ -358,7 +358,7 @@
       }
       return {
         express:{
-          track: 0,
+          track: '',
           saoid: '',
         },
         searchForm: {
@@ -516,6 +516,7 @@
 
       // 处理 onConfirm 相关事件点击
       onConfirm(){
+        let trackingNo = this.express.track
         this.$refs.express.validate(valid => {
           if (valid) {
             this.closeDialog();
@@ -523,7 +524,7 @@
               sendExpress({
                 //应该发送订单编号，快递单号
                 saoId: this.express.saoid,
-                trackNo: this.express.track
+                trackNo: trackingNo
               }).then(response => {
                 console.log('code');
                 console.log(response.code)
