@@ -320,7 +320,7 @@
       <div class="dialog-container">
         <el-dialog :visible.sync="sendExpressVisiable" title="Send Express">
           <el-form ref="express" :model="express" :rules="formRules" label-width="120px">
-            <el-form-item prop="expressTrackNo" label="Tracking No：">
+            <el-form-item prop="track" label="Tracking No：">
               <el-input v-model="express.track" />
             </el-form-item>
             <el-form-item>
@@ -349,7 +349,7 @@
     name: "mvo-order-management",
     inject: ["reload"],
     data() {
-      const validateexpressTrackNo = (rule, value, callback) => {
+      const validateTrack = (rule, value, callback) => {
         if (!value) {
           callback(new Error('The Tracking No can not be empty'))
         } else {
@@ -378,10 +378,10 @@
         list: [],
         searchList: [],
         formRules: {
-          expressTrackNo: [{
+          track: [{
             required: true,
             trigger: 'blur',
-            validator: validateexpressTrackNo
+            validator: validateTrack
           }]
         },
       }

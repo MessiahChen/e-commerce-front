@@ -61,14 +61,14 @@
       </div>
       <div class="dialog-container">
       <el-dialog :visible.sync="dialogFormVisible" title="审核">
-        <el-form ref="form" :model="form" label-width="180px" >
-          <el-form-item label="审核结果：" >
+        <el-form ref="form" :model="form" label-width="180px" :rules="auditFormRules">
+          <el-form-item label="审核结果：" prop="resource">
             <el-radio-group v-model="form.resource">
               <el-radio label="通过"></el-radio>
               <el-radio label="不通过"></el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="如不通过，请填写原因：" >
+          <el-form-item label="如不通过，请填写原因：" prop="note">
             <el-input type="textarea" v-model="form.note"></el-input>
           </el-form-item>
           <el-form-item label="上传水单：">
@@ -99,7 +99,7 @@
   import
   {
     audit,
-    getAdminFlow, withDrawMoney
+    getAdminFlow, walletRegister, withDrawMoney
   }
     from '@/network/wallet'
 
@@ -117,6 +117,20 @@
       }
     },
     data() {
+      const validateResource = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('You must choose one'))
+        } else {
+          callback()
+        }
+      }
+      const validateNote = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('The note can not be empty'))
+        } else {
+          callback()
+        }
+      }
       return {
         list: null,
         listLoading: true,
@@ -132,6 +146,18 @@
           transactionNumber: '',
           resource: '',
           note:''
+        },
+        auditFormRules: {
+          resource: [{
+            required: true,
+            trigger: 'blur',
+            validator: validateResource
+          }],
+          note: [{
+            required: true,
+            trigger: 'blur',
+            validator: validateNote
+          }],
         }
       }
     },
@@ -169,20 +195,30 @@
         this.dialogFormVisible = true;
       },
       onSave(){
-        return new Promise((resolve, reject) => {
-          audit({
-            note: this.form.note,
-            status: this.form.resource=="通过",
-            transactionNumber: this.form.transactionNumber
-          }).then(response => {
-            this.closeDialog();
-            this.reload();
-          }).catch(error => {
-            console.log(error);
-            this.closeDialog();
-            reject(error);
-          })
+        this.$refs.form.validate(valid => {
+          if (valid) {
+            this.loading = true;
+            return new Promise((resolve, reject) => {
+              audit({
+                note: this.form.note,
+                status: this.form.resource=="通过",
+                transactionNumber: this.form.transactionNumber
+              }).then(response => {
+                this.closeDialog();
+                this.reload();
+              }).catch(error => {
+                console.log(error);
+                this.closeDialog();
+                reject(error);
+              })
+            })
+          } else {
+            console.log('error submit!!')
+            return false
+          }
         })
+
+
       },
       handleRemove(file, fileList) {
         console.log(file, fileList);
