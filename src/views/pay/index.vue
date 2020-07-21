@@ -93,7 +93,8 @@
 
   import
   {
-    getExpressFee
+    getExpressFee,
+    updateStatus
   }
   from '@/network/order-management'
 
@@ -152,13 +153,31 @@
           this.payForm.flow += this.payList[i].productPrice * this.payList[i].productNum
         }
         this.payForm.flow += this.form.expressfee
-        console.log('userName:'+this.getAccountName);
+
+        this.payMethod()
+      },
+      payMethod(){
         return new Promise((resolve, reject) => {
           pay({
             accountName: this.getAccountName,
             flow: this.payForm.flow,
-            password: this.payForm.password,
-            orderNums: this.saoIdList
+            password: this.payForm.password
+          }).then(response => {
+            this.form.expressfee = 100
+            resolve()
+            this.updateMethod()
+            // this.$router.go(-1)
+          }).catch(error => {
+            reject(error);
+            this.closeDialog()
+          })
+        })
+      },
+      updateMethod(){
+        return new Promise((resolve, reject) => {
+          updateStatus({
+            // ints:orderNums
+            ints: this.saoIdList
           }).then(response => {
             console.log('code');
             console.log(response.code)
@@ -166,10 +185,8 @@
             this.form.expressfee = 100
             resolve()
             this.$router.go(-1)
-            this.loading = false
           }).catch(error => {
             reject(error);
-            this.loading = false
             this.closeDialog()
           })
         })
@@ -206,10 +223,8 @@
             this.form.expressfee = response.data
             // this.form.expressfee = 100
             resolve()
-            this.loading = false
           }).catch(error => {
             reject(error);
-            this.loading = false
           })
         })
       }

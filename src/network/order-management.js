@@ -95,6 +95,18 @@ export function getExpressFee(data) {
   })
 }
 
+export function updateStatus(data) {
+  console.log(data)
+  return request({
+    url: 'http://localhost:9030/bvoOrder/update',
+    method: 'post',
+    header: {
+      'Content-Type': 'application/json' //如果写成contentType会报错
+    },
+    data
+  })
+}
+
 // mvo
 
 export function mvoGetSalList(data) {
