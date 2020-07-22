@@ -192,26 +192,19 @@
       },
 
       onConfirm(){
-        this.$refs.form.validate(valid => {
-          if (valid) {
-            return new Promise((resolve, reject) => {
-              changePassword({
-                accountName:this.form.accountName,
-                oldPassword:this.form.oldPassword,
-                newPassword:this.form.newPassword
-              }).then(response => {
-                console.log('bvo-available-money onConfirm() changePasssword code is ');
-                console.log(response.code);
-                this.closeDialog();
-              }).catch(error => {
-                console.log(error);
-                reject(error);
-              })
-            })
-          } else {
-            console.log('error submit!!')
-            return false
-          }
+        return new Promise((resolve, reject) => {
+          changePassword({
+            accountName:this.form.accountName,
+            oldPassword:this.form.oldPassword,
+            newPassword:this.form.newPassword
+          }).then(response => {
+            console.log('bvo-available-money onConfirm() changePasssword code is ');
+            console.log(response.code);
+            this.closeDialog();
+          }).catch(error => {
+            console.log(error);
+            reject(error);
+          })
         })
       },
       depositClick(){
