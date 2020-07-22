@@ -370,21 +370,23 @@
       },
       batchDeleteProductInfo() {
         var data = this.$refs.productTable.selection;
-        console.log(data)
-
-        var proIds = []
-        for (var i = 0; i < data.length; i++) {
-          proIds[i] = data[i].proId
-        }
-
-        return new Promise((resolve, reject) => {
-          batchDeletePro(proIds).then(response => {
-            resolve()
-            this.getAllProductInfo()()
-          }).catch(error => {
-            reject(error);
+        if (data.length == 0) {
+          this.$message.warning("Please choose product")
+        } else {
+          console.log(data)
+          var proIds = []
+          for (var i = 0; i < data.length; i++) {
+            proIds[i] = data[i].proId
+          }
+          return new Promise((resolve, reject) => {
+            batchDeletePro(proIds).then(response => {
+              resolve()
+              this.getAllProductInfo()()
+            }).catch(error => {
+              reject(error);
+            })
           })
-        })
+        }
       },
       deleteProductInfo(row, index) {
         return new Promise((resolve, reject) => {
