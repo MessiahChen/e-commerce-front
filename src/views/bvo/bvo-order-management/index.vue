@@ -295,7 +295,6 @@
         </el-tabs>
       </div>
     </el-card>
-
   </div>
 </template>
 
@@ -306,7 +305,7 @@
   }
   from '@/network/order-management'
 
-    export default {
+  export default {
       name: "bvo-order-management",
       inject: ["reload"],
       data() {
@@ -471,14 +470,8 @@
 
 <style scoped rel="stylesheet/scss" lang="scss">
   @import "src/styles/btn.scss";
-
   .pan-btn {
     margin-left: 1vw;
     width: 130px;
   }
-  .search-form{
-  }
-  .tab-container{
-  }
-
 </style>

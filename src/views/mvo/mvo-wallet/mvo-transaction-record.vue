@@ -34,7 +34,6 @@
       </el-table>
     </div>
   </div>
-
 </template>
 
 <script>

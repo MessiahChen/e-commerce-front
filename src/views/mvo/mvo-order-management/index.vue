@@ -316,33 +316,31 @@
         </el-tabs>
       </div>
     </el-card>
-    <div class="send-express-container">
-      <div class="dialog-container">
-        <el-dialog :visible.sync="sendExpressVisiable" title="Send Express">
-          <el-form ref="express" :model="express" :rules="formRules" label-width="120px">
-            <el-form-item prop="track" label="Tracking No：">
-              <el-input v-model="express.track" />
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="onConfirm">Confirm</el-button>
-              <el-button @click="closeDialog">Cancel</el-button>
-            </el-form-item>
-          </el-form>
-        </el-dialog>
-      </div>
+    <div class="dialog-container">
+      <el-dialog :visible.sync="sendExpressVisiable" title="Send Express">
+        <el-form ref="express" :model="express" :rules="formRules" label-width="120px">
+          <el-form-item prop="track" label="Tracking No：">
+            <el-input v-model="express.track" />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onConfirm">Confirm</el-button>
+            <el-button @click="closeDialog">Cancel</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
+
   import
   {
     mvoGetSalList,
     sendExpress,
     cancal
-
   }
-    from '@/network/order-management'
+  from '@/network/order-management'
   import {changePassword, getAvailableMoney, withDrawMoney} from "@/network/wallet";
 
   export default {
@@ -481,9 +479,10 @@
         });
       },
       //转到快递
-      gotoTrack(){
+      gotoTrack(trackingNo){
+        this.$store.commit('order/SET_TRACKINGNO',trackingNo)
         this.$router.push({
-          // path: '/track'
+          path: '/other/express'
         });
       },
 
@@ -559,15 +558,8 @@
 
 <style scoped rel="stylesheet/scss" lang="scss">
   @import "src/styles/btn.scss";
-
   .pan-btn {
     margin-left: 1vw;
     width: 130px;
   }
-
-  .search-form{
-  }
-  .tab-container{
-  }
-
 </style>

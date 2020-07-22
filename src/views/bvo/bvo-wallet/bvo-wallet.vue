@@ -1,8 +1,14 @@
 <template>
   <div>
     <div class="login-container"  v-if="showWallet">
-      <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on"
-               label-position="left">
+      <el-form
+        ref="loginForm"
+        :model="loginForm"
+        :rules="loginRules"
+        class="login-form"
+        auto-complete="on"
+        label-position="left"
+      >
         <el-form-item prop="accountName">
           <span class="svg-container">
             <svg-icon icon-class="user" />
@@ -19,7 +25,11 @@
             <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
           </span>
         </el-form-item>
-        <el-button :loading="loading" class="pan-btn light-blue-btn" style="width:40%;margin-bottom:30px;" @click.native.prevent="handleRegister">register</el-button>
+        <el-button
+          :loading="loading"
+          class="pan-btn light-blue-btn"
+          style="width:40%;margin-bottom:30px;"
+          @click.native.prevent="handleRegister">register</el-button>
       </el-form>
     </div>
   </div>

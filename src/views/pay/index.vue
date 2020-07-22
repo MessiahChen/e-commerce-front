@@ -13,37 +13,31 @@
             <el-button type="text" @click="gotoTitle(scope.row.proId)">{{ scope.row.productTitle }}</el-button>
           </template>
         </el-table-column>
-
         <el-table-column align="center" label="Price">
           <template slot-scope="scope">
             <span>{{ scope.row.productPrice }}</span>
           </template>
         </el-table-column>
-
         <el-table-column align="center" label="QTY">
           <template slot-scope="scope">
             <span>{{ scope.row.productNum }}</span>
           </template>
         </el-table-column>
-
         <el-table-column align="center" label="Sku" >
           <template slot-scope="scope">
             <span>{{ scope.row.productSku }}</span>
           </template>
         </el-table-column>
-
         <el-table-column  align="center" label="Order No" >
           <template slot-scope="scope">
             <span>{{ scope.row.productOrderNum }}</span>
           </template>
         </el-table-column>
-
         <el-table-column  align="center" label="Total" >
           <template slot-scope="scope">
             <span>{{ scope.row.productPrice * scope.row.productNum }}</span>
           </template>
         </el-table-column>
-
       </el-table>
     </div>
     <div class="pay-form-container">
@@ -85,7 +79,6 @@
         </el-form>
       </el-dialog>
     </div>
-
   </div>
 </template>
 

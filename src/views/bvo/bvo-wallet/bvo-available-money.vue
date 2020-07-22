@@ -192,13 +192,13 @@
       },
 
       onConfirm(){
-        this.$refs.passwordForm.validate(valid => {
+        this.$refs.form.validate(valid => {
           if (valid) {
             return new Promise((resolve, reject) => {
               changePassword({
                 accountName:this.form.accountName,
-                oldPassword:this.passwordForm.oldPassword,
-                newPassword:this.passwordForm.newPassword
+                oldPassword:this.form.oldPassword,
+                newPassword:this.form.newPassword
               }).then(response => {
                 console.log('bvo-available-money onConfirm() changePasssword code is ');
                 console.log(response.code);

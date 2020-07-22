@@ -7,13 +7,12 @@
       </div>
       <el-timeline>
         <el-timeline-item v-for="i in newlist" :timestamp="i.time" placement="top">
-          <el-card style="width: 100%">
+          <el-card style="width: 40%">
             {{i.status}}
           </el-card>
         </el-timeline-item>
       </el-timeline>
     </el-card>
-
   </div>
 </template>
 
@@ -27,21 +26,29 @@
         return {
           list: [
             {
-              time: "2019-12-30 20:24:51",
+              time: "2020-7-21 20:24:51",
               status: "北京分拨中心进行装车扫描，发往：辽宁大连分拨中心"
             },
             {
-              time: "2019-12-30 01:18:48",
+              time: "2020-7-21 01:18:48",
               status: "北京分拨中心进行中转集包扫描，发往：辽宁大连分拨中心"
             },
             {
-              time: "2019-12-30 01:09:00",
+              time: "2020-7-21 01:09:00",
               status: "北京分拨中心在分拨中心进行称重扫描"
             },
             {
-              time: "2019-12-29 20:34:28",
+              time: "2020-7-21 20:34:28",
               status: "北京石景山区金顶街公司进行揽件扫描"
-            }
+            },
+            {
+              time: "2020-7-21 21:09:00",
+              status: "北京分拨中心进行中转集包扫描，发往：辽宁大连分拨中心"
+            },
+            {
+              time: "2020-7-21 01:09:00",
+              status: "辽宁大连分拨中心在金辉分拨中心进行称重扫描"
+            },
           ],
           newlist: [],
           number: 931658943036
