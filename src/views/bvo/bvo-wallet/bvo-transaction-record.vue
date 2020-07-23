@@ -25,9 +25,9 @@
         </el-table-column>
         <el-table-column label="Status" align="center">
           <template slot-scope="scope">
-            <span v-if="scope.row.status == 1">失败</span>
-            <span v-if="scope.row.status == 2">处理中</span>
-            <span v-if="scope.row.status == 4">已完成</span>
+            <span v-if="scope.row.status == 1">Failed</span>
+            <span v-if="scope.row.status == 2">Processing</span>
+            <span v-if="scope.row.status == 4">Finished</span>
           </template>
         </el-table-column>
       </el-table>

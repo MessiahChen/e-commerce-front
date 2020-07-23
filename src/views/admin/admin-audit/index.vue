@@ -10,34 +10,34 @@
           fit
           highlight-current-row
         >
-          <el-table-column label="账户名" align="center" >
+          <el-table-column label="Account Name" align="center" >
             <template slot-scope="scope">
               {{ scope.row.accountName }}
             </template>
           </el-table-column>
-          <el-table-column label="业务类型" align="center">
+          <el-table-column label="Business Type" align="center">
             <template slot-scope="scope">
-              <span v-if="scope.row.transactionType == 1">充值</span>
-              <span v-if="scope.row.transactionType == 2">提现</span>
-              <span v-if="scope.row.transactionType == 3">消费</span>
-              <span v-if="scope.row.transactionType == 4">退款</span>
+              <span v-if="scope.row.transactionType == 1">Dsposit</span>
+              <span v-if="scope.row.transactionType == 2">Withdraw</span>
+              <span v-if="scope.row.transactionType == 3">Consumption</span>
+              <span v-if="scope.row.transactionType == 4">Refund</span>
             </template>
           </el-table-column>
-          <el-table-column label="金额" align="center">
+          <el-table-column label="Money" align="center">
             <template slot-scope="scope">
               {{ scope.row.availableMoney }}
             </template>
           </el-table-column>
-          <el-table-column label="申请时间" align="center">
+          <el-table-column label="Created Time" align="center">
             <template slot-scope="scope">
               {{ scope.row.createTime }}
             </template>
           </el-table-column>
-          <el-table-column label="状态" align="center">
+          <el-table-column label="Status" align="center">
             <template slot-scope="scope">
-              <span v-if="scope.row.status == 1">失败</span>
-              <span v-if="scope.row.status == 2">处理中</span>
-              <span v-if="scope.row.status == 4">已完成</span>
+              <span v-if="scope.row.status == 1">Failed</span>
+              <span v-if="scope.row.status == 2">Processing</span>
+              <span v-if="scope.row.status == 4">Finished</span>
             </template>
           </el-table-column>
           <el-table-column label="Operation" align="center">
