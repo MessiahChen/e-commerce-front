@@ -475,7 +475,7 @@
       gotoTitle(proid){
         console.log(proid);
         this.$router.push({
-          path: '/mvo/productDetail/'+proid
+          path: '/mvo/productDetail/17'
         });
       },
       //转到快递

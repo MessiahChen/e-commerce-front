@@ -60,31 +60,31 @@
         </div>
       </div>
       <div class="dialog-container">
-      <el-dialog :visible.sync="dialogFormVisible" title="审核">
+      <el-dialog :visible.sync="dialogFormVisible" title="Audit">
         <el-form ref="form" :model="form" label-width="180px" :rules="auditFormRules">
-          <el-form-item label="审核结果：" prop="resource">
+          <el-form-item label="Result：" prop="resource">
             <el-radio-group v-model="form.resource">
-              <el-radio label="通过"></el-radio>
-              <el-radio label="不通过"></el-radio>
+              <el-radio label="yes"></el-radio>
+              <el-radio label="no"></el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="如不通过，请填写原因：" prop="note">
+          <el-form-item label="Why not pass：" prop="note">
             <el-input type="textarea" v-model="form.note"></el-input>
           </el-form-item>
-          <el-form-item label="上传水单：">
-            <el-upload
-              action="https://jsonplaceholder.typicode.com/posts/"
-              list-type="picture-card"
-              :on-preview="handlePictureCardPreview"
-              :on-remove="handleRemove">
-              <i class="el-icon-plus"></i>
-            </el-upload>
-            <el-dialog :visible.sync="dialogVisible">
-              <img width="100%" :src="dialogImageUrl" alt="">
-            </el-dialog>
-          </el-form-item>
+<!--          <el-form-item label="上传水单：">-->
+<!--            <el-upload-->
+<!--              action="https://jsonplaceholder.typicode.com/posts/"-->
+<!--              list-type="picture-card"-->
+<!--              :on-preview="handlePictureCardPreview"-->
+<!--              :on-remove="handleRemove">-->
+<!--              <i class="el-icon-plus"></i>-->
+<!--            </el-upload>-->
+<!--            <el-dialog :visible.sync="dialogVisible">-->
+<!--              <img width="100%" :src="dialogImageUrl" alt="">-->
+<!--            </el-dialog>-->
+<!--          </el-form-item>-->
           <el-form-item>
-            <el-button type="primary" @click="onSave">保存</el-button>
+            <el-button type="primary" @click="onSave">Save</el-button>
             <el-button @click="closeDialog">Cancel</el-button>
           </el-form-item>
         </el-form>

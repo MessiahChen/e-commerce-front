@@ -6,7 +6,7 @@
           <el-dialog :visible.sync="changePasswordVisible" title="Change password" >
             <el-form ref="form" :model="form" label-width="125px" :rules="formRules">
               <el-form-item label="Old Password" prop="oldPassword" >
-                <el-input v-model="form.oldPassword" />
+                <el-input type="password" v-model="form.oldPassword" />
               </el-form-item>
               <el-form-item label="New Password" prop="newPassword">
                 <el-input type="password" v-model="form.newPassword" />

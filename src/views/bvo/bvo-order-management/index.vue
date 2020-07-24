@@ -416,7 +416,7 @@
         gotoTitle(proid){
           console.log(proid);
           this.$router.push({
-            path: '/bvo/productDetail/'+proid
+            path: '/bvo/productDetail/17'
           });
         },
         //转到付款
